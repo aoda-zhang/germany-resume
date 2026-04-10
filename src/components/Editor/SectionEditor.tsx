@@ -216,17 +216,21 @@ export function SectionEditor() {
         })
         .filter(Boolean);
       
-      // 添加 summary（如果存在且未被包含）
+      // 确保 summary 存在（跟随 personal 位置）
+      const personalIndex = newSectionOrder.findIndex(s => s.type === 'personal');
       const summarySection = sectionOrder.find(s => s.type === 'summary');
-      if (summarySection && !newSectionOrder.find(s => s.type === 'summary')) {
-        // summary 跟随 personalInfo 位置
-        const personalIndex = newSectionOrder.findIndex(s => s.type === 'personal');
-        if (personalIndex >= 0) {
-          newSectionOrder.splice(personalIndex + 1, 0, summarySection);
-        } else {
-          newSectionOrder.unshift(summarySection);
-        }
+      const hasSummary = newSectionOrder.some(s => s.type === 'summary');
+      
+      if (summarySection && !hasSummary && personalIndex >= 0) {
+        newSectionOrder.splice(personalIndex + 1, 0, summarySection);
       }
+      
+      console.log('handleDragEnd:', {
+        oldIndex,
+        newIndex,
+        newEditorOrder,
+        newSectionOrder: newSectionOrder.map(s => s.type)
+      });
       
       reorderSections(newSectionOrder);
     }
