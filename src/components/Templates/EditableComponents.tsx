@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useResumeStore } from '../../store/resumeStore';
 
-// 可编辑文本组件
 export function EditableText({
   value,
   onChange,
@@ -71,7 +70,6 @@ export function EditableText({
   );
 }
 
-// 可编辑标签组件
 export function EditableLabel({
   sectionType,
   defaultLabel,

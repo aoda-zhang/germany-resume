@@ -130,7 +130,7 @@ export function GermanTemplate() {
                     {exp.workMode && <span> · <EditableText value={exp.workMode} onChange={(v) => updateExperience(exp.id, { workMode: v })} placeholder="模式" /></span>}
                   </div>
                   {exp.techStack && (
-                    <div className="mt-2">
+                    <div>
                       <span className="text-slate-500 text-xs mr-1">技术栈:</span>
                       <div className="inline-flex flex-wrap gap-1">
                         {exp.techStack.split(',').map((tech, idx) => (
