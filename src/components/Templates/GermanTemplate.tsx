@@ -4,7 +4,7 @@ import { EditableText, EditableLabel, useResumeEditing } from './EditableCompone
 
 export function GermanTemplate() {
   const { resumeData } = useResumeEditing();
-  const { personalInfo, experience, education, projects } = resumeData;
+  const { personalInfo } = resumeData;
 
   return (
     <div className="bg-white font-sans" data-resume-preview>
@@ -16,7 +16,7 @@ export function GermanTemplate() {
             {/* 姓名 */}
             <h1 className="text-4xl font-bold text-slate-900 mb-1">
               <EditableText
-                value={personalInfo.fullName}
+                value={personalInfo.fullName || ''}
                 onChange={() => {}}
                 placeholder="姓名"
               />
