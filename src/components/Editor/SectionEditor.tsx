@@ -208,15 +208,25 @@ export function SectionEditor() {
       // 重新排列 editorSections
       const newEditorOrder = arrayMove(editorSections, oldIndex, newIndex);
       
-      // 同步到 store：把新的顺序转换为 store 的 sectionOrder 格式
-      const newSectionOrder = sectionOrder
-        .filter(s => s.type === 'summary') // summary 保持原位
-        .concat(
-          newEditorOrder
-            .map(key => editorToStore[key])
-            .filter(storeType => storeType !== 'personal') // personal 不在 sectionOrder 里
-            .map(storeType => sectionOrder.find(s => s.type === storeType)!)
-        );
+      // 同步到 store：完整映射所有章节的新顺序
+      const newSectionOrder = newEditorOrder
+        .map(key => {
+          const storeType = editorToStore[key];
+          return sectionOrder.find(s => s.type === storeType)!;
+        })
+        .filter(Boolean);
+      
+      // 添加 summary（如果存在且未被包含）
+      const summarySection = sectionOrder.find(s => s.type === 'summary');
+      if (summarySection && !newSectionOrder.find(s => s.type === 'summary')) {
+        // summary 跟随 personalInfo 位置
+        const personalIndex = newSectionOrder.findIndex(s => s.type === 'personal');
+        if (personalIndex >= 0) {
+          newSectionOrder.splice(personalIndex + 1, 0, summarySection);
+        } else {
+          newSectionOrder.unshift(summarySection);
+        }
+      }
       
       reorderSections(newSectionOrder);
     }
