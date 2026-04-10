@@ -77,6 +77,11 @@ export function ClassicTemplate() {
                   <p className="mt-1 text-slate-700 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
                     <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="工作描述..." multiline className="w-full" />
                   </p>
+                  {exp.techStack && (
+                    <div className="mt-1.5 text-slate-600 italic" style={{ fontSize: '9pt' }}>
+                      技术栈: {exp.techStack}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

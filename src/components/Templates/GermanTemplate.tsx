@@ -130,6 +130,18 @@ export function GermanTemplate() {
                   <p className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
                     <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="工作描述..." multiline className="w-full" />
                   </p>
+                  {exp.techStack && (
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {exp.techStack.split(',').map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-xs"
+                        >
+                          {tech.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

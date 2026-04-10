@@ -259,6 +259,18 @@ export function ModernTemplate() {
                       className="w-full"
                     />
                   </div>
+                  {exp.techStack && (
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {exp.techStack.split(',').map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-xs"
+                        >
+                          {tech.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
