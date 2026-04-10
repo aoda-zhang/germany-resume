@@ -250,17 +250,8 @@ export function ModernTemplate() {
                       placeholder="公司"
                     />
                   </div>
-                  <div className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
-                    <EditableText
-                      value={exp.description}
-                      onChange={(v) => updateExperience(exp.id, { description: v })}
-                      placeholder="工作描述..."
-                      multiline
-                      className="w-full"
-                    />
-                  </div>
                   {exp.techStack && (
-                    <div className="mt-1.5 flex flex-wrap gap-1">
+                    <div className="mt-1 flex flex-wrap gap-1">
                       {exp.techStack.split(',').map((tech, idx) => (
                         <span
                           key={idx}
@@ -271,6 +262,15 @@ export function ModernTemplate() {
                       ))}
                     </div>
                   )}
+                  <div className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
+                    <EditableText
+                      value={exp.description}
+                      onChange={(v) => updateExperience(exp.id, { description: v })}
+                      placeholder="工作描述..."
+                      multiline
+                      className="w-full"
+                    />
+                  </div>
                 </div>
               ))}
             </div>

@@ -54,14 +54,14 @@ export function MinimalTemplate() {
                   <div className="text-slate-500" style={{ fontSize: '9.5pt' }}>
                     <EditableText value={exp.company} onChange={(v) => updateExperience(exp.id, { company: v })} placeholder="公司" />
                   </div>
-                  <p className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9pt' }}>
-                    <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="工作描述..." multiline className="w-full" />
-                  </p>
                   {exp.techStack && (
                     <div className="mt-1 text-slate-400" style={{ fontSize: '8.5pt' }}>
                       {exp.techStack}
                     </div>
                   )}
+                  <p className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9pt' }}>
+                    <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="工作描述..." multiline className="w-full" />
+                  </p>
                 </div>
               ))}
             </div>
