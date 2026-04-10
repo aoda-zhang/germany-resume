@@ -7,9 +7,13 @@ export function GermanTemplate() {
   const { personalInfo } = resumeData;
 
   return (
-    <div className="bg-white font-sans" data-resume-preview>
+    <div
+      className="bg-white font-sans"
+      style={{ padding: '15mm', minHeight: '297mm', boxSizing: 'border-box', width: '100%' }}
+      data-resume-preview
+    >
       {/* === 个人介绍部分 === */}
-      <div className="p-8">
+      <div>
         <div className="flex justify-between items-start">
           {/* 左侧：姓名+职位+联系方式 */}
           <div className="flex-1">
@@ -104,7 +108,7 @@ export function GermanTemplate() {
       </div>
 
       {/* 后续内容占位 */}
-      <div className="px-8 pb-8">
+      <div>
         {/* 待添加其他部分 */}
       </div>
     </div>

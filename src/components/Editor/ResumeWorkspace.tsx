@@ -157,7 +157,16 @@ export function ResumeWorkspace() {
 
         {/* 预览区域 */}
         <div className="flex-1 overflow-auto p-8 bg-slate-200">
-          <div className="mx-auto bg-white shadow-lg" style={{ width: '210mm', minHeight: '297mm' }} data-resume-preview>
+          <div
+            className="mx-auto bg-white shadow-lg"
+            style={{
+              width: '210mm',
+              minHeight: '297mm',
+              maxWidth: '210mm',
+              boxSizing: 'border-box',
+            }}
+            data-resume-preview
+          >
             {template === 'modern' && <ModernTemplate />}
             {template === 'classic' && <ClassicTemplate />}
             {template === 'minimal' && <MinimalTemplate />}

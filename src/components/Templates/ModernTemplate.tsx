@@ -111,7 +111,8 @@ function EditableLabel({
         onChange={(e) => setEditValue(e.target.value)}
         onBlur={handleSave}
         onKeyDown={(e) => e.key === 'Enter' && handleSave()}
-        className="text-xl font-bold text-slate-800 bg-indigo-50 border-2 border-indigo-400 rounded px-2 py-1 outline-none"
+        className="font-bold text-slate-800 bg-indigo-50 border-2 border-indigo-400 rounded px-2 py-1 outline-none"
+        style={{ fontSize: '12pt' }}
       />
     );
   }
@@ -119,7 +120,8 @@ function EditableLabel({
   return (
     <h2
       onClick={() => setIsEditing(true)}
-      className="text-xl font-bold text-slate-800 cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all border-2 border-transparent hover:border-indigo-200"
+      className="font-bold text-slate-800 cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all border-2 border-transparent hover:border-indigo-200"
+      style={{ fontSize: '12pt' }}
       title="点击编辑标题"
     >
       {label}
@@ -137,19 +139,19 @@ export function ModernTemplate() {
     switch (section.type) {
       case 'personal':
         return (
-          <header className="border-b-2 border-indigo-600 pb-6 mb-6">
-            <h1 className="text-3xl font-bold text-slate-900 mb-4">
+          <header className="border-b-2 border-indigo-600 pb-4 mb-5">
+            <h1 className="font-bold text-slate-900 mb-3" style={{ fontSize: '20pt' }}>
               <EditableText
                 value={personalInfo.fullName}
                 onChange={(v) => updatePersonalInfo({ fullName: v })}
                 placeholder="姓名"
-                className="text-3xl font-bold"
+                className="font-bold"
               />
             </h1>
-            <div className="flex flex-wrap gap-4 text-sm text-slate-600">
+            <div className="flex flex-wrap gap-4 text-slate-600" style={{ fontSize: '9.5pt' }}>
               {personalInfo.email && (
                 <span className="flex items-center gap-1">
-                  <Mail className="w-4 h-4" />
+                  <Mail className="w-3.5 h-3.5" />
                   <EditableText
                     value={personalInfo.email}
                     onChange={(v) => updatePersonalInfo({ email: v })}
@@ -159,7 +161,7 @@ export function ModernTemplate() {
               )}
               {personalInfo.phone && (
                 <span className="flex items-center gap-1">
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-3.5 h-3.5" />
                   <EditableText
                     value={personalInfo.phone}
                     onChange={(v) => updatePersonalInfo({ phone: v })}
@@ -169,7 +171,7 @@ export function ModernTemplate() {
               )}
               {personalInfo.location && (
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />
+                  <MapPin className="w-3.5 h-3.5" />
                   <EditableText
                     value={personalInfo.location}
                     onChange={(v) => updatePersonalInfo({ location: v })}
@@ -179,7 +181,7 @@ export function ModernTemplate() {
               )}
               {personalInfo.website && (
                 <span className="flex items-center gap-1">
-                  <Globe className="w-4 h-4" />
+                  <Globe className="w-3.5 h-3.5" />
                   <EditableText
                     value={personalInfo.website}
                     onChange={(v) => updatePersonalInfo({ website: v })}
@@ -194,9 +196,9 @@ export function ModernTemplate() {
       case 'summary':
         if (!personalInfo.summary) return null;
         return (
-          <section className="mb-6">
+          <section className="mb-5">
             <EditableLabel sectionType="summary" defaultLabel="个人简介" />
-            <div className="mt-3 text-slate-700 leading-relaxed">
+            <div className="mt-2 text-slate-700 leading-relaxed" style={{ fontSize: '10pt' }}>
               <EditableText
                 value={personalInfo.summary}
                 onChange={(v) => updatePersonalInfo({ summary: v })}
@@ -211,13 +213,13 @@ export function ModernTemplate() {
       case 'experience':
         if (experience.length === 0) return null;
         return (
-          <section className="mb-6">
+          <section className="mb-5">
             <EditableLabel sectionType="experience" defaultLabel="工作经验" />
-            <div className="mt-3 space-y-4">
+            <div className="mt-2 space-y-3">
               {experience.map((exp) => (
                 <div key={exp.id} className="group">
                   <div className="flex justify-between items-start">
-                    <h3 className="font-semibold text-slate-800">
+                    <h3 className="font-semibold text-slate-800" style={{ fontSize: '10.5pt' }}>
                       <EditableText
                         value={exp.position}
                         onChange={(v) => updateExperience(exp.id, { position: v })}
@@ -225,7 +227,7 @@ export function ModernTemplate() {
                         className="font-semibold"
                       />
                     </h3>
-                    <span className="text-sm text-slate-500">
+                    <span className="text-slate-500" style={{ fontSize: '9pt' }}>
                       <EditableText
                         value={`${exp.startDate} - ${exp.current ? '至今' : exp.endDate}`}
                         onChange={(v) => {
@@ -237,18 +239,18 @@ export function ModernTemplate() {
                           });
                         }}
                         placeholder="时间"
-                        className="text-sm"
+                        className="text-slate-500"
                       />
                     </span>
                   </div>
-                  <div className="text-slate-700 font-medium">
+                  <div className="text-slate-700 font-medium" style={{ fontSize: '10pt' }}>
                     <EditableText
                       value={exp.company}
                       onChange={(v) => updateExperience(exp.id, { company: v })}
                       placeholder="公司"
                     />
                   </div>
-                  <div className="mt-2 text-slate-600 text-sm whitespace-pre-line">
+                  <div className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
                     <EditableText
                       value={exp.description}
                       onChange={(v) => updateExperience(exp.id, { description: v })}
@@ -266,13 +268,13 @@ export function ModernTemplate() {
       case 'education':
         if (education.length === 0) return null;
         return (
-          <section className="mb-6">
+          <section className="mb-5">
             <EditableLabel sectionType="education" defaultLabel="教育背景" />
-            <div className="mt-3 space-y-3">
+            <div className="mt-2 space-y-2">
               {education.map((edu) => (
                 <div key={edu.id}>
                   <div className="flex justify-between items-start">
-                    <h3 className="font-semibold text-slate-800">
+                    <h3 className="font-semibold text-slate-800" style={{ fontSize: '10.5pt' }}>
                       <EditableText
                         value={edu.degree}
                         onChange={(v) => updateEducation(edu.id, { degree: v })}
@@ -280,7 +282,7 @@ export function ModernTemplate() {
                         className="font-semibold"
                       />
                     </h3>
-                    <span className="text-sm text-slate-500">
+                    <span className="text-slate-500" style={{ fontSize: '9pt' }}>
                       <EditableText
                         value={`${edu.startDate} - ${edu.current ? '至今' : edu.endDate}`}
                         onChange={(v) => {
@@ -292,11 +294,11 @@ export function ModernTemplate() {
                           });
                         }}
                         placeholder="时间"
-                        className="text-sm"
+                        className="text-slate-500"
                       />
                     </span>
                   </div>
-                  <div className="text-slate-700">
+                  <div className="text-slate-700" style={{ fontSize: '10pt' }}>
                     <EditableText
                       value={`${edu.school} · ${edu.field}`}
                       onChange={(v) => {
@@ -318,13 +320,13 @@ export function ModernTemplate() {
       case 'projects':
         if (projects.length === 0) return null;
         return (
-          <section className="mb-6">
+          <section className="mb-5">
             <EditableLabel sectionType="projects" defaultLabel="项目经历" />
-            <div className="mt-3 space-y-4">
+            <div className="mt-2 space-y-3">
               {projects.map((proj) => (
                 <div key={proj.id}>
                   <div className="flex justify-between items-start">
-                    <h3 className="font-semibold text-slate-800">
+                    <h3 className="font-semibold text-slate-800" style={{ fontSize: '10.5pt' }}>
                       <EditableText
                         value={proj.name}
                         onChange={(v) => updateProject(proj.id, { name: v })}
@@ -333,17 +335,17 @@ export function ModernTemplate() {
                       />
                     </h3>
                     {proj.link && (
-                      <a href={proj.link} className="text-sm text-indigo-600 hover:underline">
+                      <a href={proj.link} className="text-indigo-600 hover:underline" style={{ fontSize: '9pt' }}>
                         <EditableText
                           value={proj.link}
                           onChange={(v) => updateProject(proj.id, { link: v })}
                           placeholder="链接"
-                          className="text-sm"
+                          className="text-indigo-600"
                         />
                       </a>
                     )}
                   </div>
-                  <div className="mt-2 text-slate-600 text-sm whitespace-pre-line">
+                  <div className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
                     <EditableText
                       value={proj.description}
                       onChange={(v) => updateProject(proj.id, { description: v })}
@@ -353,9 +355,9 @@ export function ModernTemplate() {
                     />
                   </div>
                   {proj.technologies.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-2">
+                    <div className="mt-1.5 flex flex-wrap gap-1.5">
                       {proj.technologies.map((tech, idx) => (
-                        <span key={idx} className="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded">
+                        <span key={idx} className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded" style={{ fontSize: '8.5pt' }}>
                           <EditableText
                             value={tech}
                             onChange={(v) => {
@@ -364,7 +366,7 @@ export function ModernTemplate() {
                               updateProject(proj.id, { technologies: newTechs });
                             }}
                             placeholder="技术"
-                            className="text-xs"
+                            className="text-slate-600"
                           />
                         </span>
                       ))}
@@ -379,19 +381,20 @@ export function ModernTemplate() {
       case 'skills':
         if (skills.length === 0) return null;
         return (
-          <section className="mb-6">
+          <section className="mb-5">
             <EditableLabel sectionType="skills" defaultLabel="技能" />
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap gap-1.5">
               {skills.map((skill) => (
                 <span
                   key={skill.id}
-                  className="px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-sm"
+                  className="px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-full"
+                  style={{ fontSize: '9pt' }}
                 >
                   <EditableText
                     value={skill.name}
                     onChange={(v) => updateSkill(skill.id, { name: v })}
                     placeholder="技能"
-                    className="text-sm"
+                    className="text-indigo-700"
                   />
                 </span>
               ))}
@@ -402,11 +405,11 @@ export function ModernTemplate() {
       case 'languages':
         if (languages.length === 0) return null;
         return (
-          <section className="mb-6">
+          <section className="mb-5">
             <EditableLabel sectionType="languages" defaultLabel="语言能力" />
-            <div className="mt-3 space-y-1">
+            <div className="mt-2 space-y-0.5">
               {languages.map((lang) => (
-                <div key={lang.id} className="text-slate-700">
+                <div key={lang.id} className="text-slate-700" style={{ fontSize: '9.5pt' }}>
                   <EditableText
                     value={`${lang.name}: ${lang.level}`}
                     onChange={(v) => {
@@ -430,7 +433,10 @@ export function ModernTemplate() {
   };
 
   return (
-    <div className="bg-white p-8 min-h-[1123px] shadow-lg">
+    <div
+      className="bg-white shadow-lg"
+      style={{ padding: '15mm', minHeight: '297mm', boxSizing: 'border-box', width: '100%' }}
+    >
       {visibleSections.map((section) => (
         <div key={section.id}>{renderSection(section)}</div>
       ))}

@@ -131,9 +131,54 @@ function SortableSectionItem({
 }
 
 export function SectionEditor() {
-  const { resumeData, updateResumeData, sectionOrder, reorderSections } = useResumeStore();
+  const { resumeData, setResumeData, updateResumeData, sectionOrder, reorderSections } = useResumeStore();
   const [expandedSection, setExpandedSection] = useState<SectionKey>('personalInfo');
   const [showJson, setShowJson] = useState(false);
+  const [jsonText, setJsonText] = useState('');
+  const [jsonError, setJsonError] = useState('');
+  const [jsonDirty, setJsonDirty] = useState(false);
+
+  // 打开 JSON 视图时，用 store 数据初始化
+  const openJson = () => {
+    setJsonText(JSON.stringify(resumeData, null, 2));
+    setJsonError('');
+    setJsonDirty(false);
+    setShowJson(true);
+  };
+
+  // 关闭 JSON 视图时，如果有未应用的更改，提示
+  const closeJson = () => {
+    if (jsonDirty) {
+      const ok = window.confirm('有未应用的 JSON 更改，确定关闭吗？');
+      if (!ok) return;
+    }
+    setShowJson(false);
+  };
+
+  // 应用 JSON 到 store
+  const applyJson = () => {
+    try {
+      const parsed = JSON.parse(jsonText);
+      setResumeData(parsed);
+      setJsonDirty(false);
+      setJsonError('');
+    } catch (e) {
+      setJsonError(`JSON 格式错误: ${(e as Error).message}`);
+    }
+  };
+
+  // 从 textarea 输入更新本地 state
+  const handleJsonChange = (text: string) => {
+    setJsonText(text);
+    setJsonDirty(true);
+    // 实时校验格式
+    try {
+      JSON.parse(text);
+      setJsonError('');
+    } catch (e) {
+      setJsonError(`格式错误: ${(e as Error).message}`);
+    }
+  };
 
   // 从 store 的 sectionOrder 生成编辑器用的章节列表（过滤掉 summary，它合并到 personalInfo）
   const editorSections: SectionKey[] = sectionOrder
@@ -204,7 +249,7 @@ export function SectionEditor() {
       <div className="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between shrink-0">
         <h2 className="font-semibold text-slate-700">简历内容</h2>
         <button
-          onClick={() => setShowJson(!showJson)}
+          onClick={showJson ? closeJson : openJson}
           className={`flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg transition-colors ${
             showJson ? 'bg-indigo-100 text-indigo-700' : 'text-slate-600 hover:bg-slate-100'
           }`}
@@ -216,18 +261,49 @@ export function SectionEditor() {
 
       {/* JSON 视图 */}
       {showJson && (
-        <div className="flex-1 overflow-auto p-4">
+        <div className="flex-1 overflow-auto p-4 flex flex-col gap-3">
+          {/* 工具栏 */}
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2">
+              <button
+                onClick={applyJson}
+                disabled={!jsonDirty || !!jsonError}
+                className={`px-4 py-1.5 text-sm rounded-lg font-medium transition-colors ${
+                  jsonDirty && !jsonError
+                    ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                }`}
+              >
+                应用更改
+              </button>
+              <button
+                onClick={openJson}
+                className="px-3 py-1.5 text-sm rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+              >
+                重置
+              </button>
+            </div>
+            <div className="flex items-center gap-2">
+              {jsonDirty && !jsonError && (
+                <span className="text-xs text-amber-600">有未应用的更改</span>
+              )}
+              {jsonError && (
+                <span className="text-xs text-red-500 max-w-[200px] truncate" title={jsonError}>
+                  ❌ {jsonError}
+                </span>
+              )}
+              {!jsonError && jsonText && (
+                <span className="text-xs text-green-600">✅ 格式正确</span>
+              )}
+            </div>
+          </div>
+          
           <textarea
-            value={JSON.stringify(resumeData, null, 2)}
-            onChange={(e) => {
-              try {
-                const parsed = JSON.parse(e.target.value);
-                Object.keys(parsed).forEach(key => {
-                  updateResumeData({ [key]: parsed[key] });
-                });
-              } catch {}
-            }}
-            className="w-full h-full min-h-[500px] p-4 font-mono text-xs bg-slate-900 text-green-400 rounded-lg border border-slate-700 focus:ring-2 focus:ring-indigo-500"
+            value={jsonText}
+            onChange={(e) => handleJsonChange(e.target.value)}
+            placeholder="粘贴你的 JSON 简历数据..."
+            spellCheck={false}
+            className="flex-1 w-full p-4 font-mono text-xs bg-slate-900 text-green-400 rounded-lg border border-slate-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
           />
         </div>
       )}

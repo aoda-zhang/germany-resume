@@ -76,10 +76,12 @@ export function EditableLabel({
   sectionType,
   defaultLabel,
   className = '',
+  style,
 }: {
   sectionType: string;
   defaultLabel: string;
   className?: string;
+  style?: React.CSSProperties;
 }) {
   const { sectionOrder, updateSectionLabel } = useResumeStore();
   const section = sectionOrder.find(s => s.type === sectionType);
@@ -113,6 +115,7 @@ export function EditableLabel({
         onBlur={handleSave}
         onKeyDown={(e) => e.key === 'Enter' && handleSave()}
         className={`${className} bg-indigo-50 border-2 border-indigo-400 rounded px-2 py-1 outline-none`}
+        style={style}
       />
     );
   }
@@ -121,6 +124,7 @@ export function EditableLabel({
     <span
       onClick={() => setIsEditing(true)}
       className={`${className} cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all border-2 border-transparent hover:border-indigo-200`}
+      style={style}
       title="点击编辑标题"
     >
       {label}

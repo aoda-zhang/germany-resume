@@ -115,7 +115,10 @@ export function MinimalTemplate() {
   };
 
   return (
-    <div className="bg-white p-10 min-h-[1123px] shadow-lg">
+    <div
+      className="bg-white shadow-lg"
+      style={{ padding: '12mm 15mm', minHeight: '297mm', boxSizing: 'border-box', width: '100%' }}
+    >
       {visibleSections.map((section) => (
         <div key={section.id}>{renderSection(section)}</div>
       ))}
