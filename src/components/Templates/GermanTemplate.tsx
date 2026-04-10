@@ -248,7 +248,6 @@ export function GermanTemplate() {
     <div
       className="bg-white font-sans"
       style={{ padding: '15mm', minHeight: '297mm', boxSizing: 'border-box', width: '100%' }}
-      data-resume-preview
     >
       {visibleSections.map((section) => (
         <div key={section.id}>{renderSection(section)}</div>
