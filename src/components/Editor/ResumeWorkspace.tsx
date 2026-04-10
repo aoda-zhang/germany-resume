@@ -17,10 +17,10 @@ const templates = [
   { id: 'german' as const, nameKey: 'german' },
 ];
 
-const languages: { code: Language; name: string; flag: string }[] = [
-  { code: 'zh', name: '中文', flag: '🇨🇳' },
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+const languages: { code: Language; name: string }[] = [
+  { code: 'zh', name: '中文' },
+  { code: 'en', name: 'English' },
+  { code: 'de', name: 'Deutsch' },
 ];
 
 export function ResumeWorkspace() {
@@ -59,36 +59,7 @@ export function ResumeWorkspace() {
       <div className="w-[420px] flex-shrink-0 h-full flex flex-col bg-white border-r border-slate-200">
         {/* 顶部工具栏 */}
         <div className="px-4 py-3 border-b border-slate-200">
-          <div className="flex items-center justify-between mb-3">
-            {/* 语言选择器 */}
-            <div className="relative">
-              <button
-                onClick={() => setShowLangDropdown(!showLangDropdown)}
-                className="flex items-center gap-2 px-3 py-2 text-sm bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
-              >
-                <Globe className="w-4 h-4" />
-                <span>{currentLang?.flag} {currentLang?.name}</span>
-              </button>
-              {showLangDropdown && (
-                <div className="absolute top-full left-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg z-50">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setLanguage(lang.code);
-                        setShowLangDropdown(false);
-                      }}
-                      className={`w-full px-4 py-2 text-sm text-left hover:bg-slate-100 flex items-center gap-2 ${
-                        language === lang.code ? 'bg-indigo-50 text-indigo-600' : 'text-slate-700'
-                      }`}
-                    >
-                      {lang.flag} {lang.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
+          <div className="flex items-center justify-end">
             {/* 示例数据按钮 */}
             <div className="flex gap-2">
               <button
@@ -135,22 +106,53 @@ export function ResumeWorkspace() {
       <div className="flex-1 h-full flex flex-col">
         {/* 模板选择器 */}
         <div className="px-6 py-3 bg-white border-b border-slate-200">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-slate-700">{t.header.template}:</span>
-            <div className="flex gap-2">
-              {templates.map((tpl) => (
-                <button
-                  key={tpl.id}
-                  onClick={() => setTemplate(tpl.id)}
-                  className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
-                    template === tpl.id
-                      ? 'bg-indigo-100 text-indigo-700'
-                      : 'text-slate-600 hover:bg-slate-100'
-                  }`}
-                >
-                  {t.template[tpl.nameKey as keyof I18n['template']] as string}
-                </button>
-              ))}
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-slate-700">{t.header.template}:</span>
+              <div className="flex gap-2">
+                {templates.map((tpl) => (
+                  <button
+                    key={tpl.id}
+                    onClick={() => setTemplate(tpl.id)}
+                    className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
+                      template === tpl.id
+                        ? 'bg-indigo-100 text-indigo-700'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    {t.template[tpl.nameKey as keyof I18n['template']] as string}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 语言选择器 */}
+            <div className="ml-auto relative">
+              <button
+                onClick={() => setShowLangDropdown(!showLangDropdown)}
+                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-slate-100 hover:bg-slate-200 rounded-md transition-colors"
+              >
+                <Globe className="w-4 h-4" />
+                <span>{currentLang?.name}</span>
+              </button>
+              {showLangDropdown && (
+                <div className="absolute top-full right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-lg z-50">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        setLanguage(lang.code);
+                        setShowLangDropdown(false);
+                      }}
+                      className={`w-full px-4 py-2 text-sm text-left hover:bg-slate-100 ${
+                        language === lang.code ? 'bg-indigo-50 text-indigo-600' : 'text-slate-700'
+                      }`}
+                    >
+                      {lang.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
