@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useResumeStore } from '../../store/resumeStore';
 import { ModernTemplate } from '../Templates/ModernTemplate';
 import { ClassicTemplate } from '../Templates/ClassicTemplate';
@@ -35,7 +35,6 @@ export function ResumeWorkspace() {
     updateSectionLabel,
     language,
     setLanguage,
-    resumeData,
     fillSampleData,
     clearData,
   } = useResumeStore();
@@ -45,7 +44,7 @@ export function ResumeWorkspace() {
   const [labelInput, setLabelInput] = useState('');
   const [showLangDropdown, setShowLangDropdown] = useState(false);
 
-  const t: I18n = translations[language];
+  const t = translations[language] as I18n;
 
   const handleDragStart = (id: string) => {
     setDraggedItem(id);

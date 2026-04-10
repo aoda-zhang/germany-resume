@@ -13,7 +13,7 @@ export async function exportToPDF(element: HTMLElement, fileName: string = 'resu
       height: element.scrollHeight,
       windowWidth: element.scrollWidth,
       windowHeight: element.scrollHeight,
-      onclone: (clonedDoc, clonedEl) => {
+      onclone: (_clonedDoc, clonedEl) => {
         // Ensure the cloned element is visible and properly sized
         const el = clonedEl as HTMLElement;
         el.style.position = 'fixed';
