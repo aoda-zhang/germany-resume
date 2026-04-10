@@ -15,7 +15,7 @@ export function GermanTemplate() {
               {/* 左侧：姓名+职位+联系方式 */}
               <div className="flex-1">
                 {/* 姓名 */}
-                <h1 className="font-bold text-slate-900 border-b-2 border-sky-600 pb-1 mb-1" style={{ fontSize: '22pt' }}>
+                <h1 className="font-bold text-slate-900 mb-1" style={{ fontSize: '22pt' }}>
                   <EditableText
                     value={personalInfo.fullName || ''}
                     onChange={(v) => updatePersonalInfo({ fullName: v })}
