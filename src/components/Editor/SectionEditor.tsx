@@ -131,7 +131,7 @@ function SortableSectionItem({
 }
 
 export function SectionEditor() {
-  const { resumeData, setResumeData, updateResumeData, sectionOrder, reorderSections } = useResumeStore();
+  const { resumeData, setResumeData, updateResumeData, sectionOrder, reorderSections, resetSectionOrder } = useResumeStore();
   const [expandedSection, setExpandedSection] = useState<SectionKey>('personalInfo');
   const [showJson, setShowJson] = useState(false);
   const [jsonText, setJsonText] = useState('');
@@ -263,7 +263,20 @@ export function SectionEditor() {
     <div className="h-full flex flex-col bg-slate-50">
       {/* 头部 */}
       <div className="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between shrink-0">
-        <h2 className="font-semibold text-slate-700">简历内容</h2>
+        <div className="flex items-center gap-3">
+          <h2 className="font-semibold text-slate-700">简历内容</h2>
+          <button
+            onClick={() => {
+              if (window.confirm('重置章节顺序到默认？')) {
+                resetSectionOrder();
+              }
+            }}
+            className="px-2 py-1 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors"
+            title="重置章节顺序"
+          >
+            重置顺序
+          </button>
+        </div>
         <button
           onClick={showJson ? closeJson : openJson}
           className={`flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg transition-colors ${

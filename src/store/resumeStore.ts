@@ -274,6 +274,7 @@ interface ResumeState {
   updateSectionLabel: (sectionType: string, newLabel: string) => void;
   toggleSectionVisibility: (sectionType: string) => void;
   reorderSections: (newOrder: SectionOrder[]) => void;
+  resetSectionOrder: () => void;
   setEditingSection: (section: string | null) => void;
   setEditingField: (field: { section: string; field: string; index?: number } | null) => void;
   addExperience: (exp: Omit<ResumeData['experience'][0], 'id'>) => void;
@@ -377,6 +378,8 @@ export const useResumeStore = create<ResumeState>()(
         })),
 
       reorderSections: (newOrder) => set({ sectionOrder: newOrder }),
+
+      resetSectionOrder: () => set({ sectionOrder: defaultSectionOrder }),
 
       setEditingSection: (section) => set({ editingSection: section }),
       setEditingField: (field) => set({ editingField: field }),
