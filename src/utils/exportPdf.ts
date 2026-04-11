@@ -17,8 +17,6 @@ export async function exportToPDF(element: HTMLElement, fileName: string = 'resu
         el.style.position = 'fixed';
         el.style.left = '0';
         el.style.top = '0';
-        el.style.width = `${element.scrollWidth}px`;
-        el.style.height = `${element.scrollHeight}px`;
         el.style.zIndex = '-1';
         el.querySelectorAll('*').forEach((node) => {
           (node as HTMLElement).style.transition = 'none';
@@ -32,40 +30,67 @@ export async function exportToPDF(element: HTMLElement, fileName: string = 'resu
 
     const pdfWidth = pdf.internal.pageSize.getWidth();   // 210 mm
     const pdfHeight = pdf.internal.pageSize.getHeight(); // 297 mm
-    const imgWidth = pdfWidth;
 
-    // Template top padding: CSS px → mm (1 CSS px = 1/96 inch = 25.4/96 mm)
+    // Image dimensions in PDF mm
+    const imgWidth = pdfWidth;
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width; // mm
+
+    // Template top padding: CSS px → mm
     const topPaddingPx = parseFloat(getComputedStyle(element).paddingTop) || 0;
     const topPaddingMm = topPaddingPx * 25.4 / 96;
 
-    // Total image height in mm (accounts for the overflow height beyond one page)
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+    // Canvas pixels per mm of template content
+    const pxPerMm = canvas.height / imgHeight; // px / mm
+    const pageHeightPx = Math.round(pxPerMm * pdfHeight); // how many canvas px = one PDF page
 
-    console.log('[PDF] topPadding:', topPaddingPx, 'px =', topPaddingMm.toFixed(2), 'mm | imgH:', imgHeight.toFixed(1), 'mm | pages:', Math.ceil(imgHeight / pdfHeight));
+    // Total pages needed
+    const pageCount = Math.ceil(imgHeight / pdfHeight);
 
-    // ---- Page 1: show from y=0 (the template's top padding appears at top — this is correct) ----
+    console.log('[PDF] canvas:', canvas.width, 'x', canvas.height,
+      ' | imgH:', imgHeight.toFixed(1), 'mm',
+      ' | topPad:', topPaddingMm.toFixed(2), 'mm',
+      ' | pxPerMm:', pxPerMm.toFixed(2),
+      ' | pageHpx:', pageHeightPx,
+      ' | pages:', pageCount);
+
+    // ===================================================================
+    // Page 1: render full canvas. Template's top padding appears at top.
+    // ===================================================================
     pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
-    // ---- Pages 2+: skip the top-padding slice from the image so content aligns with page top ----
-    let sliceY = pdfHeight - topPaddingMm; // where in the image (mm) page 2 should start reading
+    // ===================================================================
+    // Pages 2+: each page shows the NEXT slice of the canvas.
+    // Extract: from (page-1) × pageHeight to bottom of canvas.
+    // Render at PDF y=0 → content starts at page top, no padding repeat.
+    // ===================================================================
+    for (let page = 2; page <= pageCount; page++) {
+      // Top edge of this page's slice in canvas pixels
+      const sliceTopPx = (page - 1) * pageHeightPx;
+      const sliceHeightPx = canvas.height - sliceTopPx;
 
-    while (sliceY < imgHeight) {
+      if (sliceHeightPx <= 0) break;
+
       pdf.addPage();
-      // Draw a white background first
       pdf.setFillColor(255, 255, 255);
       pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
 
-      // Shift the image UP so that sliceY in the image aligns with page top (y=0 in PDF)
-      const imgY = -sliceY;
+      // Extract slice: full canvas width, from sliceTopPx to bottom
+      const sliceCanvas = document.createElement('canvas');
+      sliceCanvas.width = canvas.width;
+      sliceCanvas.height = sliceHeightPx;
+      const ctx = sliceCanvas.getContext('2d')!;
+      ctx.drawImage(
+        canvas,
+        0, sliceTopPx, canvas.width, sliceHeightPx,
+        0, 0, canvas.width, sliceHeightPx
+      );
 
-      // Clip: only draw inside the page bounds
-      pdf.saveGraphicsState();
-      pdf.rect(0, 0, pdfWidth, pdfHeight, 'CLIP NODRAW');
-      pdf.clip();
-      pdf.addImage(imgData, 'PNG', 0, imgY, imgWidth, imgHeight);
-      pdf.restoreGraphicsState();
+      // Convert slice height back to PDF mm (same px/mm ratio)
+      const sliceImgHeightMm = sliceHeightPx / pxPerMm;
 
-      sliceY += pdfHeight;
+      // Render at y=0 → the slice top aligns with page top (no padding on page 2+)
+      pdf.addImage(sliceCanvas.toDataURL('image/png'), 'PNG',
+        0, 0, imgWidth, sliceImgHeightMm);
     }
 
     pdf.save(fileName);
