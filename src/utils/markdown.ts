@@ -10,7 +10,7 @@ export function resumeToMarkdown(data: ResumeData): string {
   const contacts = [
     personalInfo.email,
     personalInfo.phone,
-    personalInfo.location,
+    personalInfo.address,
     personalInfo.linkedin,
     personalInfo.website,
   ].filter(Boolean);
@@ -83,7 +83,7 @@ export function markdownToResume(md: string): Partial<ResumeData> {
       fullName: '',
       email: '',
       phone: '',
-      location: '',
+      address: '',
     },
     experience: [],
     education: [],
@@ -113,7 +113,7 @@ export function markdownToResume(md: string): Partial<ResumeData> {
         else if (/^1[3-9]\d{9}$/.test(contact) || contact.includes('+')) result.personalInfo!.phone = contact;
         else if (contact.includes('linkedin.com') || contact.includes('LinkedIn')) result.personalInfo!.linkedin = contact;
         else if (contact.includes('http')) result.personalInfo!.website = contact;
-        else result.personalInfo!.location = contact;
+        else result.personalInfo!.address = contact;
       });
       continue;
     }

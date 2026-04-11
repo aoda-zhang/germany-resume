@@ -19,7 +19,7 @@ export function MarkdownEditor() {
 
   const tPlaceholder = `# Name
 
-Email | Phone | Location
+Email | Phone | Address
 
 ## Summary
 

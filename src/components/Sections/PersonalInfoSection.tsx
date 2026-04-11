@@ -89,13 +89,13 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">{t.location}</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.address}</label>
           <input
             type="text"
-            value={data.location}
-            onChange={(e) => handleChange('location', e.target.value)}
+            value={data.address}
+            onChange={(e) => handleChange('address', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder={t.location}
+            placeholder={t.address}
           />
         </div>
         <div>

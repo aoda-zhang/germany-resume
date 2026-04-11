@@ -118,7 +118,7 @@ export function ModernTemplate() {
               </span>
               <span className="flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5" />
-                <EditableText value={personalInfo.location} onChange={(v) => updatePersonalInfo({ location: v })} placeholder={t.location} />
+                <EditableText value={personalInfo.address} onChange={(v) => updatePersonalInfo({ address: v })} placeholder={t.address} />
               </span>
               <span className="flex items-center gap-1">
                 <Globe className="w-3.5 h-3.5" />

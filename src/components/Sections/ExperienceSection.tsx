@@ -24,7 +24,7 @@ export function ExperienceSection({ data, onChange }: Props) {
       endDate: '',
       current: false,
       description: '',
-      location: '',
+      address: '',
       techStack: '',
       country: '',
       workMode: '',
@@ -168,13 +168,13 @@ export function ExperienceSection({ data, onChange }: Props) {
                     </label>
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm text-slate-600 mb-1">{t.location}</label>
+                    <label className="block text-sm text-slate-600 mb-1">{t.address}</label>
                     <input
                       type="text"
-                      value={item.location || ''}
-                      onChange={(e) => updateItem(item.id, 'location', e.target.value)}
+                      value={item.address || ''}
+                      onChange={(e) => updateItem(item.id, 'address', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder={t.location}
+                      placeholder={t.address}
                     />
                   </div>
                   <div>

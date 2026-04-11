@@ -3,13 +3,12 @@ export interface PersonalInfo {
   title?: string; 
   email: string;
   phone: string;
-  location: string;
+  address: string;
   linkedin?: string;
   website?: string;
   summary?: string;
   nationality?: string;
   photo?: string; // base64 or URL
-  interests?: string;
   github?: string;
 }
 
@@ -21,7 +20,7 @@ export interface Experience {
   endDate: string;
   current: boolean;
   description: string;
-  location?: string;  // e.g. "Düsseldorf, Germany (Remote)"
+  address?: string;  // e.g. "Düsseldorf, Germany (Remote)"
   techStack?: string; // e.g. "React, Node.js, GraphQL, AWS"
   country?: string;   // e.g. "Germany", "China"
   workMode?: string;  // e.g. "Full-time", "Part-time", "Freelance", "Internship"

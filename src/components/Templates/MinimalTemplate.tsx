@@ -23,7 +23,7 @@ export function MinimalTemplate() {
               <span>·</span>
               <EditableText value={personalInfo.phone} onChange={(v) => updatePersonalInfo({ phone: v })} placeholder={t.phone} />
               <span>·</span>
-              <EditableText value={personalInfo.location} onChange={(v) => updatePersonalInfo({ location: v })} placeholder={t.location} />
+              <EditableText value={personalInfo.address} onChange={(v) => updatePersonalInfo({ address: v })} placeholder={t.address} />
             </div>
           </header>
         );

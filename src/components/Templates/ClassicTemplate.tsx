@@ -38,10 +38,10 @@ export function ClassicTemplate() {
                   <EditableText value={personalInfo.phone} onChange={(v) => updatePersonalInfo({ phone: v })} placeholder={t.phone} />
                 </span>
               )}
-              {personalInfo.location && (
+              {personalInfo.address && (
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5" />
-                  <EditableText value={personalInfo.location} onChange={(v) => updatePersonalInfo({ location: v })} placeholder={t.location} />
+                  <EditableText value={personalInfo.address} onChange={(v) => updatePersonalInfo({ address: v })} placeholder={t.address} />
                 </span>
               )}
             </div>

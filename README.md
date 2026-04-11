@@ -99,14 +99,13 @@ interface ResumeData {
     fullName: string;
     email: string;
     phone: string;
-    location: string;
+    address: string;
     title?: string;
     linkedin?: string;
     website?: string;
     github?: string;
     summary?: string;
     nationality?: string;
-    interests?: string;
   };
   experience: Array<{
     id: string;
@@ -116,7 +115,7 @@ interface ResumeData {
     endDate: string;
     current: boolean;
     description: string;
-    location?: string;
+    address?: string;
     techStack?: string;
     country?: string;
     workMode?: string;
