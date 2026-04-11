@@ -3,10 +3,16 @@ import jsPDF from 'jspdf';
 
 export async function exportToPDF(element: HTMLElement, fileName: string = 'resume.pdf'): Promise<void> {
   try {
+    // Log element dimensions BEFORE html2canvas
+    console.log('[PDF DEBUG] element.scrollWidth:', element.scrollWidth, 'scrollHeight:', element.scrollHeight);
+    console.log('[PDF DEBUG] element.offsetWidth:', element.offsetWidth, 'offsetHeight:', element.offsetHeight);
+    const style = getComputedStyle(element);
+    console.log('[PDF DEBUG] paddingTop:', style.paddingTop, 'paddingLeft:', style.paddingLeft);
+
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
-      logging: false,
+      logging: true,  // verbose for debugging
       backgroundColor: '#ffffff',
       width: element.scrollWidth,
       height: element.scrollHeight,
@@ -25,6 +31,8 @@ export async function exportToPDF(element: HTMLElement, fileName: string = 'resu
       },
     });
 
+    console.log('[PDF DEBUG] canvas width:', canvas.width, 'height:', canvas.height);
+
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
 
@@ -32,49 +40,61 @@ export async function exportToPDF(element: HTMLElement, fileName: string = 'resu
     const pdfHeight = pdf.internal.pageSize.getHeight(); // 297 mm
 
     // Image dimensions in PDF mm
-    const imgWidth = pdfWidth;
-    const imgHeight = (canvas.height * pdfWidth) / canvas.width; // mm
+    const imgWidth = pdfWidth;  // 210mm
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width; // total template height in mm
 
-    // Template top padding: CSS px → mm
+    // Template top padding in mm
     const topPaddingPx = parseFloat(getComputedStyle(element).paddingTop) || 0;
-    const topPaddingMm = topPaddingPx * 25.4 / 96;
+    // CSS px → mm: 1px = 25.4/96 mm
+    const pxToMm = 25.4 / 96;
+    const topPaddingMm = topPaddingPx * pxToMm;
 
-    // Canvas pixels per mm of template content
-    const pxPerMm = canvas.height / imgHeight; // px / mm
-    const pageHeightPx = Math.round(pxPerMm * pdfHeight); // how many canvas px = one PDF page
+    // Canvas pixels per mm of image
+    const pxPerMm = canvas.height / imgHeight; // px/mm
 
-    // Total pages needed
+    // PDF page height in canvas pixels
+    const pageHeightPx = Math.round(pxPerMm * pdfHeight);
+
     const pageCount = Math.ceil(imgHeight / pdfHeight);
 
-    console.log('[PDF] canvas:', canvas.width, 'x', canvas.height,
-      ' | imgH:', imgHeight.toFixed(1), 'mm',
-      ' | topPad:', topPaddingMm.toFixed(2), 'mm',
-      ' | pxPerMm:', pxPerMm.toFixed(2),
-      ' | pageHpx:', pageHeightPx,
-      ' | pages:', pageCount);
+    console.log('[PDF DEBUG] imgWidth:', imgWidth, 'imgHeight:', imgHeight.toFixed(2));
+    console.log('[PDF DEBUG] topPaddingPx:', topPaddingPx, 'topPaddingMm:', topPaddingMm.toFixed(2));
+    console.log('[PDF DEBUG] pxPerMm:', pxPerMm.toFixed(4), 'pageHeightPx:', pageHeightPx);
+    console.log('[PDF DEBUG] pageCount:', pageCount, 'pdfHeight:', pdfHeight);
+
+    // Print each page's slice info
+    for (let p = 1; p <= pageCount; p++) {
+      if (p === 1) {
+        console.log(`[PDF DEBUG] Page ${p}: canvas y=[0, ${pageHeightPx}], template y=[0mm, ${pdfHeight}mm]`);
+      } else {
+        const sliceTopPx = (p - 1) * pageHeightPx;
+        const sliceBotPx = Math.min(p * pageHeightPx, canvas.height);
+        const tTop = sliceTopPx / pxPerMm;
+        const tBot = sliceBotPx / pxPerMm;
+        console.log(`[PDF DEBUG] Page ${p}: canvas y=[${sliceTopPx}, ${sliceBotPx}], template y=[${tTop.toFixed(1)}mm, ${tBot.toFixed(1)}mm]`);
+      }
+    }
 
     // ===================================================================
-    // Page 1: render full canvas. Template's top padding appears at top.
+    // Page 1: full canvas, clipped at pdfHeight → top padding visible
     // ===================================================================
     pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
     // ===================================================================
-    // Pages 2+: each page shows the NEXT slice of the canvas.
-    // Extract: from (page-1) × pageHeight to bottom of canvas.
-    // Render at PDF y=0 → content starts at page top, no padding repeat.
+    // Pages 2+: extract the correct slice, render at PDF y=0
     // ===================================================================
     for (let page = 2; page <= pageCount; page++) {
-      // Top edge of this page's slice in canvas pixels
       const sliceTopPx = (page - 1) * pageHeightPx;
       const sliceHeightPx = canvas.height - sliceTopPx;
 
       if (sliceHeightPx <= 0) break;
 
+      console.log(`[PDF DEBUG] Page ${page}: extracting sliceTopPx=${sliceTopPx}, height=${sliceHeightPx}`);
+
       pdf.addPage();
       pdf.setFillColor(255, 255, 255);
       pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
 
-      // Extract slice: full canvas width, from sliceTopPx to bottom
       const sliceCanvas = document.createElement('canvas');
       sliceCanvas.width = canvas.width;
       sliceCanvas.height = sliceHeightPx;
@@ -85,10 +105,9 @@ export async function exportToPDF(element: HTMLElement, fileName: string = 'resu
         0, 0, canvas.width, sliceHeightPx
       );
 
-      // Convert slice height back to PDF mm (same px/mm ratio)
       const sliceImgHeightMm = sliceHeightPx / pxPerMm;
+      console.log(`[PDF DEBUG] Page ${page}: sliceImgHeightMm=${sliceImgHeightMm.toFixed(2)}, will clip at ${pdfHeight}mm`);
 
-      // Render at y=0 → the slice top aligns with page top (no padding on page 2+)
       pdf.addImage(sliceCanvas.toDataURL('image/png'), 'PNG',
         0, 0, imgWidth, sliceImgHeightMm);
     }
