@@ -31,35 +31,41 @@ export async function exportToPDF(element: HTMLElement, fileName: string = 'resu
     const pdf = new jsPDF('p', 'mm', 'a4');
 
     const pdfWidth = pdf.internal.pageSize.getWidth();   // 210 mm
-    const pdfHeight = pdf.internal.pageSize.getHeight();  // 297 mm
+    const pdfHeight = pdf.internal.pageSize.getHeight(); // 297 mm
     const imgWidth = pdfWidth;
 
-    // Get the top padding of the template (e.g. "15mm" or "20mm") from its computed style
-    const topPadding = parseFloat(getComputedStyle(element).paddingTop) || 0;
+    // Template top padding: CSS px → mm (1 CSS px = 1/96 inch = 25.4/96 mm)
+    const topPaddingPx = parseFloat(getComputedStyle(element).paddingTop) || 0;
+    const topPaddingMm = topPaddingPx * 25.4 / 96;
 
-    // Convert pixel padding to mm using the same scale as the image
-    const pxToMm = pdfWidth / element.scrollWidth;
-    const topPaddingMm = topPadding * pxToMm;
-
+    // Total image height in mm (accounts for the overflow height beyond one page)
     const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    // Page 1: show from the very top (includes the template's top padding)
-    let position = 0;
-    let heightLeft = imgHeight;
+    console.log('[PDF] topPadding:', topPaddingPx, 'px =', topPaddingMm.toFixed(2), 'mm | imgH:', imgHeight.toFixed(1), 'mm | pages:', Math.ceil(imgHeight / pdfHeight));
 
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
+    // ---- Page 1: show from y=0 (the template's top padding appears at top — this is correct) ----
+    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
-    // Pages 2+: skip the template's top padding so content aligns to the page top
-    if (heightLeft > 0) {
-      position = -(pdfHeight - topPaddingMm);
-    }
+    // ---- Pages 2+: skip the top-padding slice from the image so content aligns with page top ----
+    let sliceY = pdfHeight - topPaddingMm; // where in the image (mm) page 2 should start reading
 
-    while (heightLeft > 0) {
+    while (sliceY < imgHeight) {
       pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
-      position -= pdfHeight;
+      // Draw a white background first
+      pdf.setFillColor(255, 255, 255);
+      pdf.rect(0, 0, pdfWidth, pdfHeight, 'F');
+
+      // Shift the image UP so that sliceY in the image aligns with page top (y=0 in PDF)
+      const imgY = -sliceY;
+
+      // Clip: only draw inside the page bounds
+      pdf.saveGraphicsState();
+      pdf.rect(0, 0, pdfWidth, pdfHeight, 'CLIP NODRAW');
+      pdf.clip();
+      pdf.addImage(imgData, 'PNG', 0, imgY, imgWidth, imgHeight);
+      pdf.restoreGraphicsState();
+
+      sliceY += pdfHeight;
     }
 
     pdf.save(fileName);
