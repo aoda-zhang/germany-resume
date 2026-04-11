@@ -1,73 +1,163 @@
-# React + TypeScript + Vite
+# Super Resume
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, open-source resume builder with real-time visual editing, multiple professional templates, and export capabilities.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Visual Editor** - Edit resume content directly with an intuitive interface
+- **Drag & Drop** - Reorder sections by dragging
+- **Multiple Templates** - Modern, Classic, Minimal, and German-style layouts
+- **Multi-language** - Supports Chinese, English, and German
+- **Real-time Preview** - See changes instantly
+- **Export Options** - Export to PDF or image
+- **JSON Import/Export** - Paste or edit raw JSON data
 
-## React Compiler
+## Templates
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Modern
+Clean, professional design with a colored header and skills badges.
 
-## Expanding the ESLint configuration
+### Classic
+Traditional serif typography with centered header.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Minimal
+Lightweight layout with subtle typography.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### German
+Two-column timeline style with section underlines - ideal for European CVs.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+- Node.js 18+
+- npm or pnpm
+
+### Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── Editor/           # Main workspace components
+│   │   ├── ResumeWorkspace.tsx
+│   │   ├── SectionEditor.tsx
+│   │   └── MarkdownEditor.tsx
+│   ├── Sections/         # Editable section components
+│   │   ├── ExperienceSection.tsx
+│   │   ├── EducationSection.tsx
+│   │   └── ...
+│   └── Templates/        # Resume template components
+│       ├── ModernTemplate.tsx
+│       ├── ClassicTemplate.tsx
+│       ├── MinimalTemplate.tsx
+│       ├── GermanTemplate.tsx
+│       └── EditableComponents.tsx
+├── store/
+│   └── resumeStore.ts    # Zustand state management
+├── types/
+│   └── resume.ts         # TypeScript interfaces
+├── utils/
+│   ├── exportPdf.ts      # PDF generation
+│   └── exportImage.ts     # Image export
+└── i18n/
+    └── index.ts          # Internationalization
+```
+
+## Data Format
+
+Resume data is stored in JSON format with the following structure:
+
+```typescript
+interface ResumeData {
+  personalInfo: {
+    fullName: string;
+    email: string;
+    phone: string;
+    location: string;
+    title?: string;
+    linkedin?: string;
+    website?: string;
+    github?: string;
+    summary?: string;
+    nationality?: string;
+    interests?: string;
+  };
+  experience: Array<{
+    id: string;
+    company: string;
+    position: string;
+    startDate: string;
+    endDate: string;
+    current: boolean;
+    description: string;
+    location?: string;
+    techStack?: string;
+    country?: string;
+    workMode?: string;
+  }>;
+  education: Array<{
+    id: string;
+    school: string;
+    degree: string;
+    field: string;
+    startDate: string;
+    endDate: string;
+    current: boolean;
+  }>;
+  skills: Array<{
+    id: string;
+    name: string;
+  }>;
+  projects: Array<{
+    id: string;
+    name: string;
+    description: string;
+    technologies: string[];
+  }>;
+  languages: Array<{
+    id: string;
+    name: string;
+    level: string;
+  }>;
+}
+```
+
+## Tech Stack
+
+- **React 19** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **Zustand** - State management
+- **dnd-kit** - Drag and drop
+- **html2canvas + jsPDF** - PDF export
+
+## License
+
+MIT
