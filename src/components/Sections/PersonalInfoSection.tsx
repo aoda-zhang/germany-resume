@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { PersonalInfo } from '../../types/resume';
 import { Trash2, Upload } from 'lucide-react';
+import { useResumeStore } from '../../store/resumeStore';
+import { translations } from '../../i18n';
 
 interface Props {
   data: PersonalInfo;
@@ -9,6 +11,9 @@ interface Props {
 }
 
 export function PersonalInfoSection({ data, onChange, isEditing = true }: Props) {
+  const language = useResumeStore((s) => s.language);
+  const t = translations[language].form;
+  const tEditor = translations[language].editor;
   const [photoPreview, setPhotoPreview] = useState<string | null>(data.photo || null);
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +36,7 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
   if (!isEditing) {
     return (
       <div className="text-slate-400 text-center py-8">
-        Personal InfoandPhoto
+        {tEditor.personalInfo}
       </div>
     );
   }
@@ -39,110 +44,109 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-slate-700">Personal Info</h3>
+        <h3 className="font-semibold text-slate-700">{tEditor.personalInfo}</h3>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm text-slate-600 mb-1">Name</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.name}</label>
           <input
             type="text"
             value={data.fullName}
             onChange={(e) => handleChange('fullName', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="John Doe"
+            placeholder={t.name}
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">Title</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.title}</label>
           <input
             type="text"
             value={data.title || ''}
             onChange={(e) => handleChange('title', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="Frontend Developer"
+            placeholder={t.title}
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">Email</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.email}</label>
           <input
             type="email"
             value={data.email}
             onChange={(e) => handleChange('email', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="zhangsan@example.com"
+            placeholder={t.email}
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">Phone</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.phone}</label>
           <input
             type="tel"
             value={data.phone}
             onChange={(e) => handleChange('phone', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="+86 138 0000 0000"
+            placeholder={t.phone}
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">City/Location</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.location}</label>
           <input
             type="text"
             value={data.location}
             onChange={(e) => handleChange('location', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="Shanghai"
+            placeholder={t.location}
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">GitHub</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.github}</label>
           <input
             type="text"
             value={data.github || ''}
             onChange={(e) => handleChange('github', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="github.com/username"
+            placeholder={t.github}
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">LinkedIn</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.linkedin}</label>
           <input
             type="text"
             value={data.linkedin || ''}
             onChange={(e) => handleChange('linkedin', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="linkedin.com/in/username"
+            placeholder={t.linkedin}
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">Website</label>
+          <label className="block text-sm text-slate-600 mb-1">{t.website}</label>
           <input
             type="text"
             value={data.website || ''}
             onChange={(e) => handleChange('website', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="example.com"
+            placeholder={t.website}
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm text-slate-600 mb-1">Summary</label>
+        <label className="block text-sm text-slate-600 mb-1">{tEditor.summary}</label>
         <textarea
           value={data.summary || ''}
           onChange={(e) => handleChange('summary', e.target.value)}
           rows={4}
           className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-          placeholder="BriefIntroduce yourself..."
+          placeholder={t.summaryPlaceholder}
         />
       </div>
 
-      
       <div>
-        <label className="block text-sm text-slate-600 mb-2">Photo</label>
+        <label className="block text-sm text-slate-600 mb-2">{t.avatar}</label>
         <div className="flex items-center gap-4">
           <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-slate-200 bg-slate-100">
             {photoPreview ? (
-              <img src={photoPreview} alt="Photo Preview" className="w-full h-full object-cover" />
+              <img src={photoPreview} alt={t.avatar} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-slate-400">
                 <Upload className="w-8 h-8" />
@@ -150,7 +154,7 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
             )}
           </div>
           <label className="px-4 py-2 bg-indigo-600 text-white rounded-lg cursor-pointer hover:bg-indigo-700 transition-colors">
-            <span className="text-sm">Upload Photo</span>
+            <span className="text-sm">{t.avatar}</span>
             <input
               type="file"
               accept="image/*"

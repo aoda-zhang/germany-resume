@@ -17,6 +17,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useResumeStore } from '../../store/resumeStore';
+import { translations } from '../../i18n';
 import { PersonalInfoSection } from '../Sections/PersonalInfoSection';
 import { ExperienceSection } from '../Sections/ExperienceSection';
 import { EducationSection } from '../Sections/EducationSection';
@@ -27,27 +28,15 @@ import { FileJson, ChevronDown, ChevronRight, GripVertical } from 'lucide-react'
 
 type SectionKey = 'personalInfo' | 'experience' | 'education' | 'skills' | 'projects' | 'languages';
 
-
-const sectionConfig: Record<SectionKey, { label: string; icon: string }> = {
-  personalInfo: { label: 'Personal Info', icon: '👤' },
-  experience: { label: 'Work Experience', icon: '💼' },
-  education: { label: 'Education', icon: '🎓' },
-  skills: { label: 'Skills', icon: '🛠️' },
-  projects: { label: 'Projects', icon: '🚀' },
-  languages: { label: 'Languages', icon: '🌐' },
-};
-
-
 const storeToEditor: Record<string, SectionKey> = {
   personal: 'personalInfo',
-  summary: 'personalInfo', 
+  summary: 'personalInfo',
   experience: 'experience',
   education: 'education',
   projects: 'projects',
   skills: 'skills',
   languages: 'languages',
 };
-
 
 const editorToStore: Record<SectionKey, string> = {
   personalInfo: 'personal',
@@ -58,9 +47,16 @@ const editorToStore: Record<SectionKey, string> = {
   languages: 'languages',
 };
 
+const sectionIcons: Record<SectionKey, string> = {
+  personalInfo: '👤',
+  experience: '💼',
+  education: '🎓',
+  skills: '🛠️',
+  projects: '🚀',
+  languages: '🌐',
+};
 
 function SortableSectionItem({
-  sectionKey,
   label,
   icon,
   isExpanded,
@@ -81,7 +77,7 @@ function SortableSectionItem({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: sectionKey });
+  } = useSortable({ id: Math.random().toString() });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -93,7 +89,6 @@ function SortableSectionItem({
     <div ref={setNodeRef} style={style} className={isDragging ? 'relative z-50' : ''}>
       <div className="bg-white border-b border-slate-200">
         <div className="flex items-center">
-          
           <div
             {...attributes}
             {...listeners}
@@ -101,8 +96,6 @@ function SortableSectionItem({
           >
             <GripVertical className="w-5 h-5" />
           </div>
-          
-          
           <button
             onClick={onToggle}
             className="flex-1 py-3 pr-4 flex items-center justify-between hover:bg-slate-50 transition-colors"
@@ -118,8 +111,7 @@ function SortableSectionItem({
             )}
           </button>
         </div>
-        
-        
+
         {isExpanded && (
           <div className="px-4 pb-4 border-t border-slate-100">
             {children}
@@ -131,14 +123,25 @@ function SortableSectionItem({
 }
 
 export function SectionEditor() {
+  const language = useResumeStore((s) => s.language);
   const { resumeData, setResumeData, updateResumeData, sectionOrder, reorderSections, resetSectionOrder } = useResumeStore();
+  const tEditor = translations[language].editor;
+  const tConfirm = translations[language].confirm;
   const [expandedSection, setExpandedSection] = useState<SectionKey>('personalInfo');
   const [showJson, setShowJson] = useState(false);
   const [jsonText, setJsonText] = useState('');
   const [jsonError, setJsonError] = useState('');
   const [jsonDirty, setJsonDirty] = useState(false);
 
-  
+  const sectionConfig: Record<SectionKey, { label: string; icon: string }> = {
+    personalInfo: { label: tEditor.personalInfo, icon: sectionIcons.personalInfo },
+    experience: { label: tEditor.experience, icon: sectionIcons.experience },
+    education: { label: tEditor.education, icon: sectionIcons.education },
+    skills: { label: tEditor.skills, icon: sectionIcons.skills },
+    projects: { label: tEditor.projects, icon: sectionIcons.projects },
+    languages: { label: tEditor.languages, icon: sectionIcons.languages },
+  };
+
   const openJson = () => {
     setJsonText(JSON.stringify(resumeData, null, 2));
     setJsonError('');
@@ -146,16 +149,13 @@ export function SectionEditor() {
     setShowJson(true);
   };
 
-  
   const closeJson = () => {
     if (jsonDirty) {
-      const ok = window.confirm('There are unapplied JSON changes，Are you sure you want to close?？');
-      if (!ok) return;
+      if (!window.confirm(tConfirm.clear)) return;
     }
     setShowJson(false);
   };
 
-  
   const applyJson = () => {
     try {
       const parsed = JSON.parse(jsonText);
@@ -163,61 +163,42 @@ export function SectionEditor() {
       setJsonDirty(false);
       setJsonError('');
     } catch (e) {
-      setJsonError(`JSON Format error: ${(e as Error).message}`);
+      setJsonError(`JSON: ${(e as Error).message}`);
     }
   };
 
-  
   const handleJsonChange = (text: string) => {
     setJsonText(text);
     setJsonDirty(true);
-    
     try {
       JSON.parse(text);
       setJsonError('');
     } catch (e) {
-      setJsonError(`Format error: ${(e as Error).message}`);
+      setJsonError(`${(e as Error).message}`);
     }
   };
 
-  
   const editorSections: SectionKey[] = sectionOrder
     .filter(s => s.visible && s.type !== 'summary')
     .map(s => storeToEditor[s.type] || 'personalInfo')
-    .filter((key, i, arr) => arr.indexOf(key) === i); 
+    .filter((key, i, arr) => arr.indexOf(key) === i);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8, 
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-
     if (over && active.id !== over.id) {
-      
       const oldIndex = editorSections.indexOf(active.id as SectionKey);
       const newIndex = editorSections.indexOf(over.id as SectionKey);
-      
-      
       const newEditorOrder = arrayMove(editorSections, oldIndex, newIndex);
-      
-      
       const personalSection = sectionOrder.find(s => s.type === 'personal')!;
       const summarySection = sectionOrder.find(s => s.type === 'summary')!;
-      
       const newSectionOrder: typeof sectionOrder = [];
-      
-      
       for (const key of newEditorOrder) {
         if (key === 'personalInfo') {
-          
           newSectionOrder.push(personalSection);
           newSectionOrder.push(summarySection);
         } else {
@@ -226,14 +207,6 @@ export function SectionEditor() {
           if (section) newSectionOrder.push(section);
         }
       }
-      
-      console.log('handleDragEnd:', {
-        oldIndex,
-        newIndex,
-        newEditorOrder,
-        newSectionOrder: newSectionOrder.map(s => s.type)
-      });
-      
       reorderSections(newSectionOrder);
     }
   };
@@ -261,18 +234,17 @@ export function SectionEditor() {
 
   return (
     <div className="h-full flex flex-col bg-slate-50">
-      
       <div className="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <h2 className="font-semibold text-slate-700">Resume content</h2>
+          <h2 className="font-semibold text-slate-700">{tEditor.personalInfo}</h2>
           <button
             onClick={() => {
-              if (window.confirm('Reset section order to default？')) {
+              if (window.confirm(tConfirm.clear)) {
                 resetSectionOrder();
               }
             }}
             className="px-2 py-1 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors"
-            title="Reset section order"
+            title={tEditor.sectionName}
           >
             Reset order
           </button>
@@ -288,10 +260,8 @@ export function SectionEditor() {
         </button>
       </div>
 
-      
       {showJson && (
         <div className="flex-1 overflow-auto p-4 flex flex-col gap-3">
-          
           <div className="flex items-center justify-between">
             <div className="flex gap-2">
               <button
@@ -303,41 +273,40 @@ export function SectionEditor() {
                     : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                 }`}
               >
-                Apply changes
+                {tEditor.show}
               </button>
               <button
                 onClick={openJson}
                 className="px-3 py-1.5 text-sm rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
               >
-                Reset
+                {tEditor.hide}
               </button>
             </div>
             <div className="flex items-center gap-2">
               {jsonDirty && !jsonError && (
-                <span className="text-xs text-amber-600">There are unappliedchanges</span>
+                <span className="text-xs text-amber-600">{tConfirm.clear.split('？')[0]}...</span>
               )}
               {jsonError && (
                 <span className="text-xs text-red-500 max-w-[200px] truncate" title={jsonError}>
-                  ❌ {jsonError}
+                  {jsonError}
                 </span>
               )}
               {!jsonError && jsonText && (
-                <span className="text-xs text-green-600">✅ Valid format</span>
+                <span className="text-xs text-green-600">OK</span>
               )}
             </div>
           </div>
-          
+
           <textarea
             value={jsonText}
             onChange={(e) => handleJsonChange(e.target.value)}
-            placeholder="Paste your JSON resume data..."
+            placeholder={tEditor.sectionName}
             spellCheck={false}
             className="flex-1 w-full p-4 font-mono text-xs bg-slate-900 text-green-400 rounded-lg border border-slate-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
           />
         </div>
       )}
 
-      
       {!showJson && (
         <div className="flex-1 overflow-auto">
           <DndContext

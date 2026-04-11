@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { Experience } from '../../types/resume';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { useResumeStore } from '../../store/resumeStore';
+import { translations } from '../../i18n';
 
 interface Props {
   data: Experience[];
@@ -8,6 +10,9 @@ interface Props {
 }
 
 export function ExperienceSection({ data, onChange }: Props) {
+  const language = useResumeStore((s) => s.language);
+  const t = translations[language].form;
+  const tEditor = translations[language].editor;
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const addItem = () => {
@@ -54,13 +59,13 @@ export function ExperienceSection({ data, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-slate-700">Work Experience</h3>
+        <h3 className="font-semibold text-slate-700">{tEditor.experience}</h3>
         <button
           onClick={addItem}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
         >
           <Plus className="w-4 h-4" />
-          Add
+          {tEditor.add}
         </button>
       </div>
 
@@ -73,7 +78,7 @@ export function ExperienceSection({ data, onChange }: Props) {
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-slate-700">
-                  {item.position || item.company || 'New Entry'}
+                  {item.position || item.company || tEditor.add}
                 </span>
                 <span className="text-xs text-slate-400">
                   {item.startDate && item.endDate ? `${item.startDate} - ${item.endDate}` : ''}
@@ -112,43 +117,43 @@ export function ExperienceSection({ data, onChange }: Props) {
               <div className="p-4 space-y-4 bg-white">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">CompanyName</label>
+                    <label className="block text-sm text-slate-600 mb-1">{t.company}</label>
                     <input
                       type="text"
                       value={item.company}
                       onChange={(e) => updateItem(item.id, 'company', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="CompanyName"
+                      placeholder={t.company}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">Title</label>
+                    <label className="block text-sm text-slate-600 mb-1">{t.position}</label>
                     <input
                       type="text"
                       value={item.position}
                       onChange={(e) => updateItem(item.id, 'position', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="TitleName"
+                      placeholder={t.position}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">Start Date</label>
+                    <label className="block text-sm text-slate-600 mb-1">{t.startDate}</label>
                     <input
                       type="text"
                       value={item.startDate}
                       onChange={(e) => updateItem(item.id, 'startDate', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="2020.01"
+                      placeholder={t.startDate}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">End Date</label>
+                    <label className="block text-sm text-slate-600 mb-1">{t.endDate}</label>
                     <input
                       type="text"
                       value={item.endDate}
                       onChange={(e) => updateItem(item.id, 'endDate', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="2023.12"
+                      placeholder={t.endDate}
                     />
                   </div>
                   <div className="col-span-2">
@@ -159,21 +164,21 @@ export function ExperienceSection({ data, onChange }: Props) {
                         onChange={(e) => updateItem(item.id, 'current', e.target.checked)}
                         className="rounded"
                       />
-                      Present
+                      {t.current}
                     </label>
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm text-slate-600 mb-1">Location</label>
+                    <label className="block text-sm text-slate-600 mb-1">{t.location}</label>
                     <input
                       type="text"
                       value={item.location || ''}
                       onChange={(e) => updateItem(item.id, 'location', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="City, Country"
+                      placeholder={t.location}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">CompanyNationality</label>
+                    <label className="block text-sm text-slate-600 mb-1">Country</label>
                     <input
                       type="text"
                       value={item.country || ''}
@@ -183,7 +188,7 @@ export function ExperienceSection({ data, onChange }: Props) {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">WorkMode</label>
+                    <label className="block text-sm text-slate-600 mb-1">Work Mode</label>
                     <input
                       type="text"
                       value={item.workMode || ''}
@@ -193,24 +198,23 @@ export function ExperienceSection({ data, onChange }: Props) {
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm text-slate-600 mb-1">Tech Stack</label>
+                    <label className="block text-sm text-slate-600 mb-1">{t.skills}</label>
                     <input
                       type="text"
                       value={item.techStack || ''}
                       onChange={(e) => updateItem(item.id, 'techStack', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="React, Node.js, PostgreSQL"
+                      placeholder={t.skills}
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm text-slate-600 mb-1">WorkDescription</label>
+                    <label className="block text-sm text-slate-600 mb-1">{t.description}</label>
                     <textarea
                       value={item.description}
                       onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                       rows={4}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="• Responsible for...
-• Led..."
+                      placeholder={t.description}
                     />
                   </div>
                 </div>
@@ -218,18 +222,6 @@ export function ExperienceSection({ data, onChange }: Props) {
             )}
           </div>
         ))}
-
-        {data.length === 0 && (
-          <div className="text-center py-8 text-slate-400">
-            <p>NoneWork Experience</p>
-            <button
-              onClick={addItem}
-              className="mt-2 text-indigo-600 hover:text-indigo-700"
-            >
-              + AddFirst item
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

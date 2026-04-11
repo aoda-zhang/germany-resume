@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { Education } from '../../types/resume';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { useResumeStore } from '../../store/resumeStore';
+import { translations } from '../../i18n';
 
 interface Props {
   data: Education[];
@@ -8,6 +10,9 @@ interface Props {
 }
 
 export function EducationSection({ data, onChange }: Props) {
+  const language = useResumeStore((s) => s.language);
+  const t = translations[language].form;
+  const tEditor = translations[language].editor;
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const addItem = () => {
@@ -50,13 +55,13 @@ export function EducationSection({ data, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-slate-700">Education</h3>
+        <h3 className="font-semibold text-slate-700">{tEditor.education}</h3>
         <button
           onClick={addItem}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
         >
           <Plus className="w-4 h-4" />
-          Add
+          {tEditor.add}
         </button>
       </div>
 
@@ -69,7 +74,7 @@ export function EducationSection({ data, onChange }: Props) {
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-slate-700">
-                  {item.school || item.degree || 'New Entry'}
+                  {item.school || item.degree || tEditor.add}
                 </span>
                 <span className="text-xs text-slate-400">
                   {item.startDate && item.endDate ? `${item.startDate} - ${item.endDate}` : ''}
@@ -87,29 +92,29 @@ export function EducationSection({ data, onChange }: Props) {
               <div className="p-4 space-y-4 bg-white">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">School</label>
-                    <input type="text" value={item.school} onChange={(e) => updateItem(item.id, 'school', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="SchoolName" />
+                    <label className="block text-sm text-slate-600 mb-1">{t.school}</label>
+                    <input type="text" value={item.school} onChange={(e) => updateItem(item.id, 'school', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder={t.school} />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">Degree</label>
-                    <input type="text" value={item.degree} onChange={(e) => updateItem(item.id, 'degree', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="Bachelor/Master/PhD" />
+                    <label className="block text-sm text-slate-600 mb-1">{t.degree}</label>
+                    <input type="text" value={item.degree} onChange={(e) => updateItem(item.id, 'degree', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder={t.degree} />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">Field</label>
-                    <input type="text" value={item.field} onChange={(e) => updateItem(item.id, 'field', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="Computer Science" />
+                    <label className="block text-sm text-slate-600 mb-1">{t.major}</label>
+                    <input type="text" value={item.field} onChange={(e) => updateItem(item.id, 'field', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder={t.major} />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">Start Date</label>
-                    <input type="text" value={item.startDate} onChange={(e) => updateItem(item.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="2016.09" />
+                    <label className="block text-sm text-slate-600 mb-1">{t.startDate}</label>
+                    <input type="text" value={item.startDate} onChange={(e) => updateItem(item.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder={t.startDate} />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">End Date</label>
-                    <input type="text" value={item.endDate} onChange={(e) => updateItem(item.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="2020.06" />
+                    <label className="block text-sm text-slate-600 mb-1">{t.endDate}</label>
+                    <input type="text" value={item.endDate} onChange={(e) => updateItem(item.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder={t.endDate} />
                   </div>
                   <div>
                     <label className="flex items-center gap-2 text-sm text-slate-600 mt-6">
                       <input type="checkbox" checked={item.current} onChange={(e) => updateItem(item.id, 'current', e.target.checked)} className="rounded" />
-                      Present
+                      {t.current}
                     </label>
                   </div>
                 </div>
@@ -120,8 +125,8 @@ export function EducationSection({ data, onChange }: Props) {
 
         {data.length === 0 && (
           <div className="text-center py-8 text-slate-400">
-            <p>NoneEducation</p>
-            <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ Add</button>
+            <p>{tEditor.add}</p>
+            <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ {tEditor.add}</button>
           </div>
         )}
       </div>

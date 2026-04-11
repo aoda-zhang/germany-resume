@@ -229,5 +229,32 @@ export const translations = {
   },
 } as const;
 
+export const skillLevels = {
+  beginner: 'Beginner',
+  intermediate: 'Proficient',
+  advanced: 'Expert',
+  expert: 'Master',
+} as const;
+
+export const skillLevelsZh = {
+  beginner: '入门',
+  intermediate: '熟练',
+  advanced: '精通',
+  expert: '专家',
+} as const;
+
+export const skillLevelsDe = {
+  beginner: 'Anfänger',
+  intermediate: 'Fortgeschritten',
+  advanced: 'Experte',
+  expert: 'Meister',
+} as const;
+
+export function getSkillLevel(lang: Language, level: string): string {
+  if (lang === 'zh') return skillLevelsZh[level as keyof typeof skillLevelsZh] || level;
+  if (lang === 'de') return skillLevelsDe[level as keyof typeof skillLevelsDe] || level;
+  return skillLevels[level as keyof typeof skillLevels] || level;
+}
+
 export type Language = keyof typeof translations;
 export type I18n = typeof translations.en;

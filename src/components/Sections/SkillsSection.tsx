@@ -1,19 +1,25 @@
 import type { Skill } from '../../types/resume';
 import { Plus, Trash2 } from 'lucide-react';
+import { useResumeStore } from '../../store/resumeStore';
+import { translations, getSkillLevel } from '../../i18n';
 
 interface Props {
   data: Skill[];
   onChange: (data: Skill[]) => void;
 }
 
-const levelOptions = [
-  { value: 'beginner', label: 'Beginner' },
-  { value: 'intermediate', label: 'Proficient' },
-  { value: 'advanced', label: 'Expert' },
-  { value: 'expert', label: 'Master' },
-];
-
 export function SkillsSection({ data, onChange }: Props) {
+  const language = useResumeStore((s) => s.language);
+  const t = translations[language].form;
+  const tEditor = translations[language].editor;
+
+  const levelOptions = [
+    { value: 'beginner', label: getSkillLevel(language, 'beginner') },
+    { value: 'intermediate', label: getSkillLevel(language, 'intermediate') },
+    { value: 'advanced', label: getSkillLevel(language, 'advanced') },
+    { value: 'expert', label: getSkillLevel(language, 'expert') },
+  ];
+
   const addItem = () => {
     const newItem: Skill = {
       id: `skill_${Date.now()}`,
@@ -36,13 +42,13 @@ export function SkillsSection({ data, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-slate-700">Skills</h3>
+        <h3 className="font-semibold text-slate-700">{tEditor.skills}</h3>
         <button
           onClick={addItem}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
         >
           <Plus className="w-4 h-4" />
-          Add
+          {tEditor.add}
         </button>
       </div>
 
@@ -54,7 +60,7 @@ export function SkillsSection({ data, onChange }: Props) {
               value={item.name}
               onChange={(e) => updateItem(item.id, 'name', e.target.value)}
               className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-              placeholder="SkillsName"
+              placeholder={t.skills}
             />
             <select
               value={item.level}
@@ -76,8 +82,8 @@ export function SkillsSection({ data, onChange }: Props) {
 
         {data.length === 0 && (
           <div className="text-center py-6 text-slate-400">
-            <p>NoneSkills</p>
-            <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ Add</button>
+            <p>{tEditor.add}</p>
+            <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ {tEditor.add}</button>
           </div>
         )}
       </div>

@@ -1,9 +1,16 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { EditableText, EditableLabel, useResumeEditing } from './EditableComponents';
+import { useResumeStore } from '../../store/resumeStore';
+import { translations } from '../../i18n';
 
 export function ClassicTemplate() {
+  const language = useResumeStore((s) => s.language);
+  const t = translations[language].form;
+  const tEditor = translations[language].editor;
   const { resumeData, visibleSections, updatePersonalInfo, updateExperience, updateEducation, updateSkill, updateProject, updateLanguage } = useResumeEditing();
   const { personalInfo, experience, education, skills, projects, languages } = resumeData;
+
+  const present = translations[language].form.current;
 
   const renderSection = (section: typeof visibleSections[0]) => {
     switch (section.type) {
@@ -14,7 +21,7 @@ export function ClassicTemplate() {
               <EditableText
                 value={personalInfo.fullName}
                 onChange={(v) => updatePersonalInfo({ fullName: v })}
-                placeholder="Name"
+                placeholder={t.name}
                 className="font-serif font-bold"
               />
             </h1>
@@ -22,19 +29,19 @@ export function ClassicTemplate() {
               {personalInfo.email && (
                 <span className="flex items-center gap-1">
                   <Mail className="w-3.5 h-3.5" />
-                  <EditableText value={personalInfo.email} onChange={(v) => updatePersonalInfo({ email: v })} placeholder="Email" />
+                  <EditableText value={personalInfo.email} onChange={(v) => updatePersonalInfo({ email: v })} placeholder={t.email} />
                 </span>
               )}
               {personalInfo.phone && (
                 <span className="flex items-center gap-1">
                   <Phone className="w-3.5 h-3.5" />
-                  <EditableText value={personalInfo.phone} onChange={(v) => updatePersonalInfo({ phone: v })} placeholder="Phone" />
+                  <EditableText value={personalInfo.phone} onChange={(v) => updatePersonalInfo({ phone: v })} placeholder={t.phone} />
                 </span>
               )}
               {personalInfo.location && (
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5" />
-                  <EditableText value={personalInfo.location} onChange={(v) => updatePersonalInfo({ location: v })} placeholder="Location" />
+                  <EditableText value={personalInfo.location} onChange={(v) => updatePersonalInfo({ location: v })} placeholder={t.location} />
                 </span>
               )}
             </div>
@@ -45,9 +52,9 @@ export function ClassicTemplate() {
         if (!personalInfo.summary) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="summary" defaultLabel="Summary" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
+            <EditableLabel sectionType="summary" defaultLabel={tEditor.summary} className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
             <p className="text-slate-700 leading-relaxed" style={{ fontSize: '10pt' }}>
-              <EditableText value={personalInfo.summary} onChange={(v) => updatePersonalInfo({ summary: v })} placeholder="Summary..." multiline className="w-full" />
+              <EditableText value={personalInfo.summary} onChange={(v) => updatePersonalInfo({ summary: v })} placeholder={t.summaryPlaceholder} multiline className="w-full" />
             </p>
           </section>
         );
@@ -56,31 +63,31 @@ export function ClassicTemplate() {
         if (experience.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="experience" defaultLabel="Experience" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
+            <EditableLabel sectionType="experience" defaultLabel={tEditor.experience} className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
             <div className="space-y-3">
               {experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="flex justify-between items-baseline">
                     <h3 className="font-bold text-slate-800" style={{ fontSize: '10.5pt' }}>
-                      <EditableText value={exp.position} onChange={(v) => updateExperience(exp.id, { position: v })} placeholder="Title" className="font-bold" />
+                      <EditableText value={exp.position} onChange={(v) => updateExperience(exp.id, { position: v })} placeholder={t.position} className="font-bold" />
                     </h3>
                     <span className="text-slate-600 italic" style={{ fontSize: '9pt' }}>
-                      <EditableText value={`${exp.startDate} - ${exp.current ? 'Present' : exp.endDate}`} onChange={(v) => {
+                      <EditableText value={`${exp.startDate} - ${exp.current ? present : exp.endDate}`} onChange={(v) => {
                         const dates = v.split('-').map(s => s.trim());
-                        updateExperience(exp.id, { startDate: dates[0] || '', endDate: dates[1] || '', current: dates[1]?.includes('Present') || false });
-                      }} placeholder="Time" className="italic" />
+                        updateExperience(exp.id, { startDate: dates[0] || '', endDate: dates[1] || '', current: dates[1]?.includes(present) || false });
+                      }} placeholder={t.startDate} className="italic" />
                     </span>
                   </div>
                   <div className="text-slate-700 italic" style={{ fontSize: '10pt' }}>
-                    <EditableText value={exp.company} onChange={(v) => updateExperience(exp.id, { company: v })} placeholder="Company" className="italic" />
+                    <EditableText value={exp.company} onChange={(v) => updateExperience(exp.id, { company: v })} placeholder={t.company} className="italic" />
                   </div>
                   {exp.techStack && (
                     <div className="mt-1 text-slate-600 italic" style={{ fontSize: '9pt' }}>
-                      Tech Stack: {exp.techStack}
+                      {t.skills}: {exp.techStack}
                     </div>
                   )}
                   <p className="mt-1 text-slate-700 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
-                    <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="WorkDescription..." multiline className="w-full" />
+                    <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder={t.description} multiline className="w-full" />
                   </p>
                 </div>
               ))}
@@ -92,26 +99,26 @@ export function ClassicTemplate() {
         if (education.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="education" defaultLabel="Education" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
+            <EditableLabel sectionType="education" defaultLabel={tEditor.education} className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
             <div className="space-y-2">
               {education.map((edu) => (
                 <div key={edu.id}>
                   <div className="flex justify-between items-baseline">
                     <h3 className="font-bold text-slate-800" style={{ fontSize: '10.5pt' }}>
-                      <EditableText value={edu.school} onChange={(v) => updateEducation(edu.id, { school: v })} placeholder="School" className="font-bold" />
+                      <EditableText value={edu.school} onChange={(v) => updateEducation(edu.id, { school: v })} placeholder={t.school} className="font-bold" />
                     </h3>
                     <span className="text-slate-600 italic" style={{ fontSize: '9pt' }}>
-                      <EditableText value={`${edu.startDate} - ${edu.current ? 'Present' : edu.endDate}`} onChange={(v) => {
+                      <EditableText value={`${edu.startDate} - ${edu.current ? present : edu.endDate}`} onChange={(v) => {
                         const dates = v.split('-').map(s => s.trim());
-                        updateEducation(edu.id, { startDate: dates[0] || '', endDate: dates[1] || '', current: dates[1]?.includes('Present') || false });
-                      }} placeholder="Time" className="italic" />
+                        updateEducation(edu.id, { startDate: dates[0] || '', endDate: dates[1] || '', current: dates[1]?.includes(present) || false });
+                      }} placeholder={t.startDate} className="italic" />
                     </span>
                   </div>
                   <div className="text-slate-700" style={{ fontSize: '10pt' }}>
                     <EditableText value={`${edu.degree} · ${edu.field}`} onChange={(v) => {
                       const parts = v.split('·').map(s => s.trim());
                       updateEducation(edu.id, { degree: parts[0] || '', field: parts[1] || '' });
-                    }} placeholder="Degree · Field" />
+                    }} placeholder={`${t.degree} · ${t.major}`} />
                   </div>
                 </div>
               ))}
@@ -123,15 +130,15 @@ export function ClassicTemplate() {
         if (projects.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="projects" defaultLabel="ProjectsExperience" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
+            <EditableLabel sectionType="projects" defaultLabel={tEditor.projects} className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
             <div className="space-y-3">
               {projects.map((proj) => (
                 <div key={proj.id}>
                   <h3 className="font-bold text-slate-800" style={{ fontSize: '10.5pt' }}>
-                    <EditableText value={proj.name} onChange={(v) => updateProject(proj.id, { name: v })} placeholder="ProjectsName" className="font-bold" />
+                    <EditableText value={proj.name} onChange={(v) => updateProject(proj.id, { name: v })} placeholder={t.projectName} className="font-bold" />
                   </h3>
                   <p className="mt-1 text-slate-700 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
-                    <EditableText value={proj.description} onChange={(v) => updateProject(proj.id, { description: v })} placeholder="ProjectsDescription..." multiline className="w-full" />
+                    <EditableText value={proj.description} onChange={(v) => updateProject(proj.id, { description: v })} placeholder={t.description} multiline className="w-full" />
                   </p>
                 </div>
               ))}
@@ -143,11 +150,11 @@ export function ClassicTemplate() {
         if (skills.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="skills" defaultLabel="Skills" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
+            <EditableLabel sectionType="skills" defaultLabel={tEditor.skills} className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
             <p className="text-slate-700" style={{ fontSize: '10pt' }}>
               {skills.map((skill, idx) => (
                 <span key={skill.id}>
-                  <EditableText value={skill.name} onChange={(v) => updateSkill(skill.id, { name: v })} placeholder="Skills" />
+                  <EditableText value={skill.name} onChange={(v) => updateSkill(skill.id, { name: v })} placeholder={t.skills} />
                   {idx < skills.length - 1 && ' · '}
                 </span>
               ))}
@@ -159,14 +166,14 @@ export function ClassicTemplate() {
         if (languages.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="languages" defaultLabel="LanguagesSkills" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
+            <EditableLabel sectionType="languages" defaultLabel={tEditor.languages} className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
             <div className="space-y-0.5">
               {languages.map((lang) => (
                 <div key={lang.id} className="text-slate-700" style={{ fontSize: '10pt' }}>
                   <EditableText value={`${lang.name}: ${lang.level}`} onChange={(v) => {
                     const parts = v.split(':').map(s => s.trim());
                     updateLanguage(lang.id, { name: parts[0] || '', level: parts[1] || '' });
-                  }} placeholder="Languages: Level" />
+                  }} placeholder={`${t.language}: ${t.level}`} />
                 </div>
               ))}
             </div>

@@ -322,7 +322,7 @@ export const useResumeStore = create<ResumeState>()(
 
       setLanguage: (language) => {
         const labels = {
-          zh: { personal: 'PersonalInfo', summary: 'PersonalDescription', experience: 'WorkExperience', education: 'Education', projects: 'Projects', skills: 'Skills', languages: 'Languages' },
+          zh: { personal: '基本信息', summary: '自我评价', experience: '工作经历', education: '教育经历', projects: '项目经验', skills: '专业技能', languages: '语言能力' },
           en: { personal: 'Personal Info', summary: 'Summary', experience: 'Experience', education: 'Education', projects: 'Projects', skills: 'Skills', languages: 'Languages' },
           de: { personal: 'Persönliche Daten', summary: 'Zusammenfassung', experience: 'Berufserfahrung', education: 'Ausbildung', projects: 'Projekte', skills: 'Fähigkeiten', languages: 'Sprachen' },
         };

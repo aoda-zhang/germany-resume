@@ -1,9 +1,11 @@
-import type { Language } from '../../types/resume';
+import type { Language as LangType } from '../../types/resume';
 import { Plus, Trash2 } from 'lucide-react';
+import { useResumeStore } from '../../store/resumeStore';
+import { translations } from '../../i18n';
 
 interface Props {
-  data: Language[];
-  onChange: (data: Language[]) => void;
+  data: LangType[];
+  onChange: (data: LangType[]) => void;
 }
 
 const levelOptions = [
@@ -17,8 +19,12 @@ const levelOptions = [
 ];
 
 export function LanguagesSection({ data, onChange }: Props) {
+  const language = useResumeStore((s) => s.language);
+  const t = translations[language].form;
+  const tEditor = translations[language].editor;
+
   const addItem = () => {
-    const newItem: Language = {
+    const newItem: LangType = {
       id: `lang_${Date.now()}`,
       name: '',
       level: 'B2',
@@ -26,7 +32,7 @@ export function LanguagesSection({ data, onChange }: Props) {
     onChange([...data, newItem]);
   };
 
-  const updateItem = (id: string, field: keyof Language, value: any) => {
+  const updateItem = (id: string, field: keyof LangType, value: any) => {
     onChange(data.map(item =>
       item.id === id ? { ...item, [field]: value } : item
     ));
@@ -39,9 +45,9 @@ export function LanguagesSection({ data, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-slate-700">LanguagesSkills</h3>
+        <h3 className="font-semibold text-slate-700">{tEditor.languages}</h3>
         <button onClick={addItem} className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
-          <Plus className="w-4 h-4" />Add
+          <Plus className="w-4 h-4" />{tEditor.add}
         </button>
       </div>
 
@@ -53,7 +59,7 @@ export function LanguagesSection({ data, onChange }: Props) {
               value={item.name}
               onChange={(e) => updateItem(item.id, 'name', e.target.value)}
               className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-              placeholder="LanguagesName（e.g.：English、German）"
+              placeholder={t.language}
             />
             <select
               value={item.level}
@@ -72,8 +78,8 @@ export function LanguagesSection({ data, onChange }: Props) {
 
         {data.length === 0 && (
           <div className="text-center py-6 text-slate-400">
-            <p>NoneLanguages</p>
-            <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ Add</button>
+            <p>{tEditor.add}</p>
+            <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ {tEditor.add}</button>
           </div>
         )}
       </div>
