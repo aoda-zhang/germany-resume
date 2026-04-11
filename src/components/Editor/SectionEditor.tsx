@@ -62,6 +62,7 @@ function SortableSectionItem({
   isExpanded,
   onToggle,
   children,
+  sectionKey,
 }: {
   sectionKey: SectionKey;
   label: string;
@@ -77,7 +78,7 @@ function SortableSectionItem({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: Math.random().toString() });
+  } = useSortable({ id: sectionKey });
 
   const style = {
     transform: CSS.Transform.toString(transform),
