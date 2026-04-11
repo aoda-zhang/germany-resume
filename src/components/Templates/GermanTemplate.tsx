@@ -37,43 +37,45 @@ export function GermanTemplate() {
                 )}
 
                 {/* 联系方式 - 两排，每排4个 */}
-                <div className="grid grid-cols-4 gap-x-4 gap-y-1" style={{ fontSize: '9.5pt' }}>
-                  {personalInfo.location && (
-                    <div className="text-slate-600">
+                <div style={{ fontSize: '9.5pt' }}>
+                  {/* 第一排：地址、邮箱、电话、网站 */}
+                  <div className="flex gap-x-6 mb-1">
+                    <div className="flex-1 text-slate-600">
                       <span className="font-bold text-slate-700">地址：</span>
-                      <EditableText value={personalInfo.location} onChange={(v) => updatePersonalInfo({ location: v })} placeholder="城市" />
+                      <EditableText value={personalInfo.location || ''} onChange={(v) => updatePersonalInfo({ location: v })} placeholder="城市" />
                     </div>
-                  )}
-                  {personalInfo.email && (
-                    <div className="text-slate-600">
+                    <div className="flex-1 text-slate-600">
                       <span className="font-bold text-slate-700">邮箱：</span>
-                      <EditableText value={personalInfo.email} onChange={(v) => updatePersonalInfo({ email: v })} placeholder="邮箱" />
+                      <EditableText value={personalInfo.email || ''} onChange={(v) => updatePersonalInfo({ email: v })} placeholder="邮箱" />
                     </div>
-                  )}
-                  {personalInfo.phone && (
-                    <div className="text-slate-600">
+                    <div className="flex-1 text-slate-600">
                       <span className="font-bold text-slate-700">电话：</span>
-                      <EditableText value={personalInfo.phone} onChange={(v) => updatePersonalInfo({ phone: v })} placeholder="电话" />
+                      <EditableText value={personalInfo.phone || ''} onChange={(v) => updatePersonalInfo({ phone: v })} placeholder="电话" />
                     </div>
-                  )}
-                  {personalInfo.website && (
-                    <div className="text-slate-600">
+                    <div className="flex-1 text-slate-600">
                       <span className="font-bold text-slate-700">网站：</span>
-                      <EditableText value={personalInfo.website} onChange={(v) => updatePersonalInfo({ website: v })} placeholder="网站" />
+                      <EditableText value={personalInfo.website || ''} onChange={(v) => updatePersonalInfo({ website: v })} placeholder="网站" />
                     </div>
-                  )}
-                  {personalInfo.linkedin && (
-                    <div className="text-slate-600">
+                  </div>
+                  {/* 第二排：LinkedIn、GitHub、国籍、兴趣 */}
+                  <div className="flex gap-x-6">
+                    <div className="flex-1 text-slate-600">
                       <span className="font-bold text-slate-700">LinkedIn：</span>
-                      <EditableText value={personalInfo.linkedin} onChange={(v) => updatePersonalInfo({ linkedin: v })} placeholder="LinkedIn" />
+                      <EditableText value={personalInfo.linkedin || ''} onChange={(v) => updatePersonalInfo({ linkedin: v })} placeholder="LinkedIn" />
                     </div>
-                  )}
-                  {personalInfo.github && (
-                    <div className="text-slate-600">
+                    <div className="flex-1 text-slate-600">
                       <span className="font-bold text-slate-700">GitHub：</span>
-                      <EditableText value={personalInfo.github} onChange={(v) => updatePersonalInfo({ github: v })} placeholder="GitHub" />
+                      <EditableText value={personalInfo.github || ''} onChange={(v) => updatePersonalInfo({ github: v })} placeholder="GitHub" />
                     </div>
-                  )}
+                    <div className="flex-1 text-slate-600">
+                      <span className="font-bold text-slate-700">国籍：</span>
+                      <EditableText value={personalInfo.nationality || ''} onChange={(v) => updatePersonalInfo({ nationality: v })} placeholder="国籍" />
+                    </div>
+                    <div className="flex-1 text-slate-600">
+                      <span className="font-bold text-slate-700">兴趣：</span>
+                      <EditableText value={personalInfo.interests || ''} onChange={(v) => updatePersonalInfo({ interests: v })} placeholder="兴趣" />
+                    </div>
+                  </div>
                 </div>
               </div>
 
