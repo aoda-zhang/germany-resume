@@ -42,6 +42,7 @@ export function GermanTemplate() {
                     className="font-bold"
                   />
                 </h1>
+
                 {personalInfo.title && (
                   <p className="text-sky-600 mb-4" style={{ fontSize: "12pt" }}>
                     <EditableText
@@ -52,9 +53,11 @@ export function GermanTemplate() {
                     />
                   </p>
                 )}
-                <div className="flex gap-x-8 mt-3" style={{ fontSize: "9pt" }}>
-                  <div className="flex-1 space-y-1">
-                    <div className="text-slate-700">
+
+                <div className="mt-3 space-y-1" style={{ fontSize: "9pt" }}>
+                  {/* Row 1 */}
+                  <div className="flex gap-x-8">
+                    <div className="flex-1 text-slate-700">
                       <span className="font-bold">{t.address}：</span>
                       <EditableText
                         value={personalInfo.address || ""}
@@ -62,15 +65,7 @@ export function GermanTemplate() {
                         placeholder={t.address}
                       />
                     </div>
-                    <div className="text-slate-700">
-                      <span className="font-bold">{t.email}：</span>
-                      <EditableText
-                        value={personalInfo.email || ""}
-                        onChange={(v) => updatePersonalInfo({ email: v })}
-                        placeholder={t.email}
-                      />
-                    </div>
-                    <div className="text-slate-700">
+                    <div className="flex-1 text-slate-700">
                       <span className="font-bold">{t.phone}：</span>
                       <EditableText
                         value={personalInfo.phone || ""}
@@ -78,17 +73,31 @@ export function GermanTemplate() {
                         placeholder={t.phone}
                       />
                     </div>
-                    <div className="text-slate-700">
-                      <span className="font-bold">{t.website}：</span>
+                  </div>
+                  {/* Row 2 */}
+                  <div className="flex gap-x-8">
+                    <div className="flex-1 text-slate-700">
+                      <span className="font-bold">{t.email}：</span>
                       <EditableText
-                        value={personalInfo.website || ""}
-                        onChange={(v) => updatePersonalInfo({ website: v })}
-                        placeholder={t.website}
+                        value={personalInfo.email || ""}
+                        onChange={(v) => updatePersonalInfo({ email: v })}
+                        placeholder={t.email}
                       />
                     </div>
+                    {/* <div className="flex-1 text-slate-700">
+                      <span className="font-bold">
+                        {t.dateOfBirth || "Date of Birth"}：
+                      </span>
+                      <EditableText
+                        value={personalInfo.dateOfBirth || ""}
+                        onChange={(v) => updatePersonalInfo({ dateOfBirth: v })}
+                        placeholder={t.dateOfBirth || "Date of Birth"}
+                      />
+                    </div> */}
                   </div>
-                  <div className="flex-1 space-y-1">
-                    <div className="text-slate-700">
+                  {/* Row 3 */}
+                  <div className="flex gap-x-8">
+                    <div className="flex-1 text-slate-700">
                       <span className="font-bold">{t.linkedin}：</span>
                       <EditableText
                         value={personalInfo.linkedin || ""}
@@ -96,15 +105,7 @@ export function GermanTemplate() {
                         placeholder={t.linkedin}
                       />
                     </div>
-                    <div className="text-slate-700">
-                      <span className="font-bold">{t.github}：</span>
-                      <EditableText
-                        value={personalInfo.github || ""}
-                        onChange={(v) => updatePersonalInfo({ github: v })}
-                        placeholder={t.github}
-                      />
-                    </div>
-                    <div className="text-slate-700">
+                    <div className="flex-1 text-slate-700">
                       <span className="font-bold">{t.nationality}：</span>
                       <EditableText
                         value={personalInfo.nationality || ""}
@@ -113,8 +114,28 @@ export function GermanTemplate() {
                       />
                     </div>
                   </div>
+                  {/* Row 4 */}
+                  <div className="flex gap-x-8">
+                    <div className="flex-1 text-slate-700">
+                      <span className="font-bold">{t.website}：</span>
+                      <EditableText
+                        value={personalInfo.website || ""}
+                        onChange={(v) => updatePersonalInfo({ website: v })}
+                        placeholder={t.website}
+                      />
+                    </div>
+                    <div className="flex-1 text-slate-700">
+                      <span className="font-bold">{t.github}：</span>
+                      <EditableText
+                        value={personalInfo.github || ""}
+                        onChange={(v) => updatePersonalInfo({ github: v })}
+                        placeholder={t.github}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+
               {personalInfo.photo && (
                 <div className="flex-shrink-0 ml-6">
                   <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-slate-200">
