@@ -73,7 +73,7 @@ export function ExperienceSection({ data, onChange }: Props) {
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-slate-700">
-                  {item.position || item.company || '新条目'}
+                  {item.position || item.company || 'New Entry'}
                 </span>
                 <span className="text-xs text-slate-400">
                   {item.startDate && item.endDate ? `${item.startDate} - ${item.endDate}` : ''}
@@ -112,13 +112,13 @@ export function ExperienceSection({ data, onChange }: Props) {
               <div className="p-4 space-y-4 bg-white">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">Company名称</label>
+                    <label className="block text-sm text-slate-600 mb-1">CompanyName</label>
                     <input
                       type="text"
                       value={item.company}
                       onChange={(e) => updateItem(item.id, 'company', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Company名称"
+                      placeholder="CompanyName"
                     />
                   </div>
                   <div>
@@ -128,11 +128,11 @@ export function ExperienceSection({ data, onChange }: Props) {
                       value={item.position}
                       onChange={(e) => updateItem(item.id, 'position', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Title名称"
+                      placeholder="TitleName"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">开始日期</label>
+                    <label className="block text-sm text-slate-600 mb-1">Start Date</label>
                     <input
                       type="text"
                       value={item.startDate}
@@ -142,7 +142,7 @@ export function ExperienceSection({ data, onChange }: Props) {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">结束日期</label>
+                    <label className="block text-sm text-slate-600 mb-1">End Date</label>
                     <input
                       type="text"
                       value={item.endDate}
@@ -163,17 +163,17 @@ export function ExperienceSection({ data, onChange }: Props) {
                     </label>
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm text-slate-600 mb-1">地点</label>
+                    <label className="block text-sm text-slate-600 mb-1">Location</label>
                     <input
                       type="text"
                       value={item.location || ''}
                       onChange={(e) => updateItem(item.id, 'location', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="城市, 国家"
+                      placeholder="City, Country"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">Company国籍</label>
+                    <label className="block text-sm text-slate-600 mb-1">CompanyNationality</label>
                     <input
                       type="text"
                       value={item.country || ''}
@@ -183,7 +183,7 @@ export function ExperienceSection({ data, onChange }: Props) {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">工作模式</label>
+                    <label className="block text-sm text-slate-600 mb-1">WorkMode</label>
                     <input
                       type="text"
                       value={item.workMode || ''}
@@ -203,14 +203,14 @@ export function ExperienceSection({ data, onChange }: Props) {
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm text-slate-600 mb-1">工作Description</label>
+                    <label className="block text-sm text-slate-600 mb-1">WorkDescription</label>
                     <textarea
                       value={item.description}
                       onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                       rows={4}
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-                      placeholder="• 负责...
-• 主导..."
+                      placeholder="• Responsible for...
+• Led..."
                     />
                   </div>
                 </div>
@@ -221,12 +221,12 @@ export function ExperienceSection({ data, onChange }: Props) {
 
         {data.length === 0 && (
           <div className="text-center py-8 text-slate-400">
-            <p>暂无Work Experience</p>
+            <p>NoneWork Experience</p>
             <button
               onClick={addItem}
               className="mt-2 text-indigo-600 hover:text-indigo-700"
             >
-              + Add第一条
+              + AddFirst item
             </button>
           </div>
         )}

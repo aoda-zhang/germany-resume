@@ -48,7 +48,7 @@ export function MinimalTemplate() {
                       <EditableText value={`${exp.startDate} - ${exp.current ? 'Present' : exp.endDate}`} onChange={(v) => {
                         const dates = v.split('-').map(s => s.trim());
                         updateExperience(exp.id, { startDate: dates[0] || '', endDate: dates[1] || '', current: dates[1]?.includes('Present') || false });
-                      }} placeholder="时间" className="text-slate-400" />
+                      }} placeholder="Time" className="text-slate-400" />
                     </span>
                   </div>
                   <div className="text-slate-500" style={{ fontSize: '9.5pt' }}>
@@ -60,7 +60,7 @@ export function MinimalTemplate() {
                     </div>
                   )}
                   <p className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9pt' }}>
-                    <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="工作Description..." multiline className="w-full" />
+                    <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="WorkDescription..." multiline className="w-full" />
                   </p>
                 </div>
               ))}
@@ -84,7 +84,7 @@ export function MinimalTemplate() {
                       <EditableText value={`${edu.startDate} - ${edu.current ? 'Present' : edu.endDate}`} onChange={(v) => {
                         const dates = v.split('-').map(s => s.trim());
                         updateEducation(edu.id, { startDate: dates[0] || '', endDate: dates[1] || '', current: dates[1]?.includes('Present') || false });
-                      }} placeholder="时间" className="text-slate-400" />
+                      }} placeholder="Time" className="text-slate-400" />
                     </span>
                   </div>
                   <div className="text-slate-500" style={{ fontSize: '9.5pt' }}>
@@ -108,7 +108,7 @@ export function MinimalTemplate() {
               {projects.map((proj) => (
                 <div key={proj.id}>
                   <h3 className="text-slate-900" style={{ fontSize: '10.5pt' }}>
-                    <EditableText value={proj.name} onChange={(v) => updateProject(proj.id, { name: v })} placeholder="Projects名称" />
+                    <EditableText value={proj.name} onChange={(v) => updateProject(proj.id, { name: v })} placeholder="ProjectsName" />
                   </h3>
                   <p className="mt-1 text-slate-600 whitespace-pre-line" style={{ fontSize: '9pt' }}>
                     <EditableText value={proj.description} onChange={(v) => updateProject(proj.id, { description: v })} placeholder="ProjectsDescription..." multiline className="w-full" />

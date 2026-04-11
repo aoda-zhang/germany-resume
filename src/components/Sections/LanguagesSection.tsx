@@ -7,13 +7,13 @@ interface Props {
 }
 
 const levelOptions = [
-  { value: 'A1', label: 'A1 入门' },
-  { value: 'A2', label: 'A2 基础' },
-  { value: 'B1', label: 'B1 中级' },
-  { value: 'B2', label: 'B2 中高级' },
-  { value: 'C1', label: 'C1 高级' },
-  { value: 'C2', label: 'C2 精通' },
-  { value: 'Native', label: '母语' },
+  { value: 'A1', label: 'A1 Beginner' },
+  { value: 'A2', label: 'A2 Basic' },
+  { value: 'B1', label: 'B1 Intermediate' },
+  { value: 'B2', label: 'B2 Upper-Intermediate' },
+  { value: 'C1', label: 'C1 Advanced' },
+  { value: 'C2', label: 'C2 Expert' },
+  { value: 'Native', label: 'Native' },
 ];
 
 export function LanguagesSection({ data, onChange }: Props) {
@@ -39,7 +39,7 @@ export function LanguagesSection({ data, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-slate-700">Languages能力</h3>
+        <h3 className="font-semibold text-slate-700">LanguagesSkills</h3>
         <button onClick={addItem} className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
           <Plus className="w-4 h-4" />Add
         </button>
@@ -53,7 +53,7 @@ export function LanguagesSection({ data, onChange }: Props) {
               value={item.name}
               onChange={(e) => updateItem(item.id, 'name', e.target.value)}
               className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-              placeholder="Languages名称（如：英语、德语）"
+              placeholder="LanguagesName（e.g.：English、German）"
             />
             <select
               value={item.level}
@@ -72,7 +72,7 @@ export function LanguagesSection({ data, onChange }: Props) {
 
         {data.length === 0 && (
           <div className="text-center py-6 text-slate-400">
-            <p>暂无Languages</p>
+            <p>NoneLanguages</p>
             <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ Add</button>
           </div>
         )}

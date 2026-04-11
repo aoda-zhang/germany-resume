@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useResumeStore } from '../../store/resumeStore';
 import { Mail, Phone, MapPin, Globe } from 'lucide-react';
 
-// 可Edit文本组件
+// EditText Component
 function EditableText({
   value,
   onChange,
@@ -65,14 +65,14 @@ function EditableText({
     <span
       onClick={() => setIsEditing(true)}
       className={`${className} cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all border-2 border-transparent hover:border-indigo-200`}
-      title="点击Edit"
+      title="ClickEdit"
     >
       {value || placeholder}
     </span>
   );
 }
 
-// 可Edit标签组件
+// EditLabel Component
 function EditableLabel({
   sectionType,
   defaultLabel,
@@ -122,7 +122,7 @@ function EditableLabel({
       onClick={() => setIsEditing(true)}
       className="font-bold text-slate-800 cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all border-2 border-transparent hover:border-indigo-200"
       style={{ fontSize: '12pt' }}
-      title="点击Edit标题"
+      title="ClickEditTitle"
     >
       {label}
     </h2>
@@ -238,7 +238,7 @@ export function ModernTemplate() {
                             current: dates[1]?.includes('Present') || false,
                           });
                         }}
-                        placeholder="时间"
+                        placeholder="Time"
                         className="text-slate-500"
                       />
                     </span>
@@ -266,7 +266,7 @@ export function ModernTemplate() {
                     <EditableText
                       value={exp.description}
                       onChange={(v) => updateExperience(exp.id, { description: v })}
-                      placeholder="工作Description..."
+                      placeholder="WorkDescription..."
                       multiline
                       className="w-full"
                     />
@@ -305,7 +305,7 @@ export function ModernTemplate() {
                             current: dates[1]?.includes('Present') || false,
                           });
                         }}
-                        placeholder="时间"
+                        placeholder="Time"
                         className="text-slate-500"
                       />
                     </span>
@@ -333,7 +333,7 @@ export function ModernTemplate() {
         if (projects.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="projects" defaultLabel="Projects经历" />
+            <EditableLabel sectionType="projects" defaultLabel="ProjectsExperience" />
             <div className="mt-2 space-y-3">
               {projects.map((proj) => (
                 <div key={proj.id}>
@@ -342,7 +342,7 @@ export function ModernTemplate() {
                       <EditableText
                         value={proj.name}
                         onChange={(v) => updateProject(proj.id, { name: v })}
-                        placeholder="Projects名称"
+                        placeholder="ProjectsName"
                         className="font-semibold"
                       />
                     </h3>
@@ -377,7 +377,7 @@ export function ModernTemplate() {
                               newTechs[idx] = v;
                               updateProject(proj.id, { technologies: newTechs });
                             }}
-                            placeholder="技术"
+                            placeholder="Tech"
                             className="text-slate-600"
                           />
                         </span>
@@ -418,7 +418,7 @@ export function ModernTemplate() {
         if (languages.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="languages" defaultLabel="Languages能力" />
+            <EditableLabel sectionType="languages" defaultLabel="LanguagesSkills" />
             <div className="mt-2 space-y-0.5">
               {languages.map((lang) => (
                 <div key={lang.id} className="text-slate-700" style={{ fontSize: '9.5pt' }}>

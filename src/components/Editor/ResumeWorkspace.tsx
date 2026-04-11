@@ -18,7 +18,7 @@ const templates = [
 ];
 
 const languages: { code: Language; name: string }[] = [
-  { code: 'zh', name: '中文' },
+  { code: 'zh', name: 'Chinese' },
   { code: 'en', name: 'English' },
   { code: 'de', name: 'Deutsch' },
 ];

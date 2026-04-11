@@ -63,7 +63,7 @@ export function EditableText({
     <span
       onClick={() => setIsEditing(true)}
       className={`${className} cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all border-2 border-transparent hover:border-indigo-200`}
-      title="点击Edit"
+      title="ClickEdit"
     >
       {value || placeholder}
     </span>
@@ -123,14 +123,14 @@ export function EditableLabel({
       onClick={() => setIsEditing(true)}
       className={`${className} cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all`}
       style={style}
-      title="点击Edit标题"
+      title="ClickEditTitle"
     >
       {label}
     </span>
   );
 }
 
-// 使用 store 的 Hook 包装
+
 export function useResumeEditing() {
   const store = useResumeStore();
   return {

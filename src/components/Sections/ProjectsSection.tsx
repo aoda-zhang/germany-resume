@@ -48,7 +48,7 @@ export function ProjectsSection({ data, onChange }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-slate-700">Projects经历</h3>
+        <h3 className="font-semibold text-slate-700">ProjectsExperience</h3>
         <button onClick={addItem} className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
           <Plus className="w-4 h-4" />Add
         </button>
@@ -59,7 +59,7 @@ export function ProjectsSection({ data, onChange }: Props) {
           <div key={item.id} className="border border-slate-200 rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 bg-slate-50 cursor-pointer"
               onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
-              <span className="text-sm font-medium text-slate-700">{item.name || '新Projects'}</span>
+              <span className="text-sm font-medium text-slate-700">{item.name || 'NewProjects'}</span>
               <div className="flex items-center gap-1">
                 <button onClick={(e) => { e.stopPropagation(); moveItem(item.id, 'up'); }} disabled={index === 0} className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-30"><ChevronUp className="w-4 h-4" /></button>
                 <button onClick={(e) => { e.stopPropagation(); moveItem(item.id, 'down'); }} disabled={index === data.length - 1} className="p-1 text-slate-400 hover:text-slate-600 disabled:opacity-30"><ChevronDown className="w-4 h-4" /></button>
@@ -71,15 +71,15 @@ export function ProjectsSection({ data, onChange }: Props) {
             {expandedId === item.id && (
               <div className="p-4 space-y-4 bg-white">
                 <div>
-                  <label className="block text-sm text-slate-600 mb-1">Projects名称</label>
-                  <input type="text" value={item.name} onChange={(e) => updateItem(item.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="Projects名称" />
+                  <label className="block text-sm text-slate-600 mb-1">ProjectsName</label>
+                  <input type="text" value={item.name} onChange={(e) => updateItem(item.id, 'name', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="ProjectsName" />
                 </div>
                 <div>
                   <label className="block text-sm text-slate-600 mb-1">ProjectsDescription</label>
-                  <textarea value={item.description} onChange={(e) => updateItem(item.id, 'description', e.target.value)} rows={3} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="Projects简介和你的贡献..." />
+                  <textarea value={item.description} onChange={(e) => updateItem(item.id, 'description', e.target.value)} rows={3} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="ProjectsDescription and your contributions..." />
                 </div>
                 <div>
-                  <label className="block text-sm text-slate-600 mb-1">Tech Stack（逗号分隔）</label>
+                  <label className="block text-sm text-slate-600 mb-1">Tech Stack（Comma-separated）</label>
                   <input type="text" value={item.technologies.join(', ')} onChange={(e) => updateItem(item.id, 'technologies', e.target.value.split(',').map(t => t.trim()).filter(Boolean))} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="React, Node.js, MongoDB" />
                 </div>
                 <div>
@@ -93,7 +93,7 @@ export function ProjectsSection({ data, onChange }: Props) {
 
         {data.length === 0 && (
           <div className="text-center py-8 text-slate-400">
-            <p>暂无Projects</p>
+            <p>NoneProjects</p>
             <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ Add</button>
           </div>
         )}

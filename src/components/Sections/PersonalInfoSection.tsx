@@ -31,7 +31,7 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
   if (!isEditing) {
     return (
       <div className="text-slate-400 text-center py-8">
-        Personal Info和Photo
+        Personal InfoandPhoto
       </div>
     );
   }
@@ -50,7 +50,7 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
             value={data.fullName}
             onChange={(e) => handleChange('fullName', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="张三"
+            placeholder="John Doe"
           />
         </div>
         <div>
@@ -60,7 +60,7 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
             value={data.title || ''}
             onChange={(e) => handleChange('title', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="前端开发工程师"
+            placeholder="Frontend Developer"
           />
         </div>
         <div>
@@ -84,13 +84,13 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
           />
         </div>
         <div>
-          <label className="block text-sm text-slate-600 mb-1">城市/Location</label>
+          <label className="block text-sm text-slate-600 mb-1">City/Location</label>
           <input
             type="text"
             value={data.location}
             onChange={(e) => handleChange('location', e.target.value)}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="上海"
+            placeholder="Shanghai"
           />
         </div>
         <div>
@@ -132,17 +132,17 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
           onChange={(e) => handleChange('summary', e.target.value)}
           rows={4}
           className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-          placeholder="简要介绍自己..."
+          placeholder="BriefIntroduce yourself..."
         />
       </div>
 
       
       <div>
-        <label className="block text-sm text-slate-600 mb-2">头像</label>
+        <label className="block text-sm text-slate-600 mb-2">Photo</label>
         <div className="flex items-center gap-4">
           <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-slate-200 bg-slate-100">
             {photoPreview ? (
-              <img src={photoPreview} alt="头像预览" className="w-full h-full object-cover" />
+              <img src={photoPreview} alt="Photo Preview" className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-slate-400">
                 <Upload className="w-8 h-8" />
@@ -150,7 +150,7 @@ export function PersonalInfoSection({ data, onChange, isEditing = true }: Props)
             )}
           </div>
           <label className="px-4 py-2 bg-indigo-600 text-white rounded-lg cursor-pointer hover:bg-indigo-700 transition-colors">
-            <span className="text-sm">上传头像</span>
+            <span className="text-sm">Upload Photo</span>
             <input
               type="file"
               accept="image/*"

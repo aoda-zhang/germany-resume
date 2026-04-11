@@ -16,40 +16,40 @@ interface SectionOrder {
 
 const zhSample: ResumeData = {
   personalInfo: {
-    fullName: '张明',
+    fullName: 'John Smith',
     email: 'zhangming@example.com',
     phone: '138-0000-0000',
-    location: '北京市',
+    location: 'BeijingCity',
     linkedin: '',
     website: '',
-    summary: '5年全栈开发经验，专注于React和Node.js技术栈。热爱开源，积极参与技术社区。',
+    summary: '5years of full-stack development experience，Specializing inReactandNode.jsTech Stack。Passionate about open source，Actively participates in tech communities。',
   },
   experience: [
     {
       id: '1',
-      company: '科技有限公司',
-      position: '高级前端工程师',
+      company: 'Tech Co., Ltd.',
+      position: 'AdvancedFrontendEngineer',
       startDate: '2022-01',
       endDate: '',
       current: true,
-      description: '负责公司核心产品的前端架构设计和开发\n带领5人团队完成多个重要项目\n优化前端性能，首屏加载时间减少50%',
+      description: 'Responsible forcompany core productsFrontendarchitecture designanddevelopment\nled5person team to complete multiple key projects\noptimizeFrontendperformance，first screen loadingTimereduce50%',
     },
     {
       id: '2',
-      company: '互联网公司',
-      position: '前端工程师',
+      company: 'Internet Company',
+      position: 'FrontendEngineer',
       startDate: '2020-06',
       endDate: '2021-12',
       current: false,
-      description: '参与电商平台的前端开发\n实现复杂的交互功能和动画效果\n与设计师紧密合作，确保UI/UX质量',
+      description: 'participated in e-commerce platformFrontenddevelopment\nimplemented complex interactive featuresandanimation effects\nworked closely with designers，ensuredUI/UXquality',
     },
   ],
   education: [
     {
       id: '1',
-      school: '北京大学',
-      degree: '本科',
-      field: '计算机科学与技术',
+      school: 'BeijingUniversity',
+      degree: "Bachelor's degree",
+      field: 'Computer Science and Tech',
       startDate: '2016-09',
       endDate: '2020-06',
       current: false,
@@ -64,15 +64,15 @@ const zhSample: ResumeData = {
   projects: [
     {
       id: '1',
-      name: '开源组件库',
-      description: '基于React的UI组件库，提供50+高质量组件，GitHub Stars 2k+',
+      name: 'open-source component library',
+      description: 'based on React UI component library, provides 50+ high-quality components, GitHub Stars 2k+',
       link: 'https://github.com/example/ui-lib',
       technologies: ['React', 'TypeScript', 'Rollup'],
     },
   ],
   languages: [
-    { id: '1', name: '中文', level: '母语' },
-    { id: '2', name: '英语', level: '流利' },
+    { id: '1', name: 'Chinese', level: 'Native' },
+    { id: '2', name: 'English', level: 'Fluent' },
   ],
 };
 
@@ -237,13 +237,13 @@ const deSample: ResumeData = {
 };
 
 const defaultSectionOrder: SectionOrder[] = [
-  { id: 'personal', type: 'personal', label: '个人信息', visible: true },
-  { id: 'summary', type: 'summary', label: '个人简介', visible: true },
-  { id: 'experience', type: 'experience', label: '工作经验', visible: true },
-  { id: 'education', type: 'education', label: '教育背景', visible: true },
-  { id: 'projects', type: 'projects', label: '项目经历', visible: true },
-  { id: 'skills', type: 'skills', label: '技能', visible: true },
-  { id: 'languages', type: 'languages', label: '语言能力', visible: true },
+  { id: 'personal', type: 'personal', label: 'PersonalInfo', visible: true },
+  { id: 'summary', type: 'summary', label: 'PersonalDescription', visible: true },
+  { id: 'experience', type: 'experience', label: 'WorkExperience', visible: true },
+  { id: 'education', type: 'education', label: 'Education', visible: true },
+  { id: 'projects', type: 'projects', label: 'Projects', visible: true },
+  { id: 'skills', type: 'skills', label: 'Skills', visible: true },
+  { id: 'languages', type: 'languages', label: 'Languages', visible: true },
 ];
 
 function getSampleData(lang: Language): ResumeData {
@@ -322,7 +322,7 @@ export const useResumeStore = create<ResumeState>()(
 
       setLanguage: (language) => {
         const labels = {
-          zh: { personal: '个人信息', summary: '个人简介', experience: '工作经验', education: '教育背景', projects: '项目经历', skills: '技能', languages: '语言能力' },
+          zh: { personal: 'PersonalInfo', summary: 'PersonalDescription', experience: 'WorkExperience', education: 'Education', projects: 'Projects', skills: 'Skills', languages: 'Languages' },
           en: { personal: 'Personal Info', summary: 'Summary', experience: 'Experience', education: 'Education', projects: 'Projects', skills: 'Skills', languages: 'Languages' },
           de: { personal: 'Persönliche Daten', summary: 'Zusammenfassung', experience: 'Berufserfahrung', education: 'Ausbildung', projects: 'Projekte', skills: 'Fähigkeiten', languages: 'Sprachen' },
         };

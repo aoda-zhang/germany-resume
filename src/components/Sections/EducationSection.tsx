@@ -69,7 +69,7 @@ export function EducationSection({ data, onChange }: Props) {
             >
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-slate-700">
-                  {item.school || item.degree || '新条目'}
+                  {item.school || item.degree || 'New Entry'}
                 </span>
                 <span className="text-xs text-slate-400">
                   {item.startDate && item.endDate ? `${item.startDate} - ${item.endDate}` : ''}
@@ -88,22 +88,22 @@ export function EducationSection({ data, onChange }: Props) {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm text-slate-600 mb-1">School</label>
-                    <input type="text" value={item.school} onChange={(e) => updateItem(item.id, 'school', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="School名称" />
+                    <input type="text" value={item.school} onChange={(e) => updateItem(item.id, 'school', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="SchoolName" />
                   </div>
                   <div>
                     <label className="block text-sm text-slate-600 mb-1">Degree</label>
-                    <input type="text" value={item.degree} onChange={(e) => updateItem(item.id, 'degree', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="学士/硕士/博士" />
+                    <input type="text" value={item.degree} onChange={(e) => updateItem(item.id, 'degree', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="Bachelor/Master/PhD" />
                   </div>
                   <div>
                     <label className="block text-sm text-slate-600 mb-1">Field</label>
-                    <input type="text" value={item.field} onChange={(e) => updateItem(item.id, 'field', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="计算机科学" />
+                    <input type="text" value={item.field} onChange={(e) => updateItem(item.id, 'field', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="Computer Science" />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">开始日期</label>
+                    <label className="block text-sm text-slate-600 mb-1">Start Date</label>
                     <input type="text" value={item.startDate} onChange={(e) => updateItem(item.id, 'startDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="2016.09" />
                   </div>
                   <div>
-                    <label className="block text-sm text-slate-600 mb-1">结束日期</label>
+                    <label className="block text-sm text-slate-600 mb-1">End Date</label>
                     <input type="text" value={item.endDate} onChange={(e) => updateItem(item.id, 'endDate', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder="2020.06" />
                   </div>
                   <div>
@@ -120,7 +120,7 @@ export function EducationSection({ data, onChange }: Props) {
 
         {data.length === 0 && (
           <div className="text-center py-8 text-slate-400">
-            <p>暂无Education</p>
+            <p>NoneEducation</p>
             <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ Add</button>
           </div>
         )}

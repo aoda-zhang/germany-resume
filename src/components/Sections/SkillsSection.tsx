@@ -7,10 +7,10 @@ interface Props {
 }
 
 const levelOptions = [
-  { value: 'beginner', label: '入门' },
-  { value: 'intermediate', label: '熟练' },
-  { value: 'advanced', label: '精通' },
-  { value: 'expert', label: '专家' },
+  { value: 'beginner', label: 'Beginner' },
+  { value: 'intermediate', label: 'Proficient' },
+  { value: 'advanced', label: 'Expert' },
+  { value: 'expert', label: 'Master' },
 ];
 
 export function SkillsSection({ data, onChange }: Props) {
@@ -54,7 +54,7 @@ export function SkillsSection({ data, onChange }: Props) {
               value={item.name}
               onChange={(e) => updateItem(item.id, 'name', e.target.value)}
               className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
-              placeholder="Skills名称"
+              placeholder="SkillsName"
             />
             <select
               value={item.level}
@@ -76,7 +76,7 @@ export function SkillsSection({ data, onChange }: Props) {
 
         {data.length === 0 && (
           <div className="text-center py-6 text-slate-400">
-            <p>暂无Skills</p>
+            <p>NoneSkills</p>
             <button onClick={addItem} className="mt-2 text-indigo-600 hover:text-indigo-700">+ Add</button>
           </div>
         )}

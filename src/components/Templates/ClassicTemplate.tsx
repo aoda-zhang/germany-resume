@@ -68,7 +68,7 @@ export function ClassicTemplate() {
                       <EditableText value={`${exp.startDate} - ${exp.current ? 'Present' : exp.endDate}`} onChange={(v) => {
                         const dates = v.split('-').map(s => s.trim());
                         updateExperience(exp.id, { startDate: dates[0] || '', endDate: dates[1] || '', current: dates[1]?.includes('Present') || false });
-                      }} placeholder="时间" className="italic" />
+                      }} placeholder="Time" className="italic" />
                     </span>
                   </div>
                   <div className="text-slate-700 italic" style={{ fontSize: '10pt' }}>
@@ -80,7 +80,7 @@ export function ClassicTemplate() {
                     </div>
                   )}
                   <p className="mt-1 text-slate-700 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
-                    <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="工作Description..." multiline className="w-full" />
+                    <EditableText value={exp.description} onChange={(v) => updateExperience(exp.id, { description: v })} placeholder="WorkDescription..." multiline className="w-full" />
                   </p>
                 </div>
               ))}
@@ -104,7 +104,7 @@ export function ClassicTemplate() {
                       <EditableText value={`${edu.startDate} - ${edu.current ? 'Present' : edu.endDate}`} onChange={(v) => {
                         const dates = v.split('-').map(s => s.trim());
                         updateEducation(edu.id, { startDate: dates[0] || '', endDate: dates[1] || '', current: dates[1]?.includes('Present') || false });
-                      }} placeholder="时间" className="italic" />
+                      }} placeholder="Time" className="italic" />
                     </span>
                   </div>
                   <div className="text-slate-700" style={{ fontSize: '10pt' }}>
@@ -123,12 +123,12 @@ export function ClassicTemplate() {
         if (projects.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="projects" defaultLabel="Projects经历" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
+            <EditableLabel sectionType="projects" defaultLabel="ProjectsExperience" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
             <div className="space-y-3">
               {projects.map((proj) => (
                 <div key={proj.id}>
                   <h3 className="font-bold text-slate-800" style={{ fontSize: '10.5pt' }}>
-                    <EditableText value={proj.name} onChange={(v) => updateProject(proj.id, { name: v })} placeholder="Projects名称" className="font-bold" />
+                    <EditableText value={proj.name} onChange={(v) => updateProject(proj.id, { name: v })} placeholder="ProjectsName" className="font-bold" />
                   </h3>
                   <p className="mt-1 text-slate-700 whitespace-pre-line" style={{ fontSize: '9.5pt' }}>
                     <EditableText value={proj.description} onChange={(v) => updateProject(proj.id, { description: v })} placeholder="ProjectsDescription..." multiline className="w-full" />
@@ -159,7 +159,7 @@ export function ClassicTemplate() {
         if (languages.length === 0) return null;
         return (
           <section className="mb-5">
-            <EditableLabel sectionType="languages" defaultLabel="Languages能力" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
+            <EditableLabel sectionType="languages" defaultLabel="LanguagesSkills" className="font-serif font-bold text-slate-900 border-b border-slate-300 pb-1 block mb-2" style={{ fontSize: '13pt' }} />
             <div className="space-y-0.5">
               {languages.map((lang) => (
                 <div key={lang.id} className="text-slate-700" style={{ fontSize: '10pt' }}>

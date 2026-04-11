@@ -27,7 +27,7 @@ import { FileJson, ChevronDown, ChevronRight, GripVertical } from 'lucide-react'
 
 type SectionKey = 'personalInfo' | 'experience' | 'education' | 'skills' | 'projects' | 'languages';
 
-// Edit器用的章节配置（含图标）
+
 const sectionConfig: Record<SectionKey, { label: string; icon: string }> = {
   personalInfo: { label: 'Personal Info', icon: '👤' },
   experience: { label: 'Work Experience', icon: '💼' },
@@ -37,10 +37,10 @@ const sectionConfig: Record<SectionKey, { label: string; icon: string }> = {
   languages: { label: 'Languages', icon: '🌐' },
 };
 
-// store type 到 editor type 的映射
+
 const storeToEditor: Record<string, SectionKey> = {
   personal: 'personalInfo',
-  summary: 'personalInfo', // summary 合并到 personalInfo
+  summary: 'personalInfo', 
   experience: 'experience',
   education: 'education',
   projects: 'projects',
@@ -48,7 +48,7 @@ const storeToEditor: Record<string, SectionKey> = {
   languages: 'languages',
 };
 
-// editor type 到 store type 的映射
+
 const editorToStore: Record<SectionKey, string> = {
   personalInfo: 'personal',
   experience: 'experience',
@@ -58,7 +58,7 @@ const editorToStore: Record<SectionKey, string> = {
   languages: 'languages',
 };
 
-// 可排序的章节项组件
+
 function SortableSectionItem({
   sectionKey,
   label,
@@ -138,7 +138,7 @@ export function SectionEditor() {
   const [jsonError, setJsonError] = useState('');
   const [jsonDirty, setJsonDirty] = useState(false);
 
-  // 打开 JSON 视图时，用 store 数据初始化
+  
   const openJson = () => {
     setJsonText(JSON.stringify(resumeData, null, 2));
     setJsonError('');
@@ -146,16 +146,16 @@ export function SectionEditor() {
     setShowJson(true);
   };
 
-  // 关闭 JSON 视图时，如果有未应用的更改，提示
+  
   const closeJson = () => {
     if (jsonDirty) {
-      const ok = window.confirm('有未应用的 JSON 更改，确定关闭吗？');
+      const ok = window.confirm('There are unapplied JSON changes，Are you sure you want to close?？');
       if (!ok) return;
     }
     setShowJson(false);
   };
 
-  // 应用 JSON 到 store
+  
   const applyJson = () => {
     try {
       const parsed = JSON.parse(jsonText);
@@ -163,33 +163,33 @@ export function SectionEditor() {
       setJsonDirty(false);
       setJsonError('');
     } catch (e) {
-      setJsonError(`JSON 格式错误: ${(e as Error).message}`);
+      setJsonError(`JSON Format error: ${(e as Error).message}`);
     }
   };
 
-  // 从 textarea 输入更新本地 state
+  
   const handleJsonChange = (text: string) => {
     setJsonText(text);
     setJsonDirty(true);
-    // 实时校验格式
+    
     try {
       JSON.parse(text);
       setJsonError('');
     } catch (e) {
-      setJsonError(`格式错误: ${(e as Error).message}`);
+      setJsonError(`Format error: ${(e as Error).message}`);
     }
   };
 
-  // 从 store 的 sectionOrder 生成Edit器用的章节列表（过滤掉 summary，它合并到 personalInfo）
+  
   const editorSections: SectionKey[] = sectionOrder
     .filter(s => s.visible && s.type !== 'summary')
     .map(s => storeToEditor[s.type] || 'personalInfo')
-    .filter((key, i, arr) => arr.indexOf(key) === i); // 去重
+    .filter((key, i, arr) => arr.indexOf(key) === i); 
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8, // 需要移动 8px 才开始拖拽，避免误触
+        distance: 8, 
       },
     }),
     useSensor(KeyboardSensor, {
@@ -201,23 +201,23 @@ export function SectionEditor() {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      // 找到旧位置和新位置
+      
       const oldIndex = editorSections.indexOf(active.id as SectionKey);
       const newIndex = editorSections.indexOf(over.id as SectionKey);
       
-      // 重新排列 editorSections
+      
       const newEditorOrder = arrayMove(editorSections, oldIndex, newIndex);
       
-      // 构建新的 sectionOrder：保留 personal 和 summary 的原始对象
+      
       const personalSection = sectionOrder.find(s => s.type === 'personal')!;
       const summarySection = sectionOrder.find(s => s.type === 'summary')!;
       
       const newSectionOrder: typeof sectionOrder = [];
       
-      // 按新顺序Add章节
+      
       for (const key of newEditorOrder) {
         if (key === 'personalInfo') {
-          // personalInfo 对应 personal + summary
+          
           newSectionOrder.push(personalSection);
           newSectionOrder.push(summarySection);
         } else {
@@ -264,17 +264,17 @@ export function SectionEditor() {
       
       <div className="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
-          <h2 className="font-semibold text-slate-700">简历内容</h2>
+          <h2 className="font-semibold text-slate-700">Resume content</h2>
           <button
             onClick={() => {
-              if (window.confirm('重置章节顺序到默认？')) {
+              if (window.confirm('Reset section order to default？')) {
                 resetSectionOrder();
               }
             }}
             className="px-2 py-1 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors"
-            title="重置章节顺序"
+            title="Reset section order"
           >
-            重置顺序
+            Reset order
           </button>
         </div>
         <button
@@ -303,18 +303,18 @@ export function SectionEditor() {
                     : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                 }`}
               >
-                应用更改
+                Apply changes
               </button>
               <button
                 onClick={openJson}
                 className="px-3 py-1.5 text-sm rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
               >
-                重置
+                Reset
               </button>
             </div>
             <div className="flex items-center gap-2">
               {jsonDirty && !jsonError && (
-                <span className="text-xs text-amber-600">有未应用的更改</span>
+                <span className="text-xs text-amber-600">There are unappliedchanges</span>
               )}
               {jsonError && (
                 <span className="text-xs text-red-500 max-w-[200px] truncate" title={jsonError}>
@@ -322,7 +322,7 @@ export function SectionEditor() {
                 </span>
               )}
               {!jsonError && jsonText && (
-                <span className="text-xs text-green-600">✅ 格式正确</span>
+                <span className="text-xs text-green-600">✅ Valid format</span>
               )}
             </div>
           </div>
@@ -330,7 +330,7 @@ export function SectionEditor() {
           <textarea
             value={jsonText}
             onChange={(e) => handleJsonChange(e.target.value)}
-            placeholder="粘贴你的 JSON 简历数据..."
+            placeholder="Paste your JSON resume data..."
             spellCheck={false}
             className="flex-1 w-full p-4 font-mono text-xs bg-slate-900 text-green-400 rounded-lg border border-slate-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
           />
