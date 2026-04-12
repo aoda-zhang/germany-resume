@@ -117,6 +117,10 @@ export function EducationSection({ data, onChange }: Props) {
                       {t.current}
                     </label>
                   </div>
+                  <div className="col-span-2">
+                    <label className="block text-sm text-slate-600 mb-1">{t.address}</label>
+                    <input type="text" value={item.address || ''} onChange={(e) => updateItem(item.id, 'address', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg" placeholder={t.address} />
+                  </div>
                 </div>
               </div>
             )}

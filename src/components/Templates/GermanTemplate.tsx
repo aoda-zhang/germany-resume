@@ -472,7 +472,7 @@ export function GermanTemplate() {
             />
             <div className="space-y-0.5" style={{ fontSize: "11pt" }}>
               {languages.map((lang) => (
-                <div key={lang.id}>
+                <div key={lang.id} className="flex items-baseline gap-2">
                   <EditableText
                     value={lang.name}
                     onChange={(v) => {
@@ -481,6 +481,17 @@ export function GermanTemplate() {
                       });
                     }}
                     placeholder={t.language}
+                    className="font-medium text-slate-800"
+                  />
+                  <EditableText
+                    value={lang.level}
+                    onChange={(v) => {
+                      updateLanguage(lang.id, {
+                        level: v,
+                      });
+                    }}
+                    placeholder="Level"
+                    className="text-slate-500"
                   />
                 </div>
               ))}
