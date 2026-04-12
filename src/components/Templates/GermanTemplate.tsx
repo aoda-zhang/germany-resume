@@ -306,10 +306,8 @@ export function GermanTemplate() {
             <div className="space-y-2">
               {education.map((edu) => (
                 <div key={edu.id}>
-                  {/* Top row: 时间（左）| 专业（右） */}
                   <div className="flex justify-between items-baseline gap-4">
-                    {/* 左上：时间 */}
-                    <span className="text-slate-600 flex-shrink-0" style={{ fontSize: "10pt" }}>
+                    <span className="text-slate-600 shrink-0" style={{ fontSize: "10pt" }}>
                       <EditableText
                         value={`${edu.startDate}${edu.startDate ? " - " : ""}${edu.current ? present : edu.endDate}`}
                         onChange={(v) => {
@@ -326,7 +324,6 @@ export function GermanTemplate() {
                         className="text-slate-600"
                       />
                     </span>
-                    {/* 右上：专业 */}
                     <span className="text-slate-700 font-medium text-right flex-1" style={{ fontSize: "10pt" }}>
                       <EditableText
                         value={edu.field || ""}
@@ -335,11 +332,9 @@ export function GermanTemplate() {
                       />
                     </span>
                   </div>
-                  {/* Bottom row: 地址（左）| 学校（右） */}
                   <div className="flex justify-between items-baseline gap-4">
-                    {/* 左下：地址 */}
                     {edu.address && (
-                      <span className="text-slate-500 flex-shrink-0" style={{ fontSize: "9.5pt" }}>
+                      <span className="text-slate-500 shrink-0" style={{ fontSize: "9.5pt" }}>
                         <EditableText
                           value={edu.address}
                           onChange={(v) => updateEducation(edu.id, { address: v })}
