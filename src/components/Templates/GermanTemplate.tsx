@@ -513,22 +513,19 @@ export function GermanTemplate() {
             <div style={{ fontSize: "11.5pt" }}>
               <div className="flex flex-col gap-y-1">
                 {languages.map((lang) => (
-                  <div key={lang.id} className="flex items-center gap-2">
-                    {/* language name */}
-                    <EditableText
-                      value={lang.name || ""}
-                      onChange={(v) => updateLanguage(lang.id, { name: v })}
-                      placeholder={t.language}
-                      className="min-w-[20px]"
-                    />
-
-                    {/* level select */}
+                  <div key={lang.id}>
                     <span className="text-slate-800">
                       {(() => {
                         const selected = CEFR_LEVELS.find(
                           (l) => l.value === lang.level,
                         );
-                        return selected ? selected.label : "";
+                        const name = (lang.name || "").trim();
+                        const label = selected?.label;
+                        let result = "";
+                        if (name) result += name;
+                        if (label) result += (result ? " - " : "") + label;
+
+                        return result;
                       })()}
                     </span>
                   </div>
