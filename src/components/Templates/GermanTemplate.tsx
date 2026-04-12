@@ -6,7 +6,6 @@ import {
 import { useResumeStore } from "../../store/resumeStore";
 import { translations } from "../../i18n";
 import type { PersonalInfoFieldType } from "../../store/resumeStore";
-import CEFR_LEVELS from "../../constants/languageLevel";
 
 export function GermanTemplate() {
   const language = useResumeStore((s) => s.language);
@@ -58,84 +57,67 @@ export function GermanTemplate() {
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 {/* Name & title rendered separately — only show if has value */}
-                {personalInfoFields.includes("fullName") &&
-                  personalInfo.fullName && (
-                    <h1
-                      className="font-bold text-slate-900 mb-1"
-                      style={{ fontSize: "22pt" }}
-                    >
-                      <EditableText
-                        value={personalInfo.fullName || ""}
-                        onChange={(v) => updatePersonalInfo({ fullName: v })}
-                        placeholder={t.name}
-                        className="font-bold"
-                      />
-                    </h1>
-                  )}
+                {personalInfoFields.includes("fullName") && personalInfo.fullName && (
+                  <h1 className="font-bold text-slate-900 mb-1" style={{ fontSize: "20pt" }}>
+                    <EditableText
+                      value={personalInfo.fullName || ""}
+                      onChange={(v) => updatePersonalInfo({ fullName: v })}
+                      placeholder={t.name}
+                      className="font-bold"
+                    />
+                  </h1>
+                )}
                 {personalInfoFields.includes("title") && personalInfo.title && (
-                  <p
-                    className="font-semibold text-sky-500 mb-2"
-                    style={{ fontSize: "15pt" }}
-                  >
+                  <p className="font-semibold text-slate-800 mb-3" style={{ fontSize: "13pt" }}>
                     <EditableText
                       value={personalInfo.title || ""}
                       onChange={(v) => updatePersonalInfo({ title: v })}
                       placeholder={t.title}
-                      className="font-semibold text-sky-500"
+                      className="font-semibold text-slate-800"
                     />
                   </p>
                 )}
 
                 {/* Dynamic contact fields — 2 per row */}
-                <div className="mt-2 space-y-1" style={{ fontSize: "11.5pt" }}>
-                  {Array.from({
-                    length: Math.ceil(contactFields.length / 2),
-                  }).map((_, rowIdx) => {
-                    const left = contactFields[rowIdx * 2];
-                    const right = contactFields[rowIdx * 2 + 1];
-                    return (
-                      <div key={rowIdx} className="flex gap-x-8">
-                        {left && (
-                          <div className="flex-1 break-words">
-                            <span className="font-bold">
-                              {fieldLabels[left]}：
-                            </span>
-                            <EditableText
-                              className="inline break-words"
-                              value={
-                                (personalInfo[
-                                  left as keyof typeof personalInfo
-                                ] as string) || ""
-                              }
-                              onChange={(v) =>
-                                updatePersonalInfo({ [left]: v } as any)
-                              }
-                              placeholder={fieldLabels[left]}
-                            />
-                          </div>
-                        )}
-                        {right && (
-                          <div className="flex-1 break-words">
-                            <span className="font-bold">
-                              {fieldLabels[right]}：
-                            </span>
-                            <EditableText
-                              className="inline break-words"
-                              value={
-                                (personalInfo[
-                                  right as keyof typeof personalInfo
-                                ] as string) || ""
-                              }
-                              onChange={(v) =>
-                                updatePersonalInfo({ [right]: v } as any)
-                              }
-                              placeholder={fieldLabels[right]}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                <div className="mt-2 space-y-1" style={{ fontSize: "10pt" }}>
+                  {Array.from({ length: Math.ceil(contactFields.length / 2) }).map(
+                    (_, rowIdx) => {
+                      const left = contactFields[rowIdx * 2];
+                      const right = contactFields[rowIdx * 2 + 1];
+                      return (
+                        <div key={rowIdx} className="flex gap-x-8">
+                          {left && (
+                            <div className="flex-1">
+                              <span className="font-bold">{fieldLabels[left]}：</span>
+                              <EditableText
+                                value={
+                                  (personalInfo[left as keyof typeof personalInfo] as string) || ""
+                                }
+                                onChange={(v) =>
+                                  updatePersonalInfo({ [left]: v } as any)
+                                }
+                                placeholder={fieldLabels[left]}
+                              />
+                            </div>
+                          )}
+                          {right && (
+                            <div className="flex-1">
+                              <span className="font-bold">{fieldLabels[right]}：</span>
+                              <EditableText
+                                value={
+                                  (personalInfo[right as keyof typeof personalInfo] as string) || ""
+                                }
+                                onChange={(v) =>
+                                  updatePersonalInfo({ [right]: v } as any)
+                                }
+                                placeholder={fieldLabels[right]}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
               </div>
 
@@ -160,10 +142,10 @@ export function GermanTemplate() {
             <EditableLabel
               sectionType="summary"
               defaultLabel={tEditor.summary}
-              className="font-bold text-slate-900 border-b border-black pb-1 block mb-1.5"
-              style={{ fontSize: "14pt" }}
+              className="font-bold text-slate-900 border-b-2 border-sky-600 pb-1 block mb-3"
+              style={{ fontSize: "12pt" }}
             />
-            <p style={{ fontSize: "11.5pt", lineHeight: "1.35" }}>
+            <p className="leading-relaxed" style={{ fontSize: "11pt" }}>
               <EditableText
                 value={personalInfo.summary || ""}
                 onChange={(v) => updatePersonalInfo({ summary: v })}
@@ -182,16 +164,16 @@ export function GermanTemplate() {
             <EditableLabel
               sectionType="experience"
               defaultLabel={tEditor.experience}
-              className="font-bold text-slate-900 border-b border-black pb-1 block mb-1.5"
-              style={{ fontSize: "14pt" }}
+              className="font-bold text-slate-900 border-b-2 border-sky-600 pb-1 block mb-3"
+              style={{ fontSize: "12pt" }}
             />
-            <div className="space-y-2.5">
+            <div className="space-y-4">
               {experience.map((exp) => (
-                <div key={exp.id} className="flex gap-10">
-                  <div className="w-36 shrink-0">
+                <div key={exp.id} className="flex gap-8">
+                  <div className="w-40 flex-shrink-0">
                     <span
-                      className="text-slate-600 text-left block whitespace-nowrap"
-                      style={{ fontSize: "11.5pt" }}
+                      className="text-slate-600"
+                      style={{ fontSize: "10pt" }}
                     >
                       <EditableText
                         value={`${exp.startDate} - ${exp.current ? present : exp.endDate}`}
@@ -210,8 +192,8 @@ export function GermanTemplate() {
                   </div>
                   <div className="flex-1">
                     <h3
-                      className="font-semibold text-sky-500"
-                      style={{ fontSize: "13.5pt" }}
+                      className="font-bold text-slate-900"
+                      style={{ fontSize: "11pt" }}
                     >
                       <EditableText
                         value={exp.position}
@@ -219,12 +201,12 @@ export function GermanTemplate() {
                           updateExperience(exp.id, { position: v })
                         }
                         placeholder={t.position}
-                        className="font-semibold text-sky-500"
+                        className="font-bold text-slate-900"
                       />
                     </h3>
                     <div
                       className="text-slate-700"
-                      style={{ fontSize: "11.5pt" }}
+                      style={{ fontSize: "10pt" }}
                     >
                       <EditableText
                         value={exp.company}
@@ -291,8 +273,8 @@ export function GermanTemplate() {
                       </div>
                     )}
                     <p
-                      className="mt-1 text-slate-800 whitespace-pre-line"
-                      style={{ fontSize: "11.5pt", lineHeight: "1.35" }}
+                      className="mt-2 text-slate-800 whitespace-pre-line"
+                      style={{ fontSize: "10pt" }}
                     >
                       <EditableText
                         value={exp.description}
@@ -318,85 +300,63 @@ export function GermanTemplate() {
             <EditableLabel
               sectionType="education"
               defaultLabel={tEditor.education}
-              className="font-bold text-slate-900 border-b border-black pb-1 block mb-1.5"
-              style={{ fontSize: "14pt" }}
+              className="font-bold text-slate-900 border-b-2 border-sky-600 pb-1 block mb-3"
+              style={{ fontSize: "12pt" }}
             />
-            <div className="space-y-1">
+            <div className="space-y-2">
               {education.map((edu) => (
                 <div key={edu.id}>
-                  <div className="flex gap-10">
-                    {/* LEFT: date + location */}
-                    <div className="w-36 shrink-0">
-                      <div
-                        className="text-slate-600 whitespace-nowrap"
-                        style={{ fontSize: "11.5pt" }}
-                      >
+                  {/* Top row: 时间（左）| 专业（右） */}
+                  <div className="flex justify-between items-baseline gap-4">
+                    {/* 左上：时间 */}
+                    <span className="text-slate-600 flex-shrink-0" style={{ fontSize: "10pt" }}>
+                      <EditableText
+                        value={`${edu.startDate}${edu.startDate ? " - " : ""}${edu.current ? present : edu.endDate}`}
+                        onChange={(v) => {
+                          const dashIdx = v.indexOf("-");
+                          const s1 = dashIdx >= 0 ? v.slice(0, dashIdx).trim() : v.trim();
+                          const s2 = dashIdx >= 0 ? v.slice(dashIdx + 1).trim() : "";
+                          updateEducation(edu.id, {
+                            startDate: s1,
+                            endDate: s2,
+                            current: s2.toLowerCase().includes(present.toLowerCase()),
+                          });
+                        }}
+                        placeholder={t.startDate}
+                        className="text-slate-600"
+                      />
+                    </span>
+                    {/* 右上：专业 */}
+                    <span className="text-slate-700 font-medium text-right flex-1" style={{ fontSize: "10pt" }}>
+                      <EditableText
+                        value={edu.field || ""}
+                        onChange={(v) => updateEducation(edu.id, { field: v })}
+                        placeholder={t.major}
+                      />
+                    </span>
+                  </div>
+                  {/* Bottom row: 地址（左）| 学校（右） */}
+                  <div className="flex justify-between items-baseline gap-4">
+                    {/* 左下：地址 */}
+                    {edu.address && (
+                      <span className="text-slate-500 flex-shrink-0" style={{ fontSize: "9.5pt" }}>
                         <EditableText
-                          value={`${edu.startDate} - ${edu.current ? present : edu.endDate}`}
-                          onChange={(v) => {
-                            const dates = v.split("-").map((s) => s.trim());
-                            updateEducation(edu.id, {
-                              startDate: dates[0] || "",
-                              endDate: dates[1] || "",
-                              current: dates[1]?.includes(present) || false,
-                            });
-                          }}
-                          placeholder={t.startDate}
-                        />
-                      </div>
-                      {(edu.address || edu.country) && (
-                        <div
+                          value={edu.address}
+                          onChange={(v) => updateEducation(edu.id, { address: v })}
+                          placeholder={t.address}
                           className="text-slate-500"
-                          style={{ fontSize: "11.5pt" }}
-                        >
-                          <EditableText
-                            value={`${edu.address || ""}${edu.address && edu.country ? ", " : ""}${edu.country || ""}`}
-                            onChange={(v) => {
-                              const parts = v.split(",").map((s) => s.trim());
-                              updateEducation(edu.id, {
-                                address: parts[0] || "",
-                                country: parts[1] || "",
-                              });
-                            }}
-                            placeholder={t.address}
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* RIGHT: field (major) top, school below, degree optional below school */}
-                    <div className="flex-1">
-                      <div>
-                        {/* TOP RIGHT: field (major) */}
-                        <div
-                          className="font-bold text-slate-900"
-                          style={{ fontSize: "13.5pt" }}
-                        >
-                          <EditableText
-                            value={edu.field || ""}
-                            onChange={(v) =>
-                              updateEducation(edu.id, { field: v })
-                            }
-                            placeholder={t.major}
-                            className="font-bold"
-                          />
-                        </div>
-                        {/* BOTTOM RIGHT: school */}
-                        <div
-                          className="text-slate-700"
-                          style={{ fontSize: "11.5pt" }}
-                        >
-                          <EditableText
-                            value={edu.school}
-                            onChange={(v) =>
-                              updateEducation(edu.id, { school: v })
-                            }
-                            placeholder={t.school}
-                          />
-                        </div>
-                        {/* OPTIONAL: degree below school if exists */}
-                      </div>
-                    </div>
+                        />
+                      </span>
+                    )}
+                    {/* 右下：学校 */}
+                    <h3 className="font-bold text-slate-900 text-right flex-1" style={{ fontSize: "11pt" }}>
+                      <EditableText
+                        value={edu.school || ""}
+                        onChange={(v) => updateEducation(edu.id, { school: v })}
+                        placeholder={t.school}
+                        className="font-bold"
+                      />
+                    </h3>
                   </div>
                 </div>
               ))}
@@ -411,15 +371,15 @@ export function GermanTemplate() {
             <EditableLabel
               sectionType="projects"
               defaultLabel={tEditor.projects}
-              className="font-bold text-slate-900 border-b border-black pb-1 block mb-1.5"
-              style={{ fontSize: "14pt" }}
+              className="font-bold text-slate-900 border-b-2 border-sky-600 pb-1 block mb-3"
+              style={{ fontSize: "12pt" }}
             />
-            <div className="space-y-1.5">
+            <div className="space-y-3">
               {projects.map((proj) => (
                 <div key={proj.id}>
                   <h3
                     className="font-bold text-slate-900"
-                    style={{ fontSize: "13.5pt" }}
+                    style={{ fontSize: "11pt" }}
                   >
                     <EditableText
                       value={proj.name}
@@ -430,7 +390,7 @@ export function GermanTemplate() {
                   </h3>
                   <p
                     className="mt-1 text-slate-800 whitespace-pre-line"
-                    style={{ fontSize: "11.5pt" }}
+                    style={{ fontSize: "10pt" }}
                   >
                     <EditableText
                       value={proj.description}
@@ -445,7 +405,7 @@ export function GermanTemplate() {
                   {proj.technologies.length > 0 && (
                     <div
                       className="mt-1 text-slate-600"
-                      style={{ fontSize: "11.5pt" }}
+                      style={{ fontSize: "10pt" }}
                     >
                       <span className="font-semibold">Tech：</span>
                       {proj.technologies.map((tech, idx) => (
@@ -479,12 +439,12 @@ export function GermanTemplate() {
             <EditableLabel
               sectionType="skills"
               defaultLabel={tEditor.skills}
-              className="font-bold text-slate-900 border-b border-black pb-1 block mb-1.5"
-              style={{ fontSize: "14pt" }}
+              className="font-bold text-slate-900 border-b-2 border-sky-600 pb-1 block mb-3"
+              style={{ fontSize: "12pt" }}
             />
             <div
               className="flex flex-wrap gap-x-4 gap-y-1"
-              style={{ fontSize: "11.5pt" }}
+              style={{ fontSize: "11pt" }}
             >
               {skills.map((skill) => (
                 <span key={skill.id}>
@@ -507,30 +467,23 @@ export function GermanTemplate() {
             <EditableLabel
               sectionType="languages"
               defaultLabel={tEditor.languages}
-              className="font-bold text-slate-900 border-b border-black pb-1 block mb-1.5"
-              style={{ fontSize: "14pt" }}
+              className="font-bold text-slate-900 border-b-2 border-sky-600 pb-1 block mb-3"
+              style={{ fontSize: "12pt" }}
             />
-            <div style={{ fontSize: "11.5pt" }}>
-              <div className="flex flex-col gap-y-1">
-                {languages.map((lang) => (
-                  <div key={lang.id}>
-                    <span className="text-slate-800">
-                      {(() => {
-                        const selected = CEFR_LEVELS.find(
-                          (l) => l.value === lang.level,
-                        );
-                        const name = (lang.name || "").trim();
-                        const label = selected?.label;
-                        let result = "";
-                        if (name) result += name;
-                        if (label) result += (result ? " - " : "") + label;
-
-                        return result;
-                      })()}
-                    </span>
-                  </div>
-                ))}
-              </div>
+            <div className="space-y-0.5" style={{ fontSize: "11pt" }}>
+              {languages.map((lang) => (
+                <div key={lang.id}>
+                  <EditableText
+                    value={lang.name}
+                    onChange={(v) => {
+                      updateLanguage(lang.id, {
+                        name: v,
+                      });
+                    }}
+                    placeholder={t.language}
+                  />
+                </div>
+              ))}
             </div>
           </section>
         );
@@ -542,11 +495,9 @@ export function GermanTemplate() {
 
   return (
     <div
-      className="bg-white"
+      className="bg-white font-sans"
       style={{
-        fontFamily:
-          "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-        padding: "80px",
+        padding: "15mm",
         minHeight: "297mm",
         boxSizing: "border-box",
         width: "100%",

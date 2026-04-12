@@ -37,6 +37,7 @@ export interface Education {
   startDate: string;
   endDate: string;
   current: boolean;
+  address?: string; // e.g. "Beijing, China"
 }
 
 export interface Skill {
