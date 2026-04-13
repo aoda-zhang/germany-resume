@@ -136,12 +136,13 @@ export function SingleColumnTemplate() {
             {experience.map((exp) => (
               <div
                 key={exp.id}
-                className="grid mb-3"
+                className="flex mb-3"
                 style={{ gridTemplateColumns: "140px 1fr" }}
               >
                 {/* Left: time */}
-                <div className="pr-4 text-slate-600 whitespace-nowrap">
+                <div className="pr-4 text-slate-600 whitespace-nowrap mr-6">
                   {exp.startDate} - {exp.endDate || (present ? t.present : "")}
+                  <div>{exp.address}</div>
                 </div>
 
                 {/* Right: original content */}

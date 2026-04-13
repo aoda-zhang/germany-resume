@@ -143,13 +143,13 @@ export function ExperienceEntry({
             className="font-bold text-sky-700"
           />
         </h3>
-        <span style={styles.date} className="text-slate-500 shrink-0">
+        {/* <span style={styles.date} className="text-slate-500 shrink-0">
           <EditableText
             value={`${exp.startDate}${exp.startDate ? " - " : ""}${exp.current ? present : exp.endDate}`}
             onChange={(v) => parseDateRange(v, present, (d) => onUpdate(exp.id, d))}
             placeholder={t.startDate || "Start - End"}
           />
-        </span>
+        </span> */}
       </div>
 
       <div style={styles.company} className="text-slate-700">
@@ -158,19 +158,8 @@ export function ExperienceEntry({
           onChange={(v) => onUpdate(exp.id, { company: v })}
           placeholder={t.company || "Company"}
         />
-        {exp.address && (
-          <span>
-            {" · "}
-            <EditableText
-              value={exp.address}
-              onChange={(v) => onUpdate(exp.id, { address: v })}
-              placeholder={t.address || "Address"}
-            />
-          </span>
-        )}
         {exp.country && (
           <span>
-            {" · "}
             <EditableText
               value={exp.country}
               onChange={(v) => onUpdate(exp.id, { country: v })}
