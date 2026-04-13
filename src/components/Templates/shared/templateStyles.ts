@@ -15,7 +15,7 @@ export const singleColumnStyles = {
   title: { fontSize: "24px", fontWeight: "bold" as const },
   sectionTitle: { fontSize: "19px", fontWeight: "bold" as const },
   body: { fontSize: "15.2px", fontWeight: "normal" as const },
-  label: "font-bold text-slate-900 border-b-2 border-sky-600 pb-1 block mb-3",
+  label: "font-bold text-slate-900 border-b border-slate-900 pb-1 block mb-3",
 };
 
 // ---------------------------------------------------------------------------

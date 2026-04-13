@@ -67,19 +67,19 @@ export function SingleColumnTemplate() {
 
                 {/* Contact fields — fixed 2 columns, content wraps inside each cell */}
                 <div
-                  className="mt-2 grid gap-x-3 gap-y-1 text-slate-900"
+                  className="mt-2 grid gap-y-1 text-slate-900"
                   style={{ ...s.body, gridTemplateColumns: "1fr 1fr" }}
                 >
                   {contactFields.map((f) => (
-                    <div key={f} className="min-w-0 flex items-baseline gap-1">
-                      <span className="font-bold flex-shrink-0 whitespace-nowrap">
+                    <div key={f} className="flex items-baseline mr-10">
+                      <span className="font-bold shrink-0 whitespace-nowrap">
                         {fieldLabels[f]}：
                       </span>
                       <EditableText
                         value={(personalInfo[f as keyof typeof personalInfo] as string) || ""}
                         onChange={(v) => updatePersonalInfo({ [f]: v } as any)}
                         placeholder={fieldLabels[f]}
-                        className="min-w-0 break-words"
+                        className="min-w-0 wrap-break-word"
                       />
                     </div>
                   ))}
@@ -88,7 +88,7 @@ export function SingleColumnTemplate() {
 
               {/* Right: photo */}
               {personalInfo.photo && (
-                <div className="flex-shrink-0 ml-6">
+                <div className="shrink-0">
                   <Photo
                     src={personalInfo.photo}
                     size={114}
@@ -110,13 +110,13 @@ export function SingleColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <p className="leading-relaxed text-slate-900 break-words" style={s.body}>
+            <p className="leading-relaxed text-slate-900 wrap-break-word" style={s.body}>
               <EditableText
                 value={personalInfo.summary || ""}
                 onChange={(v) => updatePersonalInfo({ summary: v })}
                 placeholder={t.summaryPlaceholder}
                 multiline
-                className="w-full break-words"
+                className="w-full wrap-break-word"
               />
             </p>
           </section>
