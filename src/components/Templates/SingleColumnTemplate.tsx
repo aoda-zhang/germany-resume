@@ -7,7 +7,7 @@ import { useResumeStore } from "../../store/resumeStore";
 import { translations } from "../../i18n";
 import type { PersonalInfoFieldType } from "../../store/resumeStore";
 
-export function GermanTemplate() {
+export function SingleColumnTemplate() {
   const language = useResumeStore((s) => s.language);
   const t = translations[language].form;
   const tEditor = translations[language].editor;

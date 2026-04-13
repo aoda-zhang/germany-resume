@@ -65,10 +65,8 @@ export const translations = {
       summaryPlaceholder: '简要介绍你的专业背景、核心优势和职业目标...',
     },
     template: {
-      classic: '经典',
-      modern: '现代',
-      minimal: '极简',
-      german: '德式',
+      singleColumn: '一栏版',
+      twoColumn: '两栏版',
     },
     confirm: {
       clear: '确定清空所有内容？此操作不可撤销。',
@@ -145,10 +143,8 @@ export const translations = {
       summaryPlaceholder: 'Brief overview of your background, strengths, and career goals...',
     },
     template: {
-      classic: 'Classic',
-      modern: 'Modern',
-      minimal: 'Minimal',
-      german: 'German',
+      singleColumn: 'Single Column',
+      twoColumn: 'Two Column',
     },
     confirm: {
       clear: 'Are you sure you want to clear all content? This cannot be undone.',
@@ -225,10 +221,8 @@ export const translations = {
       summaryPlaceholder: 'Kurze Zusammenfassung Ihres Hintergrunds, Ihrer Stärken und Karriereziele...',
     },
     template: {
-      classic: 'Klassisch',
-      modern: 'Modern',
-      minimal: 'Minimal',
-      german: 'Deutsch',
+      singleColumn: 'Einspaltig',
+      twoColumn: 'Zweispaltig',
     },
     confirm: {
       clear: 'Möchten Sie wirklich alle Inhalte löschen? Dies kann nicht rückgängig gemacht werden.',
