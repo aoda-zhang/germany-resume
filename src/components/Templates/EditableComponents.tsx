@@ -65,7 +65,7 @@ export function EditableText({
   return (
     <span
       onClick={() => setIsEditing(true)}
-      className={`${className} cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all border-2 border-transparent hover:border-indigo-200`}
+      className={`${className} cursor-text transition-all border-2 border-transparent`}
       style={style}
       title="ClickEdit"
     >

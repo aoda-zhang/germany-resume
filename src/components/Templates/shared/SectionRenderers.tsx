@@ -140,10 +140,10 @@ export function ExperienceEntry({
             value={exp.position}
             onChange={(v) => onUpdate(exp.id, { position: v })}
             placeholder={t.position || "Position"}
-            className="font-bold text-slate-900"
+            className="font-bold text-sky-700"
           />
         </h3>
-        <span style={styles.date} className="text-slate-500 flex-shrink-0">
+        <span style={styles.date} className="text-slate-500 shrink-0">
           <EditableText
             value={`${exp.startDate}${exp.startDate ? " - " : ""}${exp.current ? present : exp.endDate}`}
             onChange={(v) => parseDateRange(v, present, (d) => onUpdate(exp.id, d))}

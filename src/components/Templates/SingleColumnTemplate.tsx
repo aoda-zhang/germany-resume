@@ -47,7 +47,7 @@ export function SingleColumnTemplate() {
               {/* Left: name + title + contacts */}
               <div className="flex-1 min-w-0">
                 {personalInfo.fullName && (
-                  <h1 style={s.name} className="text-slate-900 mb-1 break-words">
+                  <h1 style={s.name} className="text-slate-900 mb-1 wrap-break-word">
                     <EditableText
                       value={personalInfo.fullName}
                       onChange={(v) => updatePersonalInfo({ fullName: v })}
@@ -56,7 +56,7 @@ export function SingleColumnTemplate() {
                   </h1>
                 )}
                 {personalInfo.title && (
-                  <p style={s.title} className="text-slate-900 mb-3 break-words">
+                  <p style={s.title} className="text-sky-700 mb-3 wrap-break-word">
                     <EditableText
                       value={personalInfo.title}
                       onChange={(v) => updatePersonalInfo({ title: v })}
