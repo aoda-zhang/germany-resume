@@ -7,12 +7,14 @@ export function EditableText({
   className = '',
   placeholder = '',
   multiline = false,
+  style,
 }: {
   value: string;
   onChange: (value: string) => void;
   className?: string;
   placeholder?: string;
   multiline?: boolean;
+  style?: React.CSSProperties;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
@@ -54,6 +56,7 @@ export function EditableText({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className={`${className} bg-indigo-50 border-2 border-indigo-400 rounded px-2 py-1 outline-none resize-none`}
+        style={style}
         rows={multiline ? 3 : undefined}
       />
     );
@@ -63,6 +66,7 @@ export function EditableText({
     <span
       onClick={() => setIsEditing(true)}
       className={`${className} cursor-text hover:bg-indigo-50 hover:px-2 hover:py-1 hover:rounded transition-all border-2 border-transparent hover:border-indigo-200`}
+      style={style}
       title="ClickEdit"
     >
       {value || placeholder}
