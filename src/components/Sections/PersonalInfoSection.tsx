@@ -20,6 +20,7 @@ import { useResumeStore } from '../../store/resumeStore';
 import { translations } from '../../i18n';
 import type { PersonalInfoFieldType } from '../../store/resumeStore';
 import { Trash2, Upload, GripVertical } from 'lucide-react';
+import { PhotoCropper } from './PhotoCropper';
 
 interface FieldRowProps {
   field: PersonalInfoFieldType;
@@ -87,6 +88,7 @@ export function PersonalInfoSection({ data, isEditing = true }: Props) {
   const t = translations[language].form;
   const tEditor = translations[language].editor;
   const [photoPreview, setPhotoPreview] = useState<string | null>(data.photo || null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
 
   const fieldLabels: Record<PersonalInfoFieldType, string> = {
     fullName: t.name,
@@ -189,6 +191,19 @@ export function PersonalInfoSection({ data, isEditing = true }: Props) {
         </SortableContext>
       </DndContext>
 
+      {/* Photo cropper modal */}
+      {pendingFile && (
+        <PhotoCropper
+          file={pendingFile}
+          onConfirm={(cropped) => {
+            setPhotoPreview(cropped);
+            updatePersonalInfo({ photo: cropped });
+            setPendingFile(null);
+          }}
+          onCancel={() => setPendingFile(null)}
+        />
+      )}
+
       {/* Photo upload */}
       <div className="pt-2 border-t border-slate-100">
         <label className="block text-sm text-slate-600 mb-2">{t.avatar}</label>
@@ -209,15 +224,7 @@ export function PersonalInfoSection({ data, isEditing = true }: Props) {
               accept="image/*"
               onChange={(e) => {
                 const file = e.target.files?.[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    const base64 = reader.result as string;
-                    setPhotoPreview(base64);
-                    updatePersonalInfo({ photo: base64 });
-                  };
-                  reader.readAsDataURL(file);
-                }
+                if (file) setPendingFile(file);
               }}
               className="hidden"
             />
