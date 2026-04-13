@@ -6,15 +6,6 @@
 export const fontSize = "16px";
 export const fontColor = "text-slate-900";
 
-export const defaultFontSizes = {
-  name: "30px",
-  title: "24px",
-  sectionTitle: "19px",
-  body: "16px",
-  caption: "14px",
-  xs: "13px",
-} as const;
-
 // ---------------------------------------------------------------------------
 // Single-column template
 // ---------------------------------------------------------------------------
@@ -23,7 +14,7 @@ export const singleColumnStyles = {
   name: { fontSize: "30px", fontWeight: "bold" as const },
   title: { fontSize: "24px", fontWeight: "bold" as const },
   sectionTitle: { fontSize: "19px", fontWeight: "bold" as const },
-  body: { fontSize: "16px", fontWeight: "normal" as const },
+  body: { fontSize: "15.2px", fontWeight: "normal" as const },
   label: "font-bold text-slate-900 border-b-2 border-sky-600 pb-1 block mb-3",
 };
 

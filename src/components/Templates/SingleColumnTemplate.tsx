@@ -67,7 +67,7 @@ export function SingleColumnTemplate() {
 
                 {/* Contact fields — fixed 2 columns, content wraps inside each cell */}
                 <div
-                  className="mt-2 grid gap-x-6 gap-y-1 text-slate-900"
+                  className="mt-2 grid gap-x-3 gap-y-1 text-slate-900"
                   style={{ ...s.body, gridTemplateColumns: "1fr 1fr" }}
                 >
                   {contactFields.map((f) => (
