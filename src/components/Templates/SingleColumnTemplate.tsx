@@ -1,7 +1,6 @@
 /**
  * SingleColumnTemplate
- * A clean, single-column layout suitable for all industries.
- * All shared logic lives in `shared/`.
+ * A clean, single-column layout.
  */
 import { EditableText } from "./EditableComponents";
 import { useTemplateData } from "./shared/useTemplateData";
@@ -47,28 +46,26 @@ export function SingleColumnTemplate() {
             <div className="flex justify-between items-start">
               <div className="flex-1">
                 {personalInfo.fullName && (
-                  <h1 style={s.name} className="font-bold text-slate-900 mb-1">
+                  <h1 style={s.name} className="text-slate-900 mb-1">
                     <EditableText
                       value={personalInfo.fullName}
                       onChange={(v) => updatePersonalInfo({ fullName: v })}
                       placeholder={t.name}
-                      className="font-bold"
                     />
                   </h1>
                 )}
                 {personalInfo.title && (
-                  <p style={s.title} className="font-semibold text-slate-800 mb-3">
+                  <p style={s.title} className="text-slate-900 mb-3">
                     <EditableText
                       value={personalInfo.title}
                       onChange={(v) => updatePersonalInfo({ title: v })}
                       placeholder={t.title}
-                      className="font-semibold"
                     />
                   </p>
                 )}
 
                 {/* Contact fields — 2 per row */}
-                <div className="mt-2 space-y-1" style={s.contact}>
+                <div className="mt-2 space-y-1" style={s.body}>
                   {Array.from({ length: Math.ceil(contactFields.length / 2) }).map(
                     (_, rowIdx) => {
                       const left = contactFields[rowIdx * 2];
@@ -77,9 +74,7 @@ export function SingleColumnTemplate() {
                         <div key={rowIdx} className="flex gap-x-8">
                           {left && (
                             <div className="flex-1">
-                              <span className="font-bold">
-                                {fieldLabels[left]}：
-                              </span>
+                              <span className="font-bold mr-1">{fieldLabels[left]}：</span>
                               <EditableText
                                 value={
                                   (personalInfo[left as keyof typeof personalInfo] as string) || ""
@@ -93,9 +88,7 @@ export function SingleColumnTemplate() {
                           )}
                           {right && (
                             <div className="flex-1">
-                              <span className="font-bold">
-                                {fieldLabels[right]}：
-                              </span>
+                              <span className="font-bold mr-1">{fieldLabels[right]}：</span>
                               <EditableText
                                 value={
                                   (personalInfo[right as keyof typeof personalInfo] as string) || ""
@@ -137,7 +130,7 @@ export function SingleColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <p className="leading-relaxed" style={s.body}>
+            <p className="leading-relaxed text-slate-900" style={s.body}>
               <EditableText
                 value={personalInfo.summary || ""}
                 onChange={(v) => updatePersonalInfo({ summary: v })}
@@ -167,12 +160,7 @@ export function SingleColumnTemplate() {
                 t={t}
                 present={present}
                 onUpdate={updateExperience}
-                styles={{
-                  date: s.date,
-                  position: s.position,
-                  company: s.company,
-                  description: s.body,
-                }}
+                styles={{ description: s.body }}
               />
             ))}
           </section>
@@ -196,11 +184,7 @@ export function SingleColumnTemplate() {
                 t={t}
                 present={present}
                 onUpdate={updateEducation}
-                styles={{
-                  date: s.date,
-                  field: s.field,
-                  school: s.school,
-                }}
+                styles={{ field: s.body }}
               />
             ))}
           </section>
@@ -223,7 +207,7 @@ export function SingleColumnTemplate() {
                 proj={proj}
                 t={t}
                 onUpdate={updateProject}
-                styles={{ name: s.projectName, description: s.body }}
+                styles={{ description: s.body }}
               />
             ))}
           </section>
@@ -240,7 +224,7 @@ export function SingleColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <div className="flex flex-wrap gap-x-4 gap-y-1" style={{ fontSize: "11pt" }}>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-900" style={s.body}>
               {skills.map((skill) => (
                 <SkillEntry
                   key={skill.id}
@@ -263,7 +247,7 @@ export function SingleColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <div className="space-y-0.5" style={{ fontSize: "11pt" }}>
+            <div className="space-y-0.5 text-slate-900" style={s.body}>
               {languages.map((lang) => (
                 <LanguageEntry
                   key={lang.id}
@@ -284,7 +268,12 @@ export function SingleColumnTemplate() {
   return (
     <div
       className="bg-white font-sans"
-      style={{ padding: s.padding, minHeight: "297mm", boxSizing: "border-box", width: "100%" }}
+      style={{
+        padding: s.padding,
+        minHeight: "297mm",
+        boxSizing: "border-box",
+        width: "100%",
+      }}
     >
       {visibleSections.map((section) => (
         <div key={section.id}>{renderSection(section)}</div>

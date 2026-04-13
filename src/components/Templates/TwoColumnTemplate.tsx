@@ -1,8 +1,8 @@
 /**
  * TwoColumnTemplate
  * Left sidebar (photo, personal info, skills, languages) + right main column.
- * All shared logic lives in `shared/`.
  */
+import { EditableText } from "./EditableComponents";
 import { useTemplateData } from "./shared/useTemplateData";
 import {
   Photo,
@@ -14,7 +14,6 @@ import {
   LanguageEntry,
 } from "./shared/SectionRenderers";
 import { twoColumnStyles as s } from "./shared/templateStyles";
-import { EditableText } from "./EditableComponents";
 
 export function TwoColumnTemplate() {
   const {
@@ -38,7 +37,6 @@ export function TwoColumnTemplate() {
     updateLanguage,
   } = useTemplateData();
 
-  // Sections split between sidebar (left) and main (right)
   const leftColumnTypes = ["personal", "skills", "languages"];
   const leftSections = visibleSections.filter((s) => leftColumnTypes.includes(s.type));
   const rightSections = visibleSections.filter((s) => !leftColumnTypes.includes(s.type));
@@ -49,20 +47,17 @@ export function TwoColumnTemplate() {
       case "personal":
         return (
           <div className="mb-4">
-            {/* Name */}
             {personalInfo.fullName && (
-              <h1 style={s.name} className="font-bold text-slate-900 mb-1">
+              <h1 style={s.name} className="text-slate-900 mb-1">
                 <EditableText
                   value={personalInfo.fullName}
                   onChange={(v) => updatePersonalInfo({ fullName: v })}
                   placeholder={t.name}
-                  className="font-bold"
                 />
               </h1>
             )}
-            {/* Title */}
             {personalInfo.title && (
-              <p style={s.title} className="font-medium text-slate-700 mb-3">
+              <p style={s.title} className="text-slate-900 mb-3">
                 <EditableText
                   value={personalInfo.title}
                   onChange={(v) => updatePersonalInfo({ title: v })}
@@ -70,13 +65,10 @@ export function TwoColumnTemplate() {
                 />
               </p>
             )}
-            {/* Contact fields */}
-            <div className="space-y-0.5" style={{ fontSize: "9pt" }}>
+            <div className="space-y-0.5 text-slate-900" style={s.body}>
               {contactFields.map((f) => (
-                <div key={f} className="flex items-center gap-2">
-                  <span className="font-semibold w-16 flex-shrink-0" style={s.contactLabel}>
-                    {fieldLabels[f]}:
-                  </span>
+                <div key={f} className="flex items-baseline gap-2">
+                  <span className="font-bold w-16 flex-shrink-0">{fieldLabels[f]}：</span>
                   <EditableText
                     value={(personalInfo[f as keyof typeof personalInfo] as string) || ""}
                     onChange={(v) => updatePersonalInfo({ [f]: v } as any)}
@@ -98,7 +90,7 @@ export function TwoColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <p className="leading-relaxed" style={s.body}>
+            <p className="leading-relaxed text-slate-900" style={s.body}>
               <EditableText
                 value={personalInfo.summary || ""}
                 onChange={(v) => updatePersonalInfo({ summary: v })}
@@ -128,7 +120,7 @@ export function TwoColumnTemplate() {
                 t={t}
                 present={present}
                 onUpdate={updateExperience}
-                styles={{ date: s.date, position: s.position, company: s.company, description: s.body }}
+                styles={{ description: s.body }}
               />
             ))}
           </section>
@@ -152,7 +144,7 @@ export function TwoColumnTemplate() {
                 t={t}
                 present={present}
                 onUpdate={updateEducation}
-                styles={{ date: s.date, field: s.field, school: s.school }}
+                styles={{ field: s.body }}
               />
             ))}
           </section>
@@ -175,7 +167,7 @@ export function TwoColumnTemplate() {
                 proj={proj}
                 t={t}
                 onUpdate={updateProject}
-                styles={{ name: s.projectName, description: s.body }}
+                styles={{ description: s.body }}
               />
             ))}
           </section>
@@ -192,7 +184,7 @@ export function TwoColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <div className="space-y-0.5" style={{ fontSize: "10pt" }}>
+            <div className="space-y-0.5 text-slate-900" style={s.body}>
               {skills.map((skill) => (
                 <SkillEntry
                   key={skill.id}
@@ -215,7 +207,7 @@ export function TwoColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <div className="space-y-0.5" style={{ fontSize: "10pt" }}>
+            <div className="space-y-0.5 text-slate-900" style={s.body}>
               {languages.map((lang) => (
                 <LanguageEntry
                   key={lang.id}
