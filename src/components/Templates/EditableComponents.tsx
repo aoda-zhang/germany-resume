@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
-import { useResumeStore } from '../../store/resumeStore';
+import { useState, useRef, useEffect } from "react";
+import { useResumeStore } from "../../store/resumeStore";
 
 export function EditableText({
   value,
   onChange,
-  className = '',
-  placeholder = '',
+  className = "",
+  placeholder = "",
   multiline = false,
   style,
 }: {
@@ -37,16 +37,16 @@ export function EditableText({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !multiline) {
+    if (e.key === "Enter" && !multiline) {
       handleSave();
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       setEditValue(value);
       setIsEditing(false);
     }
   };
 
   if (isEditing) {
-    const InputComponent = multiline ? 'textarea' : 'input';
+    const InputComponent = multiline ? "textarea" : "input";
     return (
       <InputComponent
         ref={inputRef as any}
@@ -77,7 +77,7 @@ export function EditableText({
 export function EditableLabel({
   sectionType,
   defaultLabel,
-  className = '',
+  className = "",
   style,
 }: {
   sectionType: string;
@@ -86,7 +86,7 @@ export function EditableLabel({
   style?: React.CSSProperties;
 }) {
   const { sectionOrder, updateSectionLabel } = useResumeStore();
-  const section = sectionOrder.find(s => s.type === sectionType);
+  const section = sectionOrder.find((s) => s.type === sectionType);
   const label = section?.label || defaultLabel;
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(label);
@@ -115,7 +115,7 @@ export function EditableLabel({
         value={editValue}
         onChange={(e) => setEditValue(e.target.value)}
         onBlur={handleSave}
-        onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+        onKeyDown={(e) => e.key === "Enter" && handleSave()}
         className={`${className} bg-indigo-50 border-2 border-indigo-400 rounded px-2 py-1 outline-none`}
         style={style}
       />
@@ -134,12 +134,11 @@ export function EditableLabel({
   );
 }
 
-
 export function useResumeEditing() {
   const store = useResumeStore();
   return {
     ...store,
-    visibleSections: store.sectionOrder.filter(s => s.visible),
+    visibleSections: store.sectionOrder.filter((s) => s.visible),
     personalInfoFields: store.personalInfoFieldOrder,
   };
 }

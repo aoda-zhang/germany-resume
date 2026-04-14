@@ -140,7 +140,7 @@ export function SingleColumnTemplate() {
                 style={{ gridTemplateColumns: "140px 1fr" }}
               >
                 {/* Left: time */}
-                <div className="pr-4 text-slate-600 whitespace-nowrap mr-6">
+                <div className="pr-4 text-slate-900 whitespace-nowrap mr-6">
                   {exp.startDate} - {exp.endDate || (present ? t.present : "")}
                   <div>{exp.address}</div>
                 </div>

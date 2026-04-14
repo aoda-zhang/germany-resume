@@ -10,7 +10,11 @@ import { EditableText, EditableLabel } from "../EditableComponents";
 export function parseDateRange(
   value: string,
   present: string,
-  onSave: (dates: { startDate: string; endDate: string; current: boolean }) => void
+  onSave: (dates: {
+    startDate: string;
+    endDate: string;
+    current: boolean;
+  }) => void,
 ) {
   const dashIdx = value.indexOf("-");
   const s1 = dashIdx >= 0 ? value.slice(0, dashIdx).trim() : value.trim();
@@ -195,7 +199,10 @@ export function ExperienceEntry({
         </div>
       )}
 
-      <p style={styles.description} className="mt-1.5 text-slate-900 whitespace-pre-line">
+      <p
+        style={styles.description}
+        className="mt-1.5 text-slate-900 whitespace-pre-line"
+      >
         <EditableText
           value={exp.description}
           onChange={(v) => onUpdate(exp.id, { description: v })}
@@ -242,25 +249,30 @@ export function EducationEntry({
 }: EducationEntryProps) {
   return (
     <div className="mb-2">
-      <div className="flex justify-between items-baseline gap-4">
-        <span style={styles.date} className="text-slate-600 flex-shrink-0">
+      <div className="flex items-baseline gap-4">
+        <span style={styles.date} className="text-slate-900 shrink-0 mr-17">
           <EditableText
             value={`${edu.startDate}${edu.startDate ? " - " : ""}${edu.current ? present : edu.endDate}`}
-            onChange={(v) => parseDateRange(v, present, (d) => onUpdate(edu.id, d))}
+            onChange={(v) =>
+              parseDateRange(v, present, (d) => onUpdate(edu.id, d))
+            }
             placeholder={t.startDate || "Start - End"}
           />
         </span>
-        <span style={styles.field} className="text-slate-700 font-medium text-right flex-1">
+        <span
+          style={styles.field}
+        >
           <EditableText
             value={edu.field || ""}
             onChange={(v) => onUpdate(edu.id, { field: v })}
             placeholder={t.major || "Field of Study"}
+            className="font-bold text-slate-900"
           />
         </span>
       </div>
-      <div className="flex justify-between items-baseline gap-4">
+      <div className="flex items-baseline gap-4">
         {edu.address && (
-          <span style={styles.address} className="text-slate-500 flex-shrink-0">
+          <span style={styles.address} className="text-slate-900 shrink-0 mr-15">
             <EditableText
               value={edu.address}
               onChange={(v) => onUpdate(edu.id, { address: v })}
@@ -268,12 +280,14 @@ export function EducationEntry({
             />
           </span>
         )}
-        <h3 style={styles.school} className="font-bold text-slate-900 text-right flex-1">
+        <h3
+          style={styles.school}
+          className="text-slate-900"
+        >
           <EditableText
             value={edu.school || ""}
             onChange={(v) => onUpdate(edu.id, { school: v })}
             placeholder={t.school || "School"}
-            className="font-bold"
           />
         </h3>
       </div>
@@ -300,12 +314,7 @@ export interface ProjectEntryProps {
   };
 }
 
-export function ProjectEntry({
-  proj,
-  t,
-  onUpdate,
-  styles,
-}: ProjectEntryProps) {
+export function ProjectEntry({ proj, t, onUpdate, styles }: ProjectEntryProps) {
   return (
     <div className="mb-2">
       <h3 style={styles.name} className="font-bold text-slate-900">
@@ -316,7 +325,10 @@ export function ProjectEntry({
           className="font-bold"
         />
       </h3>
-      <p style={styles.description} className="mt-1 text-slate-900 whitespace-pre-line">
+      <p
+        style={styles.description}
+        className="mt-1 text-slate-900 whitespace-pre-line"
+      >
         <EditableText
           value={proj.description}
           onChange={(v) => onUpdate(proj.id, { description: v })}
