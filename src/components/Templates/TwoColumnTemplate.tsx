@@ -119,7 +119,7 @@ export function TwoColumnTemplate() {
             {experience.map((exp) => (
               <div
                 key={exp.id}
-                className="grid mb-3"
+                className="grid"
                 style={{ gridTemplateColumns: "150px 1fr", alignItems: "start" }}
               >
                 <div className="pr-4 text-slate-900 whitespace-nowrap border-r border-slate-200 h-full" style={{ fontSize: s.body.fontSize }}>
@@ -154,7 +154,7 @@ export function TwoColumnTemplate() {
             {education.map((edu) => (
               <div
                 key={edu.id}
-                className="grid mb-2"
+                className="grid"
                 style={{ gridTemplateColumns: "150px 1fr", alignItems: "start" }}
               >
                 <div className="pr-4 text-slate-900 whitespace-nowrap border-r border-slate-200" style={{ fontSize: s.body.fontSize }}>
