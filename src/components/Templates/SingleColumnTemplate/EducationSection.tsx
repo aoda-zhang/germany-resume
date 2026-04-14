@@ -34,7 +34,7 @@ export function EducationSection({
       {education.map((edu) => (
         <div key={edu.id} className="grid mb-2" style={{ gridTemplateColumns: "160px 1fr", alignItems: "stretch" }}>
           {/* Left: time (fixed width) */}
-          <div className="text-slate-900 pr-4 mr-4 border-r border-slate-200 h-full flex flex-col" style={{ fontSize: s.body.fontSize, alignSelf: "start" }}>
+          <div className="text-slate-900 pr-4 mr-4 h-full flex flex-col" style={{ fontSize: s.body.fontSize, alignSelf: "start" }}>
             <div className="whitespace-nowrap">
               {edu.startDate} – {edu.current ? present : edu.endDate}
             </div>

@@ -166,17 +166,8 @@ export function ExperienceEntry({
 
       {exp.techStack && (
         <div style={styles.techStack} className="mt-0.5">
-          <span className="text-slate-400 text-xs mr-1">Tech:</span>
-          <div className="inline-flex flex-wrap gap-0.5">
-            {exp.techStack.split(",").map((tech, idx) => (
-              <span
-                key={idx}
-                className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-xs"
-              >
-                {tech.trim()}
-              </span>
-            ))}
-          </div>
+          <span className="font-bold text-slate-900 mr-1">Tech Stack:</span>
+          <span className="px-1.5 py-0.5 text-slate-600">{exp.techStack}</span>
         </div>
       )}
 
