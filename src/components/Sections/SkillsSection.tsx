@@ -148,7 +148,7 @@ export function SkillsSection({ data, onChange }: Props) {
                         type="text"
                         value={item.category || ''}
                         onChange={(e) => updateItem(item.id, 'category', e.target.value)}
-                        className="w-28 px-2 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                        className="w-40 px-2 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
                         placeholder={t.category}
                       />
                       <input
