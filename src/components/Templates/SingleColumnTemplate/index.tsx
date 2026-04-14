@@ -106,7 +106,6 @@ export function SingleColumnTemplate() {
               <SkillsSection
                 key={section.id}
                 skills={skills}
-                t={t}
                 tEditor={tEditor}
                 onUpdate={updateSkill as (id: string, data: Partial<Skill>) => void}
               />
@@ -116,7 +115,6 @@ export function SingleColumnTemplate() {
               <LanguagesSection
                 key={section.id}
                 languages={languages as Language[]}
-                t={t}
                 tEditor={tEditor}
                 onUpdate={updateLanguage as (id: string, data: Partial<Language>) => void}
               />

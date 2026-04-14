@@ -43,7 +43,7 @@ export function TwoColumnTemplate() {
     >
       {/* ── Left sidebar ── */}
       <div
-        className="flex-shrink-0 bg-slate-50 border-r border-slate-200"
+        className="shrink-0 bg-slate-50 border-r border-slate-200"
         style={{ width: s.sidebarWidth, padding: s.sidebarPadding }}
       >
         <Sidebar

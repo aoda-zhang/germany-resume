@@ -13,7 +13,6 @@ interface SkillsSectionProps {
 
 export function SkillsSection({
   skills,
-  t,
   tEditor,
   onUpdate,
 }: SkillsSectionProps) {
