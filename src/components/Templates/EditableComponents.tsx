@@ -7,6 +7,7 @@ export function EditableText({
   className = "",
   placeholder = "",
   multiline = false,
+  asList = false,
   style,
 }: {
   value: string;
@@ -14,6 +15,8 @@ export function EditableText({
   className?: string;
   placeholder?: string;
   multiline?: boolean;
+  /** When true, display multiline text as bullet list; otherwise preserve whitespace */
+  asList?: boolean;
   style?: React.CSSProperties;
 }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -63,7 +66,30 @@ export function EditableText({
   }
 
   // Display mode: if multiline, render with whitespace preserved (keep line breaks & spaces)
+  // If asList=true, show as bullet list instead
   if (multiline && value) {
+    if (asList) {
+      const lines = value.split("\n").filter((l) => l.trim());
+      return (
+        <ul
+          onClick={() => setIsEditing(true)}
+          className={`${className} cursor-text`}
+          style={style}
+        >
+          {lines.map((line, i) => (
+            <li key={i} className="text-slate-900">
+              <span
+                className="font-bold mr-1 inline-block"
+                style={{ fontSize: "20px", lineHeight: 1 }}
+              >
+                •
+              </span>
+              {line}
+            </li>
+          ))}
+        </ul>
+      );
+    }
     return (
       <div
         onClick={() => setIsEditing(true)}

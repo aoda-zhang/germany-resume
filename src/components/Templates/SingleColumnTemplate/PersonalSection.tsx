@@ -71,7 +71,7 @@ export function PersonalSection({
           <div className="shrink-0">
             <Photo
               src={personalInfo.photo}
-              size={114}
+              size={126}
               className="rounded-full border-2 border-slate-200"
             />
           </div>

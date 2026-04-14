@@ -189,6 +189,7 @@ export function ExperienceEntry({
           onChange={(v) => onUpdate(exp.id, { description: v })}
           placeholder={t.description || "Description"}
           multiline
+          asList
           className="w-full"
         />
       </p>
@@ -303,6 +304,7 @@ export function ProjectEntry({ proj, t, onUpdate, styles }: ProjectEntryProps) {
           onChange={(v) => onUpdate(proj.id, { description: v })}
           placeholder={t.description || "Description"}
           multiline
+          asList
           className="w-full"
         />
       </p>
