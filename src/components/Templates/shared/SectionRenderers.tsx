@@ -147,7 +147,7 @@ export function ExperienceEntry({
           placeholder={t.company || "Company"}
         />
         {exp.companyWebsite && (
-          <span className="text-slate-500">
+          <span>
             {" – "}
             <EditableText
               value={exp.companyWebsite}
@@ -178,7 +178,7 @@ export function ExperienceEntry({
       </div>
 
       {exp.companyDescription && (
-        <p style={styles.companyDescription} className="mt-1 text-slate-500 italic">
+        <p style={styles.companyDescription} className="mt-1">
           <EditableText
             value={exp.companyDescription}
             onChange={(v) => onUpdate(exp.id, { companyDescription: v })}
