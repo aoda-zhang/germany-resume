@@ -1,5 +1,5 @@
 import type { Skill } from '../../types/resume';
-import { Plus, Trash2, GripVertical } from 'lucide-react';
+import { Plus, Trash2, GripVertical, Pencil } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { useResumeStore } from '../../store/resumeStore';
 import { translations } from '../../i18n';
@@ -14,10 +14,11 @@ export function SkillsSection({ data, onChange }: Props) {
   const t = translations[language].form;
   const tEditor = translations[language].editor;
 
-  // Track the last used category for new items
   const [lastCategory, setLastCategory] = useState<string>('');
+  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
+  const [editingCategoryName, setEditingCategoryName] = useState<string>('');
 
-  // Group skills by category, use stable IDs as keys (first skill's id in each group)
+  // Build groups with stable IDs (first skill's id = group id)
   const groups: { id: string; cat: string; skills: Skill[] }[] = [];
   const catMap: Record<string, number> = {};
   data.forEach(skill => {
@@ -42,8 +43,7 @@ export function SkillsSection({ data, onChange }: Props) {
     setLastCategory(targetCat);
   };
 
-  const updateItem = (id: string, field: keyof Skill, value: any) => {
-    if (field === 'category') setLastCategory(value);
+  const updateItem = (id: string, field: keyof Skill, value: string) => {
     onChange(data.map(item =>
       item.id === id ? { ...item, [field]: value } : item
     ));
@@ -53,10 +53,33 @@ export function SkillsSection({ data, onChange }: Props) {
     onChange(data.filter(item => item.id !== id));
   };
 
-  // Drag and drop reordering within each group
+  // Rename all skills in a group to a new category
+  const renameCategory = (groupId: string, newCat: string) => {
+    const group = groups.find(g => g.id === groupId);
+    if (!group) return;
+    onChange(data.map(item =>
+      group.skills.some(s => s.id === item.id)
+        ? { ...item, category: newCat }
+        : item
+    ));
+    setEditingGroupId(null);
+    setEditingCategoryName('');
+  };
+
+  const startEditingCategory = (group: { id: string; cat: string }) => {
+    setEditingGroupId(group.id);
+    setEditingCategoryName(group.cat);
+  };
+
+  const cancelEditingCategory = () => {
+    setEditingGroupId(null);
+    setEditingCategoryName('');
+  };
+
+  // Drag and drop
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
-  const dragItemRef = useRef<{ group: string; index: number } | null>(null);
+  const dragItemRef = useRef<{ groupId: string; index: number } | null>(null);
 
   const handleDragStart = (e: React.DragEvent, groupId: string, index: number) => {
     setDraggedId((e.target as HTMLElement).closest('[data-skill-id]')?.getAttribute('data-skill-id'));
@@ -72,19 +95,14 @@ export function SkillsSection({ data, onChange }: Props) {
   const handleDrop = (e: React.DragEvent, targetGroupId: string, targetIndex: number) => {
     e.preventDefault();
     if (!dragItemRef.current) return;
-
     const { groupId: srcGroupId, index: srcIndex } = dragItemRef.current;
     const srcGroup = groups.find(g => g.id === srcGroupId);
     const tgtGroup = groups.find(g => g.id === targetGroupId);
     if (!srcGroup || !tgtGroup) return;
-
     const [movedItem] = srcGroup.skills.splice(srcIndex, 1);
     tgtGroup.skills.splice(targetIndex, 0, movedItem);
-
-    // Rebuild data from groups preserving order
     const newData: Skill[] = groups.flatMap(g => g.skills);
     onChange(newData);
-
     setDraggedId(null);
     setDragOverId(null);
     dragItemRef.current = null;
@@ -120,14 +138,38 @@ export function SkillsSection({ data, onChange }: Props) {
         <div className="space-y-6">
           {groups.map((group) => {
             const isUncategorized = group.cat === uncategorizedLabel;
+            const isEditing = editingGroupId === group.id;
             return (
               <div key={group.id}>
                 {/* Category header */}
                 <div className="flex items-center gap-2 mb-2">
-                  <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                    {isUncategorized ? tEditor.skills : group.cat}
-                  </h4>
-                  <span className="text-slate-400 text-xs">({group.skills.length})</span>
+                  {isEditing ? (
+                    <input
+                      autoFocus
+                      value={editingCategoryName}
+                      onChange={(e) => setEditingCategoryName(e.target.value)}
+                      onBlur={() => renameCategory(group.id, editingCategoryName.trim() || uncategorizedLabel)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') renameCategory(group.id, editingCategoryName.trim() || uncategorizedLabel);
+                        if (e.key === 'Escape') cancelEditingCategory();
+                      }}
+                      className="px-2 py-0.5 text-xs font-semibold text-slate-500 uppercase tracking-wide border border-indigo-400 rounded focus:ring-1 focus:ring-indigo-500 outline-none"
+                    />
+                  ) : (
+                    <>
+                      <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                        {isUncategorized ? tEditor.skills : group.cat}
+                      </h4>
+                      <span className="text-slate-400 text-xs">({group.skills.length})</span>
+                      <button
+                        onClick={() => startEditingCategory(group)}
+                        className="p-0.5 text-slate-400 hover:text-indigo-500 transition-colors"
+                        title="Edit category"
+                      >
+                        <Pencil className="w-3 h-3" />
+                      </button>
+                    </>
+                  )}
                 </div>
 
                 {/* Skills in this group */}
@@ -146,13 +188,6 @@ export function SkillsSection({ data, onChange }: Props) {
                       } ${dragOverId === item.id ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200'}`}
                     >
                       <GripVertical className="w-4 h-4 text-slate-300 cursor-grab" />
-                      <input
-                        type="text"
-                        value={item.category || ''}
-                        onChange={(e) => updateItem(item.id, 'category', e.target.value)}
-                        className="w-40 px-2 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
-                        placeholder={t.category}
-                      />
                       <input
                         type="text"
                         value={item.name}
