@@ -53,6 +53,8 @@
     "gpa": "Notendurchschnitt",
     "description": "Beschreibung",
     "company": "Unternehmen",
+    "companyWebsite": "Unternehmenswebsite",
+    "companyDescription": "Unternehmensbeschreibung",
     "position": "Position",
     "projectName": "Projektname",
     "role": "Rolle",

@@ -19,6 +19,8 @@ export function ExperienceSection({ data, onChange }: Props) {
     const newItem: Experience = {
       id: `exp_${Date.now()}`,
       company: "",
+      companyWebsite: "",
+      companyDescription: "",
       position: "",
       startDate: "",
       endDate: "",
@@ -154,6 +156,20 @@ export function ExperienceSection({ data, onChange }: Props) {
                   </div>
                   <div>
                     <label className="block text-sm text-slate-600 mb-1">
+                      {t.companyWebsite}
+                    </label>
+                    <input
+                      type="text"
+                      value={item.companyWebsite || ""}
+                      onChange={(e) =>
+                        updateItem(item.id, "companyWebsite", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                      placeholder="https://example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-slate-600 mb-1">
                       {t.position}
                     </label>
                     <input
@@ -247,6 +263,20 @@ export function ExperienceSection({ data, onChange }: Props) {
                       }
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                       placeholder="Full-time"
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <label className="block text-sm text-slate-600 mb-1">
+                      {t.companyDescription}
+                    </label>
+                    <input
+                      type="text"
+                      value={item.companyDescription || ""}
+                      onChange={(e) =>
+                        updateItem(item.id, "companyDescription", e.target.value)
+                      }
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                      placeholder={t.companyDescription}
                     />
                   </div>
                   <div className="col-span-2">

@@ -53,6 +53,8 @@
     "gpa": "GPA",
     "description": "Description",
     "company": "Company",
+    "companyWebsite": "Company Website",
+    "companyDescription": "Company Description",
     "position": "Position",
     "projectName": "Project Name",
     "role": "Role",

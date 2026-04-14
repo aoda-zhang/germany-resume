@@ -96,6 +96,8 @@ export interface ExperienceEntryProps {
     id: string;
     position: string;
     company: string;
+    companyWebsite?: string;
+    companyDescription?: string;
     address?: string;
     country?: string;
     workMode?: string;
@@ -112,6 +114,7 @@ export interface ExperienceEntryProps {
     date?: React.CSSProperties;
     position?: React.CSSProperties;
     company?: React.CSSProperties;
+    companyDescription?: React.CSSProperties;
     techStack?: React.CSSProperties;
     description?: React.CSSProperties;
   };
@@ -143,6 +146,16 @@ export function ExperienceEntry({
           onChange={(v) => onUpdate(exp.id, { company: v })}
           placeholder={t.company || "Company"}
         />
+        {exp.companyWebsite && (
+          <span className="text-slate-500">
+            {" – "}
+            <EditableText
+              value={exp.companyWebsite}
+              onChange={(v) => onUpdate(exp.id, { companyWebsite: v })}
+              placeholder="https://example.com"
+            />
+          </span>
+        )}
         {exp.country && (
           <span>
             <EditableText
@@ -163,6 +176,16 @@ export function ExperienceEntry({
           </span>
         )}
       </div>
+
+      {exp.companyDescription && (
+        <p style={styles.companyDescription} className="mt-1 text-slate-500 italic">
+          <EditableText
+            value={exp.companyDescription}
+            onChange={(v) => onUpdate(exp.id, { companyDescription: v })}
+            placeholder={t.companyDescription || "Company Description"}
+          />
+        </p>
+      )}
 
       {exp.techStack && (
         <div style={styles.techStack}>

@@ -8,6 +8,8 @@ interface Experience {
   id: string;
   position: string;
   company: string;
+  companyWebsite?: string;
+  companyDescription?: string;
   address?: string;
   country?: string;
   workMode?: string;

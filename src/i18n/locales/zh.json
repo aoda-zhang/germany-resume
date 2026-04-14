@@ -53,6 +53,8 @@
     "gpa": "GPA",
     "description": "描述",
     "company": "公司",
+    "companyWebsite": "公司网站",
+    "companyDescription": "公司简介",
     "position": "职位",
     "projectName": "项目名称",
     "role": "角色",
