@@ -120,7 +120,7 @@ export const translations = {
       linkedin: 'LinkedIn',
       avatar: 'Avatar URL',
       nationality: 'Nationality',
-      birthDate: 'Birth Date',
+      birthDate: 'Date of birth',
       workPermit: 'Work Permit',
       blueCard: 'Blue Card',
       school: 'School',
