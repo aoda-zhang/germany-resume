@@ -1,12 +1,4 @@
-/**
- * Shared section renderers.
- * Every component accepts a `style` prop for template-specific typography/spacing.
- */
 import { EditableText, EditableLabel } from "../EditableComponents";
-
-// ---------------------------------------------------------------------------
-// Utility: parses "YYYY-MM - YYYY-MM" or "YYYY-MM - Present" strings
-// ---------------------------------------------------------------------------
 export function parseDateRange(
   value: string,
   present: string,
@@ -25,10 +17,6 @@ export function parseDateRange(
     current: s2.toLowerCase().includes(present.toLowerCase()),
   });
 }
-
-// ---------------------------------------------------------------------------
-// Photo
-// ---------------------------------------------------------------------------
 export interface PhotoProps {
   src?: string;
   size?: number;
@@ -147,13 +135,6 @@ export function ExperienceEntry({
             className="font-bold text-sky-700"
           />
         </h3>
-        {/* <span style={styles.date} className="text-slate-500 shrink-0">
-          <EditableText
-            value={`${exp.startDate}${exp.startDate ? " - " : ""}${exp.current ? present : exp.endDate}`}
-            onChange={(v) => parseDateRange(v, _present, (d) => onUpdate(exp.id, d))}
-            placeholder={t.startDate || "Start - End"}
-          />
-        </span> */}
       </div>
 
       <div style={styles.company} className="text-slate-700">
@@ -248,9 +229,10 @@ export function EducationEntry({
   styles,
 }: EducationEntryProps) {
   return (
-    <div className="mb-2">
-      <div className="flex items-baseline gap-4">
-        <span style={styles.date} className="text-slate-900 shrink-0 mr-17">
+    <div className="mb-2 flex gap-4">
+      {/* LEFT */}
+      <div className="flex flex-col shrink-0">
+        <span style={styles.date} className="text-slate-900">
           <EditableText
             value={`${edu.startDate}${edu.startDate ? " - " : ""}${edu.current ? _present : edu.endDate}`}
             onChange={(v) =>
@@ -259,20 +241,9 @@ export function EducationEntry({
             placeholder={t.startDate || "Start - End"}
           />
         </span>
-        <span
-          style={styles.field}
-        >
-          <EditableText
-            value={edu.field || ""}
-            onChange={(v) => onUpdate(edu.id, { field: v })}
-            placeholder={t.major || "Field of Study"}
-            className="font-bold text-slate-900"
-          />
-        </span>
-      </div>
-      <div className="flex items-baseline gap-4">
+
         {edu.address && (
-          <span style={styles.address} className="text-slate-900 shrink-0 mr-15">
+          <span style={styles.address} className="text-slate-900 mt-1">
             <EditableText
               value={edu.address}
               onChange={(v) => onUpdate(edu.id, { address: v })}
@@ -280,16 +251,14 @@ export function EducationEntry({
             />
           </span>
         )}
-        <h3
-          style={styles.school}
-          className="text-slate-900"
-        >
-          <EditableText
-            value={edu.school || ""}
-            onChange={(v) => onUpdate(edu.id, { school: v })}
-            placeholder={t.school || "School"}
-          />
-        </h3>
+      </div>
+
+      {/* RIGHT */}
+      <div style={styles.school} className="text-slate-900 flex-1">
+        <div>
+          <span>{edu.field},</span>
+          <span>{edu.school}</span>
+        </div>
       </div>
     </div>
   );
@@ -396,10 +365,9 @@ export function LanguageEntry({
   onUpdate,
   nameStyle,
   levelStyle,
-  separator = " - ",
 }: LanguageEntryProps) {
   return (
-    <div className="flex items-baseline gap-1">
+    <span className="inline-flex items-baseline after:content-[','] after:ml-1 last:after:content-['']">
       <EditableText
         value={lang.name}
         onChange={(v) => onUpdate(lang.id, { name: v })}
@@ -407,14 +375,15 @@ export function LanguageEntry({
         className="font-medium text-slate-900"
         style={nameStyle}
       />
-      <span className="text-slate-400">{separator}</span>
+      <span>&nbsp;(</span>
       <EditableText
         value={lang.level}
         onChange={(v) => onUpdate(lang.id, { level: v })}
         placeholder="Level"
-        className="text-slate-500"
+        className="text-slate-900"
         style={levelStyle}
       />
-    </div>
+      <span>)</span>
+    </span>
   );
 }
