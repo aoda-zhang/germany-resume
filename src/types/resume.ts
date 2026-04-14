@@ -43,6 +43,7 @@ export interface Skill {
   id: string;
   name: string;
   level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  category?: string; // e.g. "Frontend", "Backend"
 }
 
 export interface Project {

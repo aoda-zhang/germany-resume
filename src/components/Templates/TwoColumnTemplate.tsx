@@ -201,6 +201,14 @@ export function TwoColumnTemplate() {
       // ----------------------------------------------------------------- //
       case "skills":
         if (skills.length === 0) return null;
+
+        const grouped: Record<string, typeof skills> = {};
+        skills.forEach(sk => {
+          const cat = sk.category?.trim() || '__none__';
+          if (!grouped[cat]) grouped[cat] = [];
+          grouped[cat].push(sk);
+        });
+
         return (
           <section className="mb-4">
             <SectionTitle
@@ -209,15 +217,18 @@ export function TwoColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <div className="space-y-0.5 text-slate-900" style={s.body}>
-              {skills.map((skill) => (
-                <SkillEntry
-                  key={skill.id}
-                  skill={skill}
-                  onUpdate={updateSkill}
-                />
-              ))}
-            </div>
+            {Object.entries(grouped).map(([cat, catSkills]) => (
+              <div key={cat} className="mb-2 last:mb-0">
+                {cat !== '__none__' && (
+                  <div className="text-slate-400 text-xs mb-0.5 uppercase tracking-wide">{cat}</div>
+                )}
+                <div className="space-y-0.5 text-slate-900" style={s.body}>
+                  {catSkills.map((skill) => (
+                    <SkillEntry key={skill.id} skill={skill} onUpdate={updateSkill} />
+                  ))}
+                </div>
+              </div>
+            ))}
           </section>
         );
 

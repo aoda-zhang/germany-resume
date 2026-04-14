@@ -218,6 +218,15 @@ export function SingleColumnTemplate() {
       // ----------------------------------------------------------------- //
       case "skills":
         if (skills.length === 0) return null;
+
+        // Group by category
+        const grouped: Record<string, typeof skills> = {};
+        skills.forEach(sk => {
+          const cat = sk.category?.trim() || '__none__';
+          if (!grouped[cat]) grouped[cat] = [];
+          grouped[cat].push(sk);
+        });
+
         return (
           <section className="mb-5">
             <SectionTitle
@@ -226,14 +235,20 @@ export function SingleColumnTemplate() {
               className={s.label}
               style={s.sectionTitle}
             />
-            <div
-              className="flex flex-wrap gap-x-4 gap-y-1 text-slate-900"
-              style={s.body}
-            >
-              {skills.map((skill) => (
-                <SkillEntry key={skill.id} skill={skill} onUpdate={updateSkill} />
-              ))}
-            </div>
+            {Object.entries(grouped).map(([cat, catSkills]) => (
+              <div key={cat} className="mb-2 last:mb-0">
+                {cat !== '__none__' && (
+                  <div className="text-slate-500 text-xs mb-1 uppercase tracking-wide" style={{ fontSize: '0.7rem' }}>
+                    {cat}
+                  </div>
+                )}
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-900" style={s.body}>
+                  {catSkills.map((skill) => (
+                    <SkillEntry key={skill.id} skill={skill} onUpdate={updateSkill} />
+                  ))}
+                </div>
+              </div>
+            ))}
           </section>
         );
 

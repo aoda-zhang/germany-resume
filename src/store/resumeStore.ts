@@ -85,10 +85,10 @@ const zhSample: ResumeData = {
     },
   ],
   skills: [
-    { id: '1', name: 'React', level: 'expert' },
-    { id: '2', name: 'TypeScript', level: 'expert' },
-    { id: '3', name: 'Node.js', level: 'advanced' },
-    { id: '4', name: 'Python', level: 'intermediate' },
+    { id: '1', name: 'React', level: 'expert', category: '前端' },
+    { id: '2', name: 'TypeScript', level: 'expert', category: '前端' },
+    { id: '3', name: 'Node.js', level: 'advanced', category: '后端' },
+    { id: '4', name: 'Python', level: 'intermediate', category: '后端' },
   ],
   projects: [
     {
@@ -147,10 +147,10 @@ const enSample: ResumeData = {
     },
   ],
   skills: [
-    { id: '1', name: 'React', level: 'expert' },
-    { id: '2', name: 'TypeScript', level: 'expert' },
-    { id: '3', name: 'Node.js', level: 'advanced' },
-    { id: '4', name: 'Python', level: 'intermediate' },
+    { id: '1', name: 'React', level: 'expert', category: '前端' },
+    { id: '2', name: 'TypeScript', level: 'expert', category: '前端' },
+    { id: '3', name: 'Node.js', level: 'advanced', category: '后端' },
+    { id: '4', name: 'Python', level: 'intermediate', category: '后端' },
   ],
   projects: [
     {
