@@ -1,9 +1,9 @@
 /**
  * Single-column layout: skills section with optional category grouping.
- * - Skills WITH a category → displayed as a group with category header
- * - Skills WITHOUT a category → displayed individually (flat list, same as before)
+ * - Skills WITH a category → category header (bold) + comma-separated skill names
+ * - Skills WITHOUT a category → flat comma-separated list
  */
-import { SkillEntry, SectionTitle } from "../shared/SectionRenderers";
+import { SectionTitle } from "../shared/SectionRenderers";
 import { singleColumnStyles as s } from "../shared/templateStyles";
 import type { Skill } from "../../../types/resume";
 
@@ -16,7 +16,6 @@ interface SkillsSectionProps {
 export function SkillsSection({ skills, tEditor, onUpdate }: SkillsSectionProps) {
   if (skills.length === 0) return null;
 
-  // Separate: grouped (has category) vs flat (no category)
   const ungrouped = skills.filter(sk => !sk.category?.trim());
   const groupedEntries: Array<{ cat: string; skills: Skill[] }> = [];
 
@@ -41,26 +40,25 @@ export function SkillsSection({ skills, tEditor, onUpdate }: SkillsSectionProps)
         style={s.sectionTitle}
       />
 
-      {/* Skills WITH a category → group header + skills */}
-      {groupedEntries.map(({ cat, skills: catSkills }) => (
-        <div key={cat} className="mb-2 last:mb-0">
-          <div className="text-slate-500 text-xs mb-1 uppercase tracking-wide" style={{ fontSize: '0.7rem' }}>
-            {cat}
+      {/* Grouped skills */}
+      {groupedEntries.map(({ cat, skills: catSkills }) => {
+        const names = catSkills.map(sk => sk.name).filter(Boolean).join(', ');
+        return (
+          <div key={cat} className="mb-2 last:mb-0">
+            <div className="font-bold text-slate-700 mb-0.5" style={s.body}>
+              {cat}
+            </div>
+            <div className="text-slate-800" style={s.body}>
+              {names}
+            </div>
           </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-900" style={s.body}>
-            {catSkills.map(skill => (
-              <SkillEntry key={skill.id} skill={skill} onUpdate={onUpdate} />
-            ))}
-          </div>
-        </div>
-      ))}
+        );
+      })}
 
-      {/* Skills WITHOUT a category → flat list, no group header */}
+      {/* Ungrouped skills */}
       {ungrouped.length > 0 && (
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-900" style={s.body}>
-          {ungrouped.map(skill => (
-            <SkillEntry key={skill.id} skill={skill} onUpdate={onUpdate} />
-          ))}
+        <div className="text-slate-800" style={s.body}>
+          {ungrouped.map(sk => sk.name).filter(Boolean).join(', ')}
         </div>
       )}
     </section>

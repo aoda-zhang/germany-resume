@@ -1,6 +1,6 @@
 import type { Skill } from '../../types/resume';
-import { Plus, Trash2, GripVertical, Pencil } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { Plus, Trash2, Pencil } from 'lucide-react';
+import { useState } from 'react';
 import { useResumeStore } from '../../store/resumeStore';
 import { translations } from '../../i18n';
 
@@ -9,212 +9,183 @@ interface Props {
   onChange: (data: Skill[]) => void;
 }
 
+interface SkillGroup {
+  id: string;
+  cat: string;
+  skillNames: string[]; // comma-separated text, live-editable
+}
+
 export function SkillsSection({ data, onChange }: Props) {
   const language = useResumeStore((s) => s.language);
   const t = translations[language].form;
   const tEditor = translations[language].editor;
 
-  const [lastCategory, setLastCategory] = useState<string>('');
-  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
-  const [editingCategoryName, setEditingCategoryName] = useState<string>('');
+  const uncategorizedLabel = t.uncategorized || 'Other';
 
-  // Build groups with stable IDs (first skill's id = group id)
-  const groups: { id: string; cat: string; skills: Skill[] }[] = [];
-  const catMap: Record<string, number> = {};
-  data.forEach(skill => {
-    const cat = skill.category?.trim() || t.uncategorized || 'Other';
-    if (catMap[cat] === undefined) {
-      catMap[cat] = groups.length;
-      groups.push({ id: skill.id, cat, skills: [skill] });
-    } else {
-      groups[catMap[cat]].skills.push(skill);
-    }
-  });
+  // Build groups from data, preserving first skill id as stable group id
+  const buildGroups = (): SkillGroup[] => {
+    const map: Record<string, SkillGroup> = {};
+    data.forEach(sk => {
+      const cat = sk.category?.trim() || uncategorizedLabel;
+      if (!map[cat]) {
+        map[cat] = { id: sk.id, cat, skillNames: [] };
+      }
+      if (sk.name.trim()) map[cat].skillNames.push(sk.name.trim());
+    });
+    return Object.values(map);
+  };
 
-  const addItem = (category?: string) => {
-    const targetCat = category || lastCategory || t.uncategorized || 'Other';
-    const newItem: Skill = {
+  const groups = buildGroups();
+
+  // When user edits the comma-separated skill text field
+  const updateSkillNames = (groupId: string, text: string) => {
+    const group = groups.find(g => g.id === groupId);
+    if (!group) return;
+    const names = text.split(',').map(n => n.trim()).filter(Boolean);
+    // Replace: keep skills in this group that are NOT being replaced, add new ones
+    const newSkills: Skill[] = [];
+    const oldSkills = data.filter(sk =>
+      (sk.category?.trim() || uncategorizedLabel) === group.cat &&
+      sk.id !== groupId
+    );
+    // Add old skills that match existing names (preserves id/name if user re-adds)
+    names.forEach((name, i) => {
+      const existing = data.find(sk =>
+        (sk.category?.trim() || uncategorizedLabel) === group.cat &&
+        sk.name.trim() === name
+      );
+      if (existing) {
+        newSkills.push(existing);
+      } else {
+        newSkills.push({
+          id: `skill_${Date.now()}_${i}`,
+          name,
+          level: 'intermediate',
+          category: group.cat === uncategorizedLabel ? '' : group.cat,
+        });
+      }
+    });
+    onChange([...oldSkills, ...newSkills]);
+  };
+
+  // When user renames the category
+  const updateCategoryName = (groupId: string, oldCat: string, newCat: string) => {
+    const safeNewCat = newCat.trim() || uncategorizedLabel;
+    if (oldCat === safeNewCat) return;
+    onChange(data.map(sk => ({
+      ...sk,
+      category: (sk.category?.trim() || uncategorizedLabel) === oldCat
+        ? safeNewCat
+        : sk.category,
+    })));
+  };
+
+  // Delete an entire group
+  const removeGroup = (groupId: string) => {
+    const group = groups.find(g => g.id === groupId);
+    if (!group) return;
+    onChange(data.filter(sk =>
+      (sk.category?.trim() || uncategorizedLabel) !== group.cat
+    ));
+  };
+
+  // Add a new group
+  const addGroup = () => {
+    const newCat = uncategorizedLabel;
+    const newSkill: Skill = {
       id: `skill_${Date.now()}`,
       name: '',
       level: 'intermediate',
-      category: targetCat,
+      category: newCat,
     };
-    onChange([...data, newItem]);
-    setLastCategory(targetCat);
+    onChange([...data, newSkill]);
   };
 
-  const updateItem = (id: string, field: keyof Skill, value: string) => {
-    onChange(data.map(item =>
-      item.id === id ? { ...item, [field]: value } : item
-    ));
+  const [editingCatId, setEditingCatId] = useState<string | null>(null);
+  const [editingCatName, setEditingCatName] = useState<string>('');
+
+  const startEditCat = (group: SkillGroup) => {
+    setEditingCatId(group.id);
+    setEditingCatName(group.cat);
   };
 
-  const removeItem = (id: string) => {
-    onChange(data.filter(item => item.id !== id));
+  const saveEditCat = (group: SkillGroup) => {
+    updateCategoryName(group.id, group.cat, editingCatName);
+    setEditingCatId(null);
   };
-
-  // Rename all skills in a group to a new category
-  const renameCategory = (groupId: string, newCat: string) => {
-    const group = groups.find(g => g.id === groupId);
-    if (!group) return;
-    onChange(data.map(item =>
-      group.skills.some(s => s.id === item.id)
-        ? { ...item, category: newCat }
-        : item
-    ));
-    setEditingGroupId(null);
-    setEditingCategoryName('');
-  };
-
-  const startEditingCategory = (group: { id: string; cat: string }) => {
-    setEditingGroupId(group.id);
-    setEditingCategoryName(group.cat);
-  };
-
-  const cancelEditingCategory = () => {
-    setEditingGroupId(null);
-    setEditingCategoryName('');
-  };
-
-  // Drag and drop
-  const [draggedId, setDraggedId] = useState<string | null>(null);
-  const [dragOverId, setDragOverId] = useState<string | null>(null);
-  const dragItemRef = useRef<{ groupId: string; index: number } | null>(null);
-
-  const handleDragStart = (e: React.DragEvent, groupId: string, index: number) => {
-    setDraggedId((e.target as HTMLElement).closest('[data-skill-id]')?.getAttribute('data-skill-id'));
-    dragItemRef.current = { groupId, index };
-    e.dataTransfer.effectAllowed = 'move';
-  };
-
-  const handleDragOver = (e: React.DragEvent, skillId: string) => {
-    e.preventDefault();
-    setDragOverId(skillId);
-  };
-
-  const handleDrop = (e: React.DragEvent, targetGroupId: string, targetIndex: number) => {
-    e.preventDefault();
-    if (!dragItemRef.current) return;
-    const { groupId: srcGroupId, index: srcIndex } = dragItemRef.current;
-    const srcGroup = groups.find(g => g.id === srcGroupId);
-    const tgtGroup = groups.find(g => g.id === targetGroupId);
-    if (!srcGroup || !tgtGroup) return;
-    const [movedItem] = srcGroup.skills.splice(srcIndex, 1);
-    tgtGroup.skills.splice(targetIndex, 0, movedItem);
-    const newData: Skill[] = groups.flatMap(g => g.skills);
-    onChange(newData);
-    setDraggedId(null);
-    setDragOverId(null);
-    dragItemRef.current = null;
-  };
-
-  const handleDragEnd = () => {
-    setDraggedId(null);
-    setDragOverId(null);
-    dragItemRef.current = null;
-  };
-
-  const uncategorizedLabel = t.uncategorized || 'Other';
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-slate-700">{tEditor.skills}</h3>
         <button
-          onClick={() => addItem()}
+          onClick={addGroup}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
         >
           <Plus className="w-4 h-4" />
-          {t.add}
+          {t.addGroup || 'Add Group'}
         </button>
       </div>
 
-      {data.length === 0 ? (
+      {groups.length === 0 ? (
         <div className="text-center py-6 text-slate-400">
           <p>{tEditor.add}</p>
-          <button onClick={() => addItem()} className="mt-2 text-indigo-600 hover:text-indigo-700">+ {t.add}</button>
+          <button onClick={addGroup} className="mt-2 text-indigo-600 hover:text-indigo-700">
+            + {t.addGroup || 'Add Group'}
+          </button>
         </div>
       ) : (
-        <div className="space-y-6">
-          {groups.map((group) => {
-            const isUncategorized = group.cat === uncategorizedLabel;
-            const isEditing = editingGroupId === group.id;
-            return (
-              <div key={group.id}>
-                {/* Category header */}
-                <div className="flex items-center gap-2 mb-2">
-                  {isEditing ? (
-                    <input
-                      autoFocus
-                      value={editingCategoryName}
-                      onChange={(e) => setEditingCategoryName(e.target.value)}
-                      onBlur={() => renameCategory(group.id, editingCategoryName.trim() || uncategorizedLabel)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') renameCategory(group.id, editingCategoryName.trim() || uncategorizedLabel);
-                        if (e.key === 'Escape') cancelEditingCategory();
-                      }}
-                      className="px-2 py-0.5 text-xs font-semibold text-slate-500 uppercase tracking-wide border border-indigo-400 rounded focus:ring-1 focus:ring-indigo-500 outline-none"
-                    />
-                  ) : (
-                    <>
-                      <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                        {isUncategorized ? tEditor.skills : group.cat}
-                      </h4>
-                      <span className="text-slate-400 text-xs">({group.skills.length})</span>
-                      <button
-                        onClick={() => startEditingCategory(group)}
-                        className="p-0.5 text-slate-400 hover:text-indigo-500 transition-colors"
-                        title="Edit category"
-                      >
-                        <Pencil className="w-3 h-3" />
-                      </button>
-                    </>
-                  )}
-                </div>
-
-                {/* Skills in this group */}
-                <div className="space-y-2">
-                  {group.skills.map((item, idx) => (
-                    <div
-                      key={item.id}
-                      data-skill-id={item.id}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, group.id, idx)}
-                      onDragOver={(e) => handleDragOver(e, item.id)}
-                      onDrop={(e) => handleDrop(e, group.id, idx)}
-                      onDragEnd={handleDragEnd}
-                      className={`flex items-center gap-2 p-2 bg-white border rounded-lg ${
-                        draggedId === item.id ? 'opacity-50' : ''
-                      } ${dragOverId === item.id ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200'}`}
+        <div className="space-y-4">
+          {groups.map((group) => (
+            <div key={group.id} className="p-3 bg-white border border-slate-200 rounded-lg space-y-2">
+              {/* Category header row */}
+              <div className="flex items-center gap-2">
+                {editingCatId === group.id ? (
+                  <input
+                    autoFocus
+                    value={editingCatName}
+                    onChange={(e) => setEditingCatName(e.target.value)}
+                    onBlur={() => saveEditCat(group)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') saveEditCat(group);
+                      if (e.key === 'Escape') setEditingCatId(null);
+                    }}
+                    className="flex-1 px-2 py-1 text-sm font-bold border border-indigo-400 rounded focus:ring-1 focus:ring-indigo-500 outline-none"
+                  />
+                ) : (
+                  <>
+                    <span className="font-bold text-sm text-slate-700 flex-1">
+                      {group.cat}
+                    </span>
+                    <button
+                      onClick={() => startEditCat(group)}
+                      className="p-1 text-slate-400 hover:text-indigo-500"
+                      title="Rename group"
                     >
-                      <GripVertical className="w-4 h-4 text-slate-300 cursor-grab" />
-                      <input
-                        type="text"
-                        value={item.name}
-                        onChange={(e) => updateItem(item.id, 'name', e.target.value)}
-                        className="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm"
-                        placeholder={t.skillName}
-                      />
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="p-1.5 text-red-400 hover:text-red-600"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Add to this group */}
-                <button
-                  onClick={() => addItem(group.cat)}
-                  className="mt-2 w-full py-1 text-xs text-indigo-500 hover:text-indigo-700 border border-dashed border-indigo-200 rounded"
-                >
-                  + {t.add} {isUncategorized ? tEditor.skills : group.cat}
-                </button>
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => removeGroup(group.id)}
+                      className="p-1 text-slate-400 hover:text-red-500"
+                      title="Delete group"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </>
+                )}
               </div>
-            );
-          })}
+
+              {/* Skills comma-separated input */}
+              <textarea
+                value={group.skillNames.join(', ')}
+                onChange={(e) => updateSkillNames(group.id, e.target.value)}
+                placeholder={tEditor.skillsPlaceholder || 'e.g. JavaScript, TypeScript, React'}
+                rows={2}
+                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 resize-none text-slate-700"
+              />
+              <p className="text-xs text-slate-400">Separate skills with commas</p>
+            </div>
+          ))}
         </div>
       )}
     </div>

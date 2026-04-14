@@ -1,7 +1,8 @@
 /**
  * Two-column layout sidebar: skills list with optional category grouping.
+ * Category name bold + comma-separated skill names.
  */
-import { SectionTitle, SkillEntry } from "../shared/SectionRenderers";
+import { SectionTitle } from "../shared/SectionRenderers";
 import { twoColumnStyles as s } from "../shared/templateStyles";
 import type { Skill } from "../../../types/resume";
 
@@ -11,7 +12,7 @@ interface SkillsSectionProps {
   onUpdate: (id: string, data: Partial<Skill>) => void;
 }
 
-export function SkillsSection({ skills, tEditor, onUpdate }: SkillsSectionProps) {
+export function SkillsSection({ skills, tEditor, onUpdate: _onUpdate }: SkillsSectionProps) {
   if (skills.length === 0) return null;
 
   const ungrouped = skills.filter(sk => !sk.category?.trim());
@@ -38,22 +39,19 @@ export function SkillsSection({ skills, tEditor, onUpdate }: SkillsSectionProps)
         style={s.sectionTitle}
       />
 
-      {groupedEntries.map(({ cat, skills: catSkills }) => (
-        <div key={cat} className="mb-2 last:mb-0">
-          <div className="text-slate-400 text-xs mb-0.5 uppercase tracking-wide">{cat}</div>
-          <div className="space-y-0.5 text-slate-900" style={s.body}>
-            {catSkills.map(skill => (
-              <SkillEntry key={skill.id} skill={skill} onUpdate={onUpdate} />
-            ))}
+      {groupedEntries.map(({ cat, skills: catSkills }) => {
+        const names = catSkills.map(sk => sk.name).filter(Boolean).join(', ');
+        return (
+          <div key={cat} className="mb-2 last:mb-0">
+            <div className="font-bold text-slate-600 mb-0.5 text-xs">{cat}</div>
+            <div className="text-slate-800 text-xs" style={s.body}>{names}</div>
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       {ungrouped.length > 0 && (
-        <div className="space-y-0.5 text-slate-900" style={s.body}>
-          {ungrouped.map(skill => (
-            <SkillEntry key={skill.id} skill={skill} onUpdate={onUpdate} />
-          ))}
+        <div className="text-slate-800 text-xs" style={s.body}>
+          {ungrouped.map(sk => sk.name).filter(Boolean).join(', ')}
         </div>
       )}
     </div>
