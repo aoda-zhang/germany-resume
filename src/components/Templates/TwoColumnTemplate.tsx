@@ -21,6 +21,7 @@ export function TwoColumnTemplate() {
     tEditor,
     present,
     personalInfo,
+    summary,
     experience,
     education,
     skills,
@@ -30,6 +31,7 @@ export function TwoColumnTemplate() {
     contactFields,
     fieldLabels,
     updatePersonalInfo,
+    updateResumeData,
     updateExperience,
     updateEducation,
     updateSkill,
@@ -93,8 +95,8 @@ export function TwoColumnTemplate() {
             />
             <p className="leading-relaxed text-slate-900" style={s.body}>
               <EditableText
-                value={personalInfo.summary || ""}
-                onChange={(v) => updatePersonalInfo({ summary: v })}
+                value={summary || ""}
+                onChange={(v) => updateResumeData({ summary: v })}
                 placeholder={t.summaryPlaceholder}
                 multiline
                 className="w-full"

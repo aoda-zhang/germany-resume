@@ -16,13 +16,13 @@ interface SectionOrder {
 
 /** 个人信息的子字段排序 */
 export type PersonalInfoFieldType =
-  | 'fullName' | 'title' | 'summary'
+  | 'fullName' | 'title'
   | 'email' | 'phone' | 'address'
   | 'nationality' | 'birthDate' | 'workPermit' | 'blueCard'
   | 'linkedin' | 'github' | 'website';
 
 export const defaultPersonalInfoFieldOrder: PersonalInfoFieldType[] = [
-  'fullName', 'title', 'summary',
+  'fullName', 'title',
   'email', 'phone', 'address',
   'nationality', 'birthDate', 'workPermit', 'blueCard',
   'linkedin', 'github', 'website',
@@ -31,7 +31,6 @@ export const defaultPersonalInfoFieldOrder: PersonalInfoFieldType[] = [
 export const personalInfoFieldMeta: Record<PersonalInfoFieldType, { rows: number }> = {
   fullName: { rows: 1 },
   title: { rows: 1 },
-  summary: { rows: 4 },
   email: { rows: 1 },
   phone: { rows: 1 },
   address: { rows: 1 },
@@ -52,7 +51,6 @@ const zhSample: ResumeData = {
     address: 'BeijingCity',
     linkedin: '',
     website: '',
-    summary: '5years of full-stack development experience，Specializing inReactandNode.jsTech Stack。Passionate about open source，Actively participates in tech communities。',
   },
   summary: '5年全栈开发经验，擅长React与Node.js技术栈，热衷开源与技术社区。',
   experience: [
@@ -115,7 +113,6 @@ const enSample: ResumeData = {
     address: 'San Francisco, CA',
     linkedin: 'linkedin.com/in/johnsmith',
     website: 'johnsmith.dev',
-    summary: '5+ years of full-stack development experience, specializing in React and Node.js ecosystems. Passionate about open source and active in the developer community.',
   },
   summary: '5+ years of full-stack development experience, specializing in React and Node.js.',
   experience: [
@@ -181,7 +178,6 @@ const deSample: ResumeData = {
     github: 'github.com/JenPalacios',
     website: 'jenpalacios.com',
     nationality: 'Guatemalan',
-    summary: 'Frontend Developer mit 7 Jahren Erfahrung, spezialisiert auf JavaScript. Starke Befürworterin von Clean-Code-Praktiken durch strukturierte Code-Reviews und kollaborative Entwicklung. Interessiert an Online-Zahlungen und End-to-End-Testing.',
   },
   summary: 'Erfahrene Full-Stack-Entwicklerin mit Fokus auf JavaScript und Clean-Code-Praktiken.',
   experience: [
@@ -332,7 +328,7 @@ interface ResumeState {
 }
 
 const emptyResume: ResumeData = {
-  personalInfo: { fullName: '', email: '', phone: '', address: '', linkedin: '', website: '', summary: '' },
+  personalInfo: { fullName: '', email: '', phone: '', address: '', linkedin: '', website: '' },
   summary: '',
   experience: [],
   education: [],

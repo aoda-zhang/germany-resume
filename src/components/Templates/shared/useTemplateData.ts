@@ -18,6 +18,7 @@ export function useTemplateData() {
     visibleSections,
     personalInfoFields,
     updatePersonalInfo,
+  updateResumeData,
     updateExperience,
     updateEducation,
     updateSkill,
@@ -25,7 +26,7 @@ export function useTemplateData() {
     updateLanguage,
   } = useResumeEditing();
 
-  const { personalInfo, experience, education, skills, projects, languages } =
+  const { personalInfo, summary, experience, education, skills, projects, languages } =
     resumeData;
 
   /** Contact fields that have a value (excluding fullName & title which render separately) */
@@ -39,7 +40,6 @@ export function useTemplateData() {
   const fieldLabels: Record<PersonalInfoFieldType, string> = {
     fullName: t.name,
     title: t.title,
-    summary: tEditor.summary,
     email: t.email,
     phone: t.phone,
     address: t.address,
@@ -60,6 +60,7 @@ export function useTemplateData() {
     language,
     // data
     personalInfo,
+    summary,
     experience,
     education,
     skills,
@@ -71,6 +72,7 @@ export function useTemplateData() {
     fieldLabels,
     // updaters
     updatePersonalInfo,
+    updateResumeData,
     updateExperience,
     updateEducation,
     updateSkill,

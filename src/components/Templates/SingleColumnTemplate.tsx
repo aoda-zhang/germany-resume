@@ -21,6 +21,7 @@ export function SingleColumnTemplate() {
     tEditor,
     present,
     personalInfo,
+    summary,
     experience,
     education,
     skills,
@@ -30,6 +31,7 @@ export function SingleColumnTemplate() {
     contactFields,
     fieldLabels,
     updatePersonalInfo,
+    updateResumeData,
     updateExperience,
     updateEducation,
     updateSkill,
@@ -112,8 +114,8 @@ export function SingleColumnTemplate() {
             />
             <p className="leading-relaxed text-slate-900 wrap-break-word" style={s.body}>
               <EditableText
-                value={personalInfo.summary || ""}
-                onChange={(v) => updatePersonalInfo({ summary: v })}
+                value={summary || ""}
+                onChange={(v) => updateResumeData({ summary: v })}
                 placeholder={t.summaryPlaceholder}
                 multiline
                 className="w-full wrap-break-word"

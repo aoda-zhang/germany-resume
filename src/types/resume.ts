@@ -6,7 +6,6 @@ export interface PersonalInfo {
   address: string;
   linkedin?: string;
   website?: string;
-  summary?: string;
   nationality?: string;
   birthDate?: string;
   workPermit?: string;

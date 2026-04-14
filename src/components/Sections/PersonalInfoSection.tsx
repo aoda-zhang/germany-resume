@@ -113,7 +113,6 @@ export function PersonalInfoSection({ data, isEditing = true }: Props) {
   const fieldLabels: Record<PersonalInfoFieldType, string> = {
     fullName: t.name,
     title: t.title,
-    summary: tEditor.summary,
     email: t.email,
     phone: t.phone,
     address: t.address,
@@ -129,7 +128,6 @@ export function PersonalInfoSection({ data, isEditing = true }: Props) {
   const fieldTypes: Record<PersonalInfoFieldType, 'text' | 'email' | 'tel' | 'url'> = {
     fullName: 'text',
     title: 'text',
-    summary: 'text',
     email: 'email',
     phone: 'tel',
     address: 'text',
@@ -143,7 +141,7 @@ export function PersonalInfoSection({ data, isEditing = true }: Props) {
   };
 
   const fieldRows: Record<PersonalInfoFieldType, number> = {
-    fullName: 1, title: 1, summary: 4,
+    fullName: 1, title: 1,
     email: 1, phone: 1, address: 1,
     nationality: 1, birthDate: 1, workPermit: 1, blueCard: 1,
     linkedin: 1, github: 1, website: 1,
@@ -214,7 +212,7 @@ export function PersonalInfoSection({ data, isEditing = true }: Props) {
                 value={getValue(field)}
                 type={fieldTypes[field]}
                 rows={fieldRows[field]}
-                placeholder={field === 'summary' ? t.summaryPlaceholder : undefined}
+                placeholder={undefined}
                 onSave={(f, v) => handleChange(f, v)}
               />
             ))}
