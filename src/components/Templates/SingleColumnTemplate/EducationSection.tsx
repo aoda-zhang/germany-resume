@@ -39,14 +39,14 @@ export function EducationSection({
               {edu.startDate} – {edu.current ? present : edu.endDate}
             </div>
             {edu.address && (
-              <div className="text-slate-500 mt-0.5">{edu.address}</div>
+              <div className="text-slate-900 mt-0.5">{edu.address}</div>
             )}
           </div>
 
           {/* Right: field + school */}
           <div className="min-w-0">
             <div className="flex items-baseline gap-4">
-              <span className="font-bold text-slate-900" style={{ fontSize: s.body.fontSize, alignSelf: "start" }}>
+              <span className="text-slate-900" style={{ fontSize: s.body.fontSize, alignSelf: "start" }}>
                 {edu.field || t.major || "Field of Study"}
               </span>
               <span className="text-slate-500 shrink-0">
