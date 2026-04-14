@@ -117,14 +117,25 @@ export function TwoColumnTemplate() {
               style={s.sectionTitle}
             />
             {experience.map((exp) => (
-              <ExperienceEntry
+              <div
                 key={exp.id}
-                exp={exp}
-                t={t}
-                present={present}
-                onUpdate={updateExperience}
-                styles={{ description: s.body }}
-              />
+                className="grid mb-3"
+                style={{ gridTemplateColumns: "150px 1fr", alignItems: "start" }}
+              >
+                <div className="pr-4 text-slate-900 whitespace-nowrap border-r border-slate-200 h-full" style={{ fontSize: s.body.fontSize }}>
+                  <div>{exp.startDate} - {exp.endDate || (present ? t.current : "")}</div>
+                  {exp.address && <div className="text-slate-500 mt-0.5">{exp.address}</div>}
+                </div>
+                <div className="min-w-0 pl-4">
+                  <ExperienceEntry
+                    exp={exp}
+                    t={t}
+                    present={present}
+                    onUpdate={updateExperience}
+                    styles={{ description: s.body }}
+                  />
+                </div>
+              </div>
             ))}
           </section>
         );
@@ -141,14 +152,25 @@ export function TwoColumnTemplate() {
               style={s.sectionTitle}
             />
             {education.map((edu) => (
-              <EducationEntry
+              <div
                 key={edu.id}
-                edu={edu}
-                t={t}
-                present={present}
-                onUpdate={updateEducation}
-                styles={{ field: s.body }}
-              />
+                className="grid mb-2"
+                style={{ gridTemplateColumns: "150px 1fr", alignItems: "start" }}
+              >
+                <div className="pr-4 text-slate-900 whitespace-nowrap border-r border-slate-200" style={{ fontSize: s.body.fontSize }}>
+                  <span>
+                    {edu.startDate}{edu.startDate ? " - " : ""}{edu.current ? present : edu.endDate}
+                  </span>
+                  {edu.address && <div className="text-slate-500 mt-0.5">{edu.address}</div>}
+                </div>
+                <div className="text-slate-900 pl-4" style={s.body}>
+                  <div className="flex items-baseline gap-4">
+                    <span className="font-bold">{edu.field || t.major || "Field of Study"}</span>
+                    {edu.degree && <span className="text-slate-500 shrink-0">, {edu.degree}</span>}
+                  </div>
+                  <div className="mt-0.5">{edu.school || t.school || "School"}</div>
+                </div>
+              </div>
             ))}
           </section>
         );
