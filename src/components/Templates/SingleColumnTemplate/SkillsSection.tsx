@@ -24,11 +24,18 @@ export function SkillsSection({ skills, tEditor, onUpdate }: SkillsSectionProps)
     const cat = sk.category?.trim();
     if (cat && !seen.has(cat)) {
       seen.add(cat);
-      groupedEntries.push({
+groupedEntries.push({
         cat,
         skills: skills.filter(s => s.category?.trim() === cat),
       });
     }
+  });
+
+// Sort by order field so drag-and-drop group reordering is reflected
+  groupedEntries.sort((a, b) => {
+    const aOrd = a.skills[0]?.order ?? 999;
+    const bOrd = b.skills[0]?.order ?? 999;
+    return aOrd - bOrd;
   });
 
   return (

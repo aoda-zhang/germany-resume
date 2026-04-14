@@ -30,6 +30,13 @@ export function SkillsSection({ skills, tEditor, onUpdate: _onUpdate }: SkillsSe
     }
   });
 
+  // Sort by order field so drag-and-drop group reordering is reflected
+  groupedEntries.sort((a, b) => {
+    const aOrd = a.skills[0]?.order ?? 999;
+    const bOrd = b.skills[0]?.order ?? 999;
+    return aOrd - bOrd;
+  });
+
   return (
     <div className="mt-4">
       <SectionTitle
