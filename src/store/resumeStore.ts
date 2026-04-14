@@ -16,13 +16,13 @@ interface SectionOrder {
 
 /** 个人信息的子字段排序 */
 export type PersonalInfoFieldType =
-  | 'fullName' | 'title'
+  | 'fullName' | 'title' | 'summary'
   | 'email' | 'phone' | 'address'
   | 'nationality' | 'birthDate' | 'workPermit' | 'blueCard'
   | 'linkedin' | 'github' | 'website';
 
 export const defaultPersonalInfoFieldOrder: PersonalInfoFieldType[] = [
-  'fullName', 'title',
+  'fullName', 'title', 'summary',
   'email', 'phone', 'address',
   'nationality', 'birthDate', 'workPermit', 'blueCard',
   'linkedin', 'github', 'website',
@@ -31,6 +31,7 @@ export const defaultPersonalInfoFieldOrder: PersonalInfoFieldType[] = [
 export const personalInfoFieldMeta: Record<PersonalInfoFieldType, { rows: number }> = {
   fullName: { rows: 1 },
   title: { rows: 1 },
+  summary: { rows: 4 },
   email: { rows: 1 },
   phone: { rows: 1 },
   address: { rows: 1 },

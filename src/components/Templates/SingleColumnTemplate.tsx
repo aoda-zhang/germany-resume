@@ -141,7 +141,7 @@ export function SingleColumnTemplate() {
               >
                 {/* Left: time */}
                 <div className="pr-4 text-slate-900 whitespace-nowrap mr-6">
-                  {exp.startDate} - {exp.endDate || (present ? t.present : "")}
+                  {exp.startDate} - {exp.endDate || (present ? t.current : "")}
                   <div>{exp.address}</div>
                 </div>
 

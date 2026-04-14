@@ -132,7 +132,7 @@ export interface ExperienceEntryProps {
 export function ExperienceEntry({
   exp,
   t,
-  present,
+  present: _present,
   onUpdate,
   styles,
 }: ExperienceEntryProps) {
@@ -150,7 +150,7 @@ export function ExperienceEntry({
         {/* <span style={styles.date} className="text-slate-500 shrink-0">
           <EditableText
             value={`${exp.startDate}${exp.startDate ? " - " : ""}${exp.current ? present : exp.endDate}`}
-            onChange={(v) => parseDateRange(v, present, (d) => onUpdate(exp.id, d))}
+            onChange={(v) => parseDateRange(v, _present, (d) => onUpdate(exp.id, d))}
             placeholder={t.startDate || "Start - End"}
           />
         </span> */}
@@ -243,7 +243,7 @@ export interface EducationEntryProps {
 export function EducationEntry({
   edu,
   t,
-  present,
+  present: _present,
   onUpdate,
   styles,
 }: EducationEntryProps) {
@@ -252,9 +252,9 @@ export function EducationEntry({
       <div className="flex items-baseline gap-4">
         <span style={styles.date} className="text-slate-900 shrink-0 mr-17">
           <EditableText
-            value={`${edu.startDate}${edu.startDate ? " - " : ""}${edu.current ? present : edu.endDate}`}
+            value={`${edu.startDate}${edu.startDate ? " - " : ""}${edu.current ? _present : edu.endDate}`}
             onChange={(v) =>
-              parseDateRange(v, present, (d) => onUpdate(edu.id, d))
+              parseDateRange(v, _present, (d) => onUpdate(edu.id, d))
             }
             placeholder={t.startDate || "Start - End"}
           />

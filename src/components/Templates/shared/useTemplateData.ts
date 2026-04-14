@@ -39,6 +39,7 @@ export function useTemplateData() {
   const fieldLabels: Record<PersonalInfoFieldType, string> = {
     fullName: t.name,
     title: t.title,
+    summary: tEditor.summary,
     email: t.email,
     phone: t.phone,
     address: t.address,
