@@ -1,6 +1,6 @@
 import type { Skill } from '../../types/resume';
-import { Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { Plus, Trash2, GripVertical } from 'lucide-react';
+import { useState, useRef } from 'react';
 import { useResumeStore } from '../../store/resumeStore';
 import { translations } from '../../i18n';
 
@@ -14,14 +14,8 @@ export function SkillsSection({ data, onChange }: Props) {
   const t = translations[language].form;
   const tEditor = translations[language].editor;
 
-  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['__all__']));
-
-  const levelOptions = [
-    { value: 'beginner', label: t.beginner },
-    { value: 'intermediate', label: t.intermediate },
-    { value: 'advanced', label: t.advanced },
-    { value: 'expert', label: t.expert },
-  ];
+  // Track the last used category for new items
+  const [lastCategory, setLastCategory] = useState<string>('');
 
   // Group skills by category
   const groups: Record<string, Skill[]> = {};
@@ -31,28 +25,20 @@ export function SkillsSection({ data, onChange }: Props) {
     groups[cat].push(skill);
   });
 
-  const toggleGroup = (cat: string) => {
-    setExpandedGroups(prev => {
-      const next = new Set(prev);
-      if (next.has(cat)) next.delete(cat);
-      else next.add(cat);
-      return next;
-    });
-  };
-
   const addItem = (category?: string) => {
+    const targetCat = category || lastCategory || t.uncategorized || 'Other';
     const newItem: Skill = {
       id: `skill_${Date.now()}`,
       name: '',
       level: 'intermediate',
-      category: category || '',
+      category: targetCat,
     };
     onChange([...data, newItem]);
-    // Auto-expand the group this was added to
-    if (category) setExpandedGroups(prev => new Set([...prev, category]));
+    setLastCategory(targetCat);
   };
 
   const updateItem = (id: string, field: keyof Skill, value: any) => {
+    if (field === 'category') setLastCategory(value);
     onChange(data.map(item =>
       item.id === id ? { ...item, [field]: value } : item
     ));
@@ -62,157 +48,138 @@ export function SkillsSection({ data, onChange }: Props) {
     onChange(data.filter(item => item.id !== id));
   };
 
-  const moveItem = (id: string, direction: 'up' | 'down') => {
-    const idx = data.findIndex(s => s.id === id);
-    if (idx < 0) return;
-    const newIdx = direction === 'up' ? idx - 1 : idx + 1;
-    if (newIdx < 0 || newIdx >= data.length) return;
-    const newData = [...data];
-    [newData[idx], newData[newIdx]] = [newData[newIdx], newData[idx]];
-    onChange(newData);
+  // Drag and drop reordering within each group
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const dragItemRef = useRef<{ group: string; index: number } | null>(null);
+
+  const handleDragStart = (e: React.DragEvent, group: string, index: number) => {
+    setDraggedId((e.target as HTMLElement).closest('[data-skill-id]')?.getAttribute('data-skill-id'));
+    dragItemRef.current = { group, index };
+    e.dataTransfer.effectAllowed = 'move';
   };
 
-  const hasCategories = Object.keys(groups).some(cat => cat !== (t.uncategorized || 'Other'));
+  const handleDragOver = (e: React.DragEvent, skillId: string) => {
+    e.preventDefault();
+    setDragOverId(skillId);
+  };
+
+  const handleDrop = (e: React.DragEvent, targetGroup: string, targetIndex: number) => {
+    e.preventDefault();
+    if (!dragItemRef.current) return;
+
+    const { group: srcGroup, index: srcIndex } = dragItemRef.current;
+    const srcSkills = groups[srcGroup];
+    const [movedItem] = srcSkills.splice(srcIndex, 1);
+    
+    const targetSkills = groups[targetGroup];
+    targetSkills.splice(targetIndex, 0, movedItem);
+    
+    // Rebuild data from groups preserving order
+    const newData: Skill[] = [];
+    Object.entries(groups).forEach(([cat, skills]) => {
+      newData.push(...skills);
+    });
+    onChange(newData);
+    
+    setDraggedId(null);
+    setDragOverId(null);
+    dragItemRef.current = null;
+  };
+
+  const handleDragEnd = () => {
+    setDraggedId(null);
+    setDragOverId(null);
+    dragItemRef.current = null;
+  };
+
+  const hasCategories = Object.keys(groups).length > 0;
+  const uncategorizedLabel = t.uncategorized || 'Other';
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-slate-700">{tEditor.skills}</h3>
-        <div className="flex gap-2">
-          <button
-            onClick={() => addItem('')}
-            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-          >
-            <Plus className="w-4 h-4" />
-            {t.add}
-          </button>
-        </div>
+        <button
+          onClick={() => addItem()}
+          className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+        >
+          <Plus className="w-4 h-4" />
+          {t.add}
+        </button>
       </div>
 
-      {/* Grouped view */}
-      {hasCategories && Object.entries(groups).map(([cat, skills]) => {
-        const isExpanded = expandedGroups.has(cat) || expandedGroups.has('__all__');
-        const isRealGroup = cat !== (t.uncategorized || 'Other');
-
-        return (
-          <div key={cat} className="border border-slate-200 rounded-lg overflow-hidden">
-            {/* Group header */}
-            <button
-              onClick={() => toggleGroup(cat)}
-              className="w-full flex items-center gap-2 px-3 py-2 bg-slate-50 hover:bg-slate-100 text-left"
-            >
-              {isRealGroup ? (
-                <>
-                  {isExpanded
-                    ? <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                    : <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
-                  }
-                  <span className="font-medium text-slate-700 text-sm">{cat}</span>
-                  <span className="text-slate-400 text-xs">({skills.length})</span>
-                </>
-              ) : (
-                <span className="text-slate-400 text-sm">{tEditor.skills}</span>
-              )}
-            </button>
-
-            {/* Group items */}
-            {(isExpanded || !isRealGroup) && (
-              <div className="p-3 space-y-2">
-                {skills.map((item) => (
-                  <SkillRow
-                    key={item.id}
-                    item={item}
-                    levelOptions={levelOptions}
-                    onUpdate={updateItem}
-                    onRemove={removeItem}
-                    onMove={moveItem}
-                    showCategory={false}
-                  />
-                ))}
-                {isRealGroup && (
-                  <button
-                    onClick={() => addItem(cat)}
-                    className="w-full py-1 text-xs text-indigo-500 hover:text-indigo-700 border border-dashed border-indigo-200 rounded mt-1"
-                  >
-                    + {t.add} {cat}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        );
-      })}
-
-      {/* Flat list for uncategorized / no groups */}
-      {!hasCategories && data.length === 0 && (
+      {data.length === 0 ? (
         <div className="text-center py-6 text-slate-400">
           <p>{tEditor.add}</p>
           <button onClick={() => addItem()} className="mt-2 text-indigo-600 hover:text-indigo-700">+ {t.add}</button>
         </div>
+      ) : (
+        <div className="space-y-6">
+          {Object.entries(groups).map(([cat, catSkills]) => {
+            const isUncategorized = cat === uncategorizedLabel;
+            return (
+              <div key={cat}>
+                {/* Category header */}
+                <div className="flex items-center gap-2 mb-2">
+                  <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    {isUncategorized ? tEditor.skills : cat}
+                  </h4>
+                  <span className="text-slate-400 text-xs">({catSkills.length})</span>
+                </div>
+                
+                {/* Skills in this group */}
+                <div className="space-y-2">
+                  {catSkills.map((item, idx) => (
+                    <div
+                      key={item.id}
+                      data-skill-id={item.id}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, cat, idx)}
+                      onDragOver={(e) => handleDragOver(e, item.id)}
+                      onDrop={(e) => handleDrop(e, cat, idx)}
+                      onDragEnd={handleDragEnd}
+                      className={`flex items-center gap-2 p-2 bg-white border rounded-lg ${
+                        draggedId === item.id ? 'opacity-50' : ''
+                      } ${dragOverId === item.id ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200'}`}
+                    >
+                      <GripVertical className="w-4 h-4 text-slate-300 cursor-grab" />
+                      <input
+                        type="text"
+                        value={item.category || ''}
+                        onChange={(e) => updateItem(item.id, 'category', e.target.value)}
+                        className="w-28 px-2 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                        placeholder={t.category}
+                      />
+                      <input
+                        type="text"
+                        value={item.name}
+                        onChange={(e) => updateItem(item.id, 'name', e.target.value)}
+                        className="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm"
+                        placeholder={t.skillName}
+                      />
+                      <button 
+                        onClick={() => removeItem(item.id)} 
+                        className="p-1.5 text-red-400 hover:text-red-600"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Add to this group */}
+                <button
+                  onClick={() => addItem(cat)}
+                  className="mt-2 w-full py-1 text-xs text-indigo-500 hover:text-indigo-700 border border-dashed border-indigo-200 rounded"
+                >
+                  + {t.add} {isUncategorized ? tEditor.skills : cat}
+                </button>
+              </div>
+            );
+          })}
+        </div>
       )}
-
-      {/* Fallback: flat list when no categories used yet */}
-      {!hasCategories && data.map((item) => (
-        <SkillRow
-          key={item.id}
-          item={item}
-          levelOptions={levelOptions}
-          onUpdate={updateItem}
-          onRemove={removeItem}
-          onMove={moveItem}
-          showCategory={true}
-        />
-      ))}
-    </div>
-  );
-}
-
-// ── Sub-component ──────────────────────────────────────────────────────────────
-interface SkillRowProps {
-  item: Skill;
-  levelOptions: { value: string; label: string }[];
-  onUpdate: (id: string, field: keyof Skill, value: any) => void;
-  onRemove: (id: string) => void;
-  onMove: (id: string, dir: 'up' | 'down') => void;
-  showCategory: boolean;
-}
-
-function SkillRow({ item, levelOptions, onUpdate, onRemove, onMove, showCategory }: SkillRowProps) {
-  const language = useResumeStore((s) => s.language);
-  const t = translations[language].form;
-
-  return (
-    <div className="flex items-center gap-2">
-      {showCategory && (
-        <input
-          type="text"
-          value={item.category || ''}
-          onChange={(e) => onUpdate(item.id, 'category', e.target.value)}
-          className="w-24 px-2 py-1.5 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
-          placeholder={t.category}
-        />
-      )}
-      <input
-        type="text"
-        value={item.name}
-        onChange={(e) => onUpdate(item.id, 'name', e.target.value)}
-        className="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm"
-        placeholder={t.skillName}
-      />
-      <select
-        value={item.level}
-        onChange={(e) => onUpdate(item.id, 'level', e.target.value)}
-        className="px-2 py-1.5 border border-slate-300 rounded-lg focus:ring-1 focus:ring-indigo-500 text-sm"
-      >
-        {levelOptions.map(opt => (
-          <option key={opt.value} value={opt.value}>{opt.label}</option>
-        ))}
-      </select>
-      <button onClick={() => onMove(item.id, 'up')} className="p-1 text-slate-400 hover:text-slate-600 text-xs">↑</button>
-      <button onClick={() => onMove(item.id, 'down')} className="p-1 text-slate-400 hover:text-slate-600 text-xs">↓</button>
-      <button onClick={() => onRemove(item.id)} className="p-1.5 text-red-400 hover:text-red-600">
-        <Trash2 className="w-4 h-4" />
-      </button>
     </div>
   );
 }
