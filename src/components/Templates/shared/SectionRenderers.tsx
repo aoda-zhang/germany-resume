@@ -256,7 +256,7 @@ export function EducationEntry({
       {/* RIGHT */}
       <div style={styles.school} className="text-slate-900 flex-1">
         <div>
-          <span>{edu.field},</span>
+          <span className="font-bold">{`${edu.field}, `}</span>
           <span>{edu.school}</span>
         </div>
       </div>
