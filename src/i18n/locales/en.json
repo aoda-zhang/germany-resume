@@ -16,7 +16,7 @@
   },
   "editor": {
     "personalInfo": "Personal Info",
-    "summary": "Summary",
+    "summary": "Profile",
     "education": "Education",
     "experience": "Experience",
     "projects": "Projects",
@@ -49,7 +49,7 @@
     "major": "Major",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "current": "Present",
+    "current": "present",
     "gpa": "GPA",
     "description": "Description",
     "company": "Company",
