@@ -29,7 +29,7 @@ html, body, #root {
 @media print {
   @page {
     size: A4;
-    margin: 0;
+    margin: 15mm;  /* 给页面四周添加边距，第二页顶部不再是0 */
   }
 
   /* --- Reset layout constraints --- */
@@ -86,20 +86,16 @@ html, body, #root {
     print-color-adjust: exact !important;
   }
 
-  /* --- Pagination: only prevent individual entries from being split --- */
-  /* Do NOT put break-inside:avoid on <section> — it causes whole sections
-     to jump to next page, leaving large blank gaps. */
-
-  /* Experience / Education / Project / Skills / Language entries */
-  section .mb-3,
-  section .mb-4,
-  section .mb-5,
-  .grid[class*="mb-"] {
+  /* --- Pagination: prevent individual entries from being split --- */
+  /* ⚠️ 谨慎使用 break-inside: avoid — 太激进会导致大空白 */
+  
+  /* Only apply to items that shouldn't be cut in half (like paragraphs) */
+  p, li, td {
     break-inside: avoid;
   }
 
-  /* TwoColumn sidebar items */
-  aside > div {
+  /* Grid entries - 改为更宽松的规则 */
+  .grid.mb-3 > div {
     break-inside: avoid;
   }
 
