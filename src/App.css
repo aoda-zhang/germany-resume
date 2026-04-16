@@ -86,18 +86,20 @@ html, body, #root {
     print-color-adjust: exact !important;
   }
 
-  /* --- Pagination: prevent sections from being split --- */
-  section {
-    break-inside: avoid;
-  }
+  /* --- Pagination: only prevent individual entries from being split --- */
+  /* Do NOT put break-inside:avoid on <section> — it causes whole sections
+     to jump to next page, leaving large blank gaps. */
 
-  /* Experience / Education / Project entries — never split across pages */
-  section > div {
+  /* Experience / Education / Project / Skills / Language entries */
+  section .mb-3,
+  section .mb-4,
+  section .mb-5,
+  .grid[class*="mb-"] {
     break-inside: avoid;
   }
 
   /* TwoColumn sidebar items */
-  aside div {
+  aside > div {
     break-inside: avoid;
   }
 
