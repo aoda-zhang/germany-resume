@@ -52,11 +52,14 @@ export function PersonalSection({
           >
             {contactFields.map((f) => (
               <div key={f} className="flex items-baseline mr-10">
-                <span className="font-bold shrink-0 whitespace-nowrap after:content-['：']">
+                <span className="font-bold shrink-0 whitespace-nowrap contact-label">
                   {fieldLabels[f]}
                 </span>
                 <EditableText
-                  value={(personalInfo[f as keyof typeof personalInfo] as string) || ""}
+                  value={
+                    (personalInfo[f as keyof typeof personalInfo] as string) ||
+                    ""
+                  }
                   onChange={(v) => onUpdateField(f, v)}
                   placeholder={fieldLabels[f]}
                   className="min-w-0 wrap-break-word"

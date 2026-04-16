@@ -34,7 +34,7 @@ export function ContactSection({
         const val = (personalInfo[f as keyof typeof personalInfo] as string) || "";
         return (
           <div key={f} className="flex items-baseline gap-1 min-w-0">
-            <span className="font-bold flex-shrink-0 whitespace-nowrap after:content-['：']">{fieldLabels[f]}</span>
+            <span className="font-bold flex-shrink-0 whitespace-nowrap contact-label">{fieldLabels[f]}</span>
             <EditableText
               value={val}
               onChange={(v) => onUpdateField(f, v)}

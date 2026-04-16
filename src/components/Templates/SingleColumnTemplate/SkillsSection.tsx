@@ -52,7 +52,7 @@ groupedEntries.push({
         const names = catSkills.map(sk => sk.name).filter(Boolean).join(', ');
         return (
           <div key={cat} className="mb-1.5 last:mb-0 flex gap-2">
-            <span className="font-bold text-slate-800 flex-shrink-0">{cat}:</span>
+            <span className="font-bold text-slate-800 shrink-0">{cat}:</span>
             <span className="text-slate-800" style={s.body}>{names}</span>
           </div>
         );

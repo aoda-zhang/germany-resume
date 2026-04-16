@@ -8,6 +8,12 @@ html, body, #root {
   overflow: hidden;
 }
 
+/* Contact field labels: always show colon via ::after (works in print too) */
+.contact-label::after {
+  content: "：";
+  padding-right: 2px;
+}
+
 /* A4 paper size simulation — preview only */
 [data-resume-preview] {
   min-width: 210mm;
