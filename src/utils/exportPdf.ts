@@ -4,11 +4,9 @@
  * Uses CSS @media print for layout control.
  */
 
-export async function exportToPDF(_element: HTMLElement): Promise<void> {
+export async function exportToPDF(): Promise<void> {
   // Store original title
   const originalTitle = document.title;
-
-  // Set document title for PDF filename
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
