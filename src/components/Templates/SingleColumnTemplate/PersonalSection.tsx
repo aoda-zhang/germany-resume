@@ -36,7 +36,7 @@ export function PersonalSection({
             </h1>
           )}
           {personalInfo.title && (
-            <p style={s.title} className="text-sky-700 mb-3 wrap-break-word">
+            <p style={s.title} className="text-sky-700 mb-5 wrap-break-word">
               <EditableText
                 value={personalInfo.title}
                 onChange={(v) => onUpdateField("title", v)}
@@ -75,7 +75,7 @@ export function PersonalSection({
           <div className="shrink-0">
             <Photo
               src={personalInfo.photo}
-              size={126}
+              size={170}
               className="rounded-full border-2 border-slate-200"
             />
           </div>
