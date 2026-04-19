@@ -24,7 +24,7 @@ export function PersonalSection({
   return (
     <header className="mb-6">
       {/* Top: name + title, full width */}
-      <div className="mb-4">
+      <div className="ml-20 mb-4">
         {personalInfo.fullName && (
           <h1 style={s.name} className="text-slate-900 mb-1 wrap-break-word">
             <EditableText
@@ -47,7 +47,17 @@ export function PersonalSection({
 
       {/* Bottom: contacts (left) + photo (right, vertically centered) */}
       <div className="flex justify-between items-center gap-2">
-        {/* Left: contact fields */}
+        {/* photo, vertically centered with contacts */}
+        {personalInfo.photo && (
+          <div className="shrink-0 mr-20">
+            <Photo
+              src={personalInfo.photo}
+              size={200}
+              className="rounded-full border-2 border-slate-200"
+            />
+          </div>
+        )}
+        {/* contact fields */}
         <div className="flex-1 min-w-0">
           <div className="grid gap-y-1 text-slate-900">
             {contactFields.map((f) => (
@@ -69,17 +79,6 @@ export function PersonalSection({
             ))}
           </div>
         </div>
-
-        {/* Right: photo, vertically centered with contacts */}
-        {personalInfo.photo && (
-          <div className="shrink-0 mr-0 ml-6">
-            <Photo
-              src={personalInfo.photo}
-              size={140}
-              className="rounded-full border-2 border-slate-200"
-            />
-          </div>
-        )}
       </div>
     </header>
   );
