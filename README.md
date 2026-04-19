@@ -8,6 +8,26 @@
 
 ---
 
+## 📖 About
+
+When I started applying for jobs in Germany, I quickly realized that German CVs follow a very specific format — one that's quite different from what I was used to. German recruiters expect:
+
+- A professional photo in the top corner
+- Personal details like nationality and date of birth
+- A clean, structured layout (often with a sidebar)
+- Concise content that fits on 1-2 pages
+
+After struggling with generic resume builders that didn't understand these requirements, I built Germany Resume. It's a tool designed specifically for the German job market, with:
+
+- **Localized field names** in German (Vorname, Nachname, Anschrift, etc.)
+- **A4 format** by default — no more US Letter confusion
+- **Photo upload with crop** — because German CVs need that photo
+- **Trilingual support** — write once in Chinese, generate English and German versions
+
+This project is open source and free to use. I hope it helps others on their journey to work in Germany! 🇩🇪
+
+---
+
 ## 🎯 Why This Project
 
 When applying for jobs in Germany, a resume that matches local expectations makes a big difference:
