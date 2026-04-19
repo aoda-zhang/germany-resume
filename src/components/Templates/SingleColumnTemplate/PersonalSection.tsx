@@ -72,7 +72,7 @@ export function PersonalSection({
 
         {/* Right: photo, vertically centered with contacts */}
         {personalInfo.photo && (
-          <div className="shrink-0">
+          <div className="shrink-0 mr-4">
             <Photo
               src={personalInfo.photo}
               size={140}
