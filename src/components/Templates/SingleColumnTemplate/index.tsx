@@ -11,7 +11,7 @@ import { EducationSection } from "./EducationSection";
 import { ProjectSection } from "./ProjectSection";
 import { SkillsSection } from "./SkillsSection";
 import { LanguagesSection } from "./LanguagesSection";
-import type { Experience, Education, Project, Skill, Language } from "../../../types/resume";
+import type { Experience, Education, Project, Language } from "../../../types/resume";
 
 export function SingleColumnTemplate() {
   const {
@@ -32,7 +32,6 @@ export function SingleColumnTemplate() {
     updateResumeData,
     updateExperience,
     updateEducation,
-    updateSkill,
     updateProject,
     updateLanguage,
   } = useTemplateData();
@@ -107,7 +106,6 @@ export function SingleColumnTemplate() {
                 key={section.id}
                 skills={skills}
                 tEditor={tEditor}
-                onUpdate={updateSkill as (id: string, data: Partial<Skill>) => void}
               />
             );
           case "languages":
