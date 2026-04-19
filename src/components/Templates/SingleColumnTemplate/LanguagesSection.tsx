@@ -18,7 +18,6 @@ interface LanguagesSectionProps {
 
 export function LanguagesSection({
   languages,
-  t,
   tEditor,
   onUpdate,
 }: LanguagesSectionProps) {

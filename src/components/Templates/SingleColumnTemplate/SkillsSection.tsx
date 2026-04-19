@@ -10,10 +10,9 @@ import type { Skill } from "../../../types/resume";
 interface SkillsSectionProps {
   skills: Skill[];
   tEditor: Record<string, string>;
-  onUpdate: (id: string, data: Partial<Skill>) => void;
 }
 
-export function SkillsSection({ skills, tEditor, onUpdate }: SkillsSectionProps) {
+export function SkillsSection({ skills, tEditor }: SkillsSectionProps) {
   if (skills.length === 0) return null;
 
   const ungrouped = skills.filter(sk => !sk.category?.trim());

@@ -77,8 +77,8 @@ export function SkillsSection({ data, onChange }: Props) {
     // Swap order values of all skills in src/tgt groups
     const srcCat = srcGroup.cat;
     const tgtCat = tgtGroup.cat;
-    const srcCatNorm = srcCat === uncategorizedLabel ? '' : srcCat;
-    const tgtCatNorm = tgtCat === uncategorizedLabel ? '' : tgtCat;
+    const _srcCatNorm = srcCat === uncategorizedLabel ? '' : srcCat;
+    const _tgtCatNorm = tgtCat === uncategorizedLabel ? '' : tgtCat;
 
     const reordered = data.map(sk => {
       const skCatNorm = sk.category?.trim() || uncategorizedLabel;
@@ -102,7 +102,7 @@ export function SkillsSection({ data, onChange }: Props) {
   };
 
   // Update category name for all skills in a group
-  const updateCategory = (groupId: string, oldCat: string, newCat: string) => {
+  const updateCategory = ( _groupId: string, oldCat: string, newCat: string) => {
     const safeNewCat = newCat.trim() || uncategorizedLabel;
     if (safeNewCat === oldCat) return;
     onChange(data.map(sk => {

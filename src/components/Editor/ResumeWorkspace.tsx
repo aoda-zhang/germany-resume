@@ -35,7 +35,7 @@ export function ResumeWorkspace() {
   const handleExportPDF = async () => {
     const element = document.querySelector('[data-resume-preview]');
     if (element) {
-      await exportToPDF(element as HTMLElement);
+      await exportToPDF();
     }
   };
 

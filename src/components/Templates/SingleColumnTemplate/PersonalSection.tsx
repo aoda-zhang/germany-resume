@@ -22,11 +22,21 @@ export function PersonalSection({
   onUpdateField,
 }: PersonalSectionProps) {
   return (
-    <header className="mb-6">
-      {/* Top: name + title, full width */}
-      <div className="ml-20 mb-4">
+    <header className="mb-6 flex gap-6">
+      {/* Left: photo at top */}
+      {personalInfo.photo && (
+        <div className="shrink-0 mr-10">
+          <Photo
+            src={personalInfo.photo}
+            size={200}
+            className="rounded-full border-2 border-slate-200"
+          />
+        </div>
+      )}
+      {/* Right: name + title on top, contact fields below */}
+      <div className="flex-1 min-w-0">
         {personalInfo.fullName && (
-          <h1 style={s.name} className="text-slate-900 mb-1 wrap-break-word">
+          <h1 style={s.name} className="text-slate-900">
             <EditableText
               value={personalInfo.fullName}
               onChange={(v) => onUpdateField("fullName", v)}
@@ -35,7 +45,7 @@ export function PersonalSection({
           </h1>
         )}
         {personalInfo.title && (
-          <p style={s.title} className="text-sky-700 wrap-break-word">
+          <p style={s.title} className="text-sky-700 mb-3 wrap-break-word">
             <EditableText
               value={personalInfo.title}
               onChange={(v) => onUpdateField("title", v)}
@@ -43,41 +53,25 @@ export function PersonalSection({
             />
           </p>
         )}
-      </div>
-
-      {/* Bottom: contacts (left) + photo (right, vertically centered) */}
-      <div className="flex justify-between items-center gap-2">
-        {/* photo, vertically centered with contacts */}
-        {personalInfo.photo && (
-          <div className="shrink-0 mr-20">
-            <Photo
-              src={personalInfo.photo}
-              size={200}
-              className="rounded-full border-2 border-slate-200"
-            />
-          </div>
-        )}
-        {/* contact fields */}
-        <div className="flex-1 min-w-0">
-          <div className="grid gap-y-1 text-slate-900">
-            {contactFields.map((f) => (
-              <div key={f} className="flex items-baseline mr-10">
-                <span className="font-bold shrink-0 whitespace-nowrap pr-1">
-                  {fieldLabels[f]}
-                  <span>:</span>
-                </span>
-                <EditableText
-                  value={
-                    (personalInfo[f as keyof typeof personalInfo] as string) ||
-                    ""
-                  }
-                  onChange={(v) => onUpdateField(f, v)}
-                  placeholder={fieldLabels[f]}
-                  className="min-w-0 wrap-break-word"
-                />
-              </div>
-            ))}
-          </div>
+        {/* two column */}
+        {/* <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-slate-900"> */}
+        <div className="text-slate-900">
+          {contactFields.map((f) => (
+            <div key={f} className="flex items-baseline">
+              <span className="font-bold shrink-0 whitespace-nowrap pr-1">
+                {fieldLabels[f]}
+                <span>:</span>
+              </span>
+              <EditableText
+                value={
+                  (personalInfo[f as keyof typeof personalInfo] as string) || ""
+                }
+                onChange={(v) => onUpdateField(f, v)}
+                placeholder={fieldLabels[f]}
+                className="min-w-0 wrap-break-word"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </header>
