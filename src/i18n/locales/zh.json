@@ -29,7 +29,9 @@
     "sectionName": "区块名称",
     "show": "显示",
     "hide": "隐藏",
-    "interests": "Interests"
+    "additionalSkills": "Additional Skills",
+    "interests": "Interests",
+    "interestsPlaceholder": "Reading, Photography, Hiking..."
   },
   "form": {
     "name": "姓名",

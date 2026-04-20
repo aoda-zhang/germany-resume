@@ -9,7 +9,7 @@ export type Language = 'zh' | 'en' | 'de';
 
 interface SectionOrder {
   id: string;
-  type: 'personal' | 'summary' | 'experience' | 'education' | 'projects' | 'skills' | 'languages' | 'interests';
+  type: 'personal' | 'summary' | 'experience' | 'education' | 'projects' | 'skills' | 'additionalSkills';
   label: string;
   visible: boolean;
 }
@@ -275,8 +275,7 @@ const defaultSectionOrder: SectionOrder[] = [
   { id: 'education', type: 'education', label: 'Education', visible: true },
   { id: 'projects', type: 'projects', label: 'Projects', visible: true },
   { id: 'skills', type: 'skills', label: 'Skills', visible: true },
-  { id: 'languages', type: 'languages', label: 'Languages', visible: true },
-  { id: 'interests', type: 'interests', label: 'Interests', visible: true },
+  { id: 'additionalSkills', type: 'additionalSkills', label: 'Additional Skills', visible: true },
 ];
 
 function getSampleData(lang: Language): ResumeData {

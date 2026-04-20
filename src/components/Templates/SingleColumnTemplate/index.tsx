@@ -110,22 +110,21 @@ export function SingleColumnTemplate() {
                 tEditor={tEditor}
               />
             );
-          case "languages":
+          case "additionalSkills":
             return (
-              <LanguagesSection
-                key={section.id}
-                languages={languages as Language[]}
-                tEditor={tEditor}
-                onUpdate={updateLanguage as (id: string, data: Partial<Language>) => void}
-              />
-            );
-          case "interests":
-            return (
-              <InterestsSection
-                key={section.id}
-                interests={interests}
-                t={t}
-              />
+              <>
+                <LanguagesSection
+                  key={`${section.id}-lang`}
+                  languages={languages as Language[]}
+                  tEditor={tEditor}
+                  onUpdate={updateLanguage as (id: string, data: Partial<Language>) => void}
+                />
+                <InterestsSection
+                  key={`${section.id}-interests`}
+                  interests={interests}
+                  t={t}
+                />
+              </>
             );
           default:
             return null;

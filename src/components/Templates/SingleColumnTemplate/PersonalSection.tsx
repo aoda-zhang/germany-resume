@@ -22,9 +22,9 @@ export function PersonalSection({
   onUpdateField,
 }: PersonalSectionProps) {
   return (
-    <header className="mb-6">
+    <header className="mb-1">
       {/* Top: Name and Title */}
-      <div className="mb-4">
+      <div className="mb-1">
         {personalInfo.fullName && (
           <h1 style={s.name} className="text-slate-900">
             <EditableText
@@ -35,7 +35,7 @@ export function PersonalSection({
           </h1>
         )}
         {personalInfo.title && (
-          <p style={s.title} className="text-sky-700 wrap-break-word">
+          <p style={s.title} className="text-sky-600 wrap-break-word">
             <EditableText
               value={personalInfo.title}
               onChange={(v) => onUpdateField("title", v)}

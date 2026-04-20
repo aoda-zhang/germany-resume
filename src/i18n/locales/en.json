@@ -29,7 +29,9 @@
     "sectionName": "Section Name",
     "show": "Show",
     "hide": "Hide",
-    "interests": "Interests"
+    "additionalSkills": "Additional Skills",
+    "interests": "Interests",
+    "interestsPlaceholder": "Reading, Photography, Hiking..."
   },
   "form": {
     "name": "Name",

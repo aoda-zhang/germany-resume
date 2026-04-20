@@ -135,7 +135,7 @@ export function ExperienceEntry({
             value={exp.position}
             onChange={(v) => onUpdate(exp.id, { position: v })}
             placeholder={t.position || "Position"}
-            className="font-bold text-sky-700"
+            className="font-bold text-sky-600"
           />
         </h3>
       </div>
