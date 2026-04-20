@@ -397,16 +397,16 @@ function getProficiency(level: string): string {
 
 /** Level labels that should NOT show parentheses */
 const NO_PARENTHESIS_LEVELS = [
-  'mother tongue',
-  'native',
-  'native speaker',
-  'native language',
+  "mother tongue",
+  "native",
+  "native speaker",
+  "native language",
 ];
 
 /** Checks if a level is a "mother tongue" type label (no CEFR code) */
 function isMotherTongue(level: string): boolean {
   return NO_PARENTHESIS_LEVELS.some((l) =>
-    level.toLowerCase().includes(l.toLowerCase())
+    level.toLowerCase().includes(l.toLowerCase()),
   );
 }
 
@@ -428,12 +428,11 @@ export function LanguageEntry({
         style={nameStyle}
       />
       <span> - </span>
-      <span className="italic text-slate-700">
+      <span className=" text-slate-900">
         <EditableText
           value={isMT ? level : getProficiency(level)}
           onChange={(v) => onUpdate(lang.id, { level: v })}
           placeholder="Proficiency"
-          className="italic"
         />
       </span>
       {!isMT && (
