@@ -114,7 +114,7 @@ export function SingleColumnTemplate() {
             return (
               <section key={section.id} className="mb-4">
                 <h2
-                  className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 border-b border-slate-300 pb-1"
+                  className="text-xs font-bold tracking-wider text-slate-700 mb-2 border-b border-slate-300 pb-1"
                   style={s.sectionTitle}
                 >
                   Additional Skills & Interests
