@@ -120,7 +120,8 @@ export function SingleColumnTemplate() {
                   Additional Skills & Interests
                 </h2>
                 {languages.length > 0 && (
-                  <div className="mb-2">
+                  <div className="mb-3">
+                    <h3 className="text-xs font-semibold text-slate-600 mb-1">Languages</h3>
                     <LanguagesSection
                       languages={languages as Language[]}
                       onUpdate={updateLanguage as (id: string, data: Partial<Language>) => void}
@@ -128,7 +129,10 @@ export function SingleColumnTemplate() {
                   </div>
                 )}
                 {interests && (
-                  <InterestsSection interests={interests} t={t} />
+                  <div>
+                    <h3 className="text-xs font-semibold text-slate-600 mb-1">Interests</h3>
+                    <InterestsSection interests={interests} t={t} />
+                  </div>
                 )}
               </section>
             );

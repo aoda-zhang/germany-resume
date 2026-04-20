@@ -1,5 +1,7 @@
 /**
  * Single-column layout: languages section (inline, comma-separated).
+ * Format: "Chinese - fluent (C1), English - advanced (B2)"
+ * Mother tongue: "Spanish - mother tongue" (no parentheses)
  */
 import { EditableText } from "../EditableComponents";
 import { singleColumnStyles as s } from "../shared/templateStyles";
@@ -13,6 +15,26 @@ interface Language {
 interface LanguagesSectionProps {
   languages: Language[];
   onUpdate: (id: string, data: Partial<Language>) => void;
+}
+
+/** Maps CEFR level codes to readable proficiency descriptions */
+const proficiencyMap: Record<string, string> = {
+  A1: "Beginner",
+  A2: "Elementary",
+  B1: "Intermediate",
+  B2: "Upper-Intermediate",
+  "B2 - C1": "Advanced",
+  C1: "Advanced",
+  C2: "Expert",
+  Native: "Native",
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
+  expert: "Expert",
+};
+
+function getProficiency(level: string): string {
+  return proficiencyMap[level] ?? level;
 }
 
 /** Checks if a level is a "mother tongue" type label (no CEFR code) */
@@ -41,13 +63,24 @@ export function LanguagesSection({
               placeholder="Language"
               className="font-medium"
             />
-            <span>&nbsp;(</span>
+            <span> - </span>
             <EditableText
-              value={isMT ? "Mother Tongue" : lang.level}
+              value={isMT ? lang.level : getProficiency(lang.level)}
               onChange={(v) => onUpdate(lang.id, { level: v })}
-              placeholder="Level"
+              placeholder="Proficiency"
             />
-            <span>)</span>
+            {!isMT && (
+              <>
+                <span>&nbsp;(</span>
+                <EditableText
+                  value={lang.level}
+                  onChange={(v) => onUpdate(lang.id, { level: v })}
+                  placeholder="Level"
+                  className="font-medium"
+                />
+                <span>)</span>
+              </>
+            )}
             {showComma && <span>,&nbsp;</span>}
           </span>
         );
