@@ -81,7 +81,7 @@ export function LanguagesSection({
                 <span>)</span>
               </>
             )}
-            {showComma && <span>,&nbsp;</span>}
+            {showComma && <span>,&nbsp;&nbsp;</span>}
           </span>
         );
       })}
