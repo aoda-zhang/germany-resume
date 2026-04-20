@@ -112,19 +112,25 @@ export function SingleColumnTemplate() {
             );
           case "additionalSkills":
             return (
-              <>
-                <LanguagesSection
-                  key={`${section.id}-lang`}
-                  languages={languages as Language[]}
-                  tEditor={tEditor}
-                  onUpdate={updateLanguage as (id: string, data: Partial<Language>) => void}
-                />
-                <InterestsSection
-                  key={`${section.id}-interests`}
-                  interests={interests}
-                  t={t}
-                />
-              </>
+              <section key={section.id} className="mb-4">
+                <h2
+                  className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 border-b border-slate-300 pb-1"
+                  style={s.sectionTitle}
+                >
+                  Additional Skills & Interests
+                </h2>
+                {languages.length > 0 && (
+                  <div className="mb-2">
+                    <LanguagesSection
+                      languages={languages as Language[]}
+                      onUpdate={updateLanguage as (id: string, data: Partial<Language>) => void}
+                    />
+                  </div>
+                )}
+                {interests && (
+                  <InterestsSection interests={interests} t={t} />
+                )}
+              </section>
             );
           default:
             return null;
