@@ -11,7 +11,6 @@ import { EducationSection } from "./EducationSection";
 import { ProjectSection } from "./ProjectSection";
 import { SkillsSection } from "./SkillsSection";
 import { LanguagesSection } from "./LanguagesSection";
-import { InterestsSection } from "./InterestsSection";
 import type {
   Experience,
   Education,
@@ -131,7 +130,7 @@ export function SingleColumnTemplate() {
             return (
               <section key={section.id} className="mb-4">
                 <h2
-                  className="text-xs font-bold tracking-wider text-slate-900 mb-2"
+                  className="text-xs font-bold tracking-wider text-slate-900 mb-2 border-b border-slate-900 pb-1"
                   style={s.sectionTitle}
                 >
                   Additional Skills & Interests
@@ -153,7 +152,14 @@ export function SingleColumnTemplate() {
                 {interests && (
                   <div>
                     <h3 className="font-bold text-slate-900 mb-1">Interests</h3>
-                    <InterestsSection interests={interests} t={t} />
+                    <div className="text-slate-800" style={s.body}>
+                      {interests.split("\n").filter(Boolean).map((line, i) => (
+                        <div key={i} className="flex items-start gap-2 mb-1">
+                          <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-900 shrink-0" />
+                          <span>{line.trim()}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </section>
