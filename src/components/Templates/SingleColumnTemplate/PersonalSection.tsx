@@ -23,17 +23,6 @@ export function PersonalSection({
 }: PersonalSectionProps) {
   return (
     <header className="mb-6 flex gap-6">
-      {/* Left: photo at top */}
-      {personalInfo.photo && (
-        <div className="shrink-0 mr-10">
-          <Photo
-            src={personalInfo.photo}
-            size={200}
-            className="rounded-full border-2 border-slate-200"
-          />
-        </div>
-      )}
-      {/* Right: name + title on top, contact fields below */}
       <div className="flex-1 min-w-0">
         {personalInfo.fullName && (
           <h1 style={s.name} className="text-slate-900">
@@ -74,6 +63,15 @@ export function PersonalSection({
           ))}
         </div>
       </div>
+      {personalInfo.photo && (
+        <div className="shrink-0 mr-10">
+          <Photo
+            src={personalInfo.photo}
+            size={200}
+            className="rounded-full border-2 border-slate-200"
+          />
+        </div>
+      )}
     </header>
   );
 }

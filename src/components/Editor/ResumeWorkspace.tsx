@@ -49,10 +49,10 @@ export function ResumeWorkspace() {
   const currentLang = languages.find(l => l.code === language);
 
   return (
-    <div className="h-screen flex bg-slate-100">
+    <div className="h-screen flex bg-slate-100 gap-10">
       
       {/* Left editor panel — hidden when printing */}
-      <div className="w-[420px] flex-shrink-0 h-full flex flex-col bg-white border-r border-slate-200" data-no-print>
+      <div className="w-105 shrink-0 h-full flex flex-col bg-white border-r border-slate-200" data-no-print>
         
         <div className="px-4 py-3 border-b border-slate-200">
           <div className="flex items-center justify-end">
