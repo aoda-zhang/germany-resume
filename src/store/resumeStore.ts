@@ -271,10 +271,10 @@ const deSample: ResumeData = {
 const defaultSectionOrder: SectionOrder[] = [
   { id: 'personal', type: 'personal', label: 'PersonalInfo', visible: true },
   { id: 'summary', type: 'summary', label: 'PersonalDescription', visible: true },
+  { id: 'skills', type: 'skills', label: 'Skills', visible: true },
   { id: 'experience', type: 'experience', label: 'WorkExperience', visible: true },
   { id: 'education', type: 'education', label: 'Education', visible: true },
   { id: 'projects', type: 'projects', label: 'Projects', visible: true },
-  { id: 'skills', type: 'skills', label: 'Skills', visible: true },
   { id: 'additionalSkills', type: 'additionalSkills', label: 'Additional Skills', visible: true },
 ];
 
