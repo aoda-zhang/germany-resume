@@ -26,7 +26,7 @@ export function useTemplateData() {
     updateLanguage,
   } = useResumeEditing();
 
-  const { personalInfo, summary, experience, education, skills, projects, languages } =
+  const { personalInfo, summary, experience, education, skills, projects, languages, interests } =
     resumeData;
 
   /** Contact fields that have a value (excluding fullName & title which render separately) */
@@ -46,6 +46,7 @@ export function useTemplateData() {
     nationality: t.nationality,
     birthDate: t.birthDate,
     workPermit: t.workPermit,
+    residenceStatus: t.residenceStatus,
     blueCard: t.blueCard,
     linkedin: t.linkedin,
     github: t.github,
@@ -66,6 +67,7 @@ export function useTemplateData() {
     skills,
     projects,
     languages,
+    interests,
     // layout
     visibleSections,
     contactFields,

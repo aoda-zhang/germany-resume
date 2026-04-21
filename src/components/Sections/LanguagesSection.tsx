@@ -16,7 +16,7 @@ const levelOptions = [
   { value: 'B2 - C1', label: 'B2+' },
   { value: 'C1', label: 'C1 Advanced' },
   { value: 'C2', label: 'C2 Expert' },
-  { value: 'Native', label: 'Native' },
+  { value: 'Mother Tongue', label: 'Mother Tongue' },
 ];
 
 export function LanguagesSection({ data, onChange }: Props) {

@@ -77,8 +77,6 @@ export function SkillsSection({ data, onChange }: Props) {
     // Swap order values of all skills in src/tgt groups
     const srcCat = srcGroup.cat;
     const tgtCat = tgtGroup.cat;
-    const srcCatNorm = srcCat === uncategorizedLabel ? '' : srcCat;
-    const tgtCatNorm = tgtCat === uncategorizedLabel ? '' : tgtCat;
 
     const reordered = data.map(sk => {
       const skCatNorm = sk.category?.trim() || uncategorizedLabel;
@@ -102,7 +100,7 @@ export function SkillsSection({ data, onChange }: Props) {
   };
 
   // Update category name for all skills in a group
-  const updateCategory = (groupId: string, oldCat: string, newCat: string) => {
+  const updateCategory = ( _groupId: string, oldCat: string, newCat: string) => {
     const safeNewCat = newCat.trim() || uncategorizedLabel;
     if (safeNewCat === oldCat) return;
     onChange(data.map(sk => {
@@ -163,7 +161,7 @@ export function SkillsSection({ data, onChange }: Props) {
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
         >
           <Plus className="w-4 h-4" />
-          {t.addGroup || 'Add Group'}
+          {(t as any).addGroup || 'Add Group'}
         </button>
       </div>
 
@@ -171,7 +169,7 @@ export function SkillsSection({ data, onChange }: Props) {
         <div className="text-center py-6 text-slate-400">
           <p>{tEditor.add}</p>
           <button onClick={addGroup} className="mt-2 text-indigo-600 hover:text-indigo-700">
-            + {t.addGroup || 'Add Group'}
+            + {(t as any).addGroup || 'Add Group'}
           </button>
         </div>
       ) : (

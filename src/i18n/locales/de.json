@@ -28,7 +28,10 @@
     "moveDown": "Nach unten",
     "sectionName": "Abschnittsname",
     "show": "Anzeigen",
-    "hide": "Ausblenden"
+    "hide": "Ausblenden",
+    "additionalSkills": "Zusätzliche Fähigkeiten & Interessen",
+    "interests": "Interests",
+    "interestsPlaceholder": "Reading, Photography, Hiking..."
   },
   "form": {
     "name": "Name",
@@ -43,6 +46,7 @@
     "nationality": "Staatsangehörigkeit",
     "birthDate": "Geburtsdatum",
     "workPermit": "Arbeitserlaubnis",
+    "residenceStatus": "Aufenthaltsstatus",
     "blueCard": "Blaue Karte",
     "school": "Schule/Universität",
     "degree": "Abschluss",
@@ -68,8 +72,7 @@
     "summaryPlaceholder": "Kurze Zusammenfassung Ihres Hintergrunds, Ihrer Stärken und Karriereziele..."
   },
   "template": {
-    "singleColumn": "Einspaltig",
-    "twoColumn": "Zweispaltig"
+    "singleColumn": "Einspaltig"
   },
   "confirm": {
     "clear": "Möchten Sie wirklich alle Inhalte löschen? Dies kann nicht rückgängig gemacht werden.",

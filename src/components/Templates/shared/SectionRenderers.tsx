@@ -55,7 +55,7 @@ export function SectionTitle({
     <EditableLabel
       sectionType={sectionType}
       defaultLabel={label}
-      className={`block mb-2 ${className}`}
+      className={`block mb-4 ${className}`}
       style={style}
     />
   );
@@ -135,7 +135,7 @@ export function ExperienceEntry({
             value={exp.position}
             onChange={(v) => onUpdate(exp.id, { position: v })}
             placeholder={t.position || "Position"}
-            className="font-bold text-sky-700"
+            className="font-bold text-sky-600"
           />
         </h3>
       </div>
@@ -147,16 +147,10 @@ export function ExperienceEntry({
           placeholder={t.company || "Company"}
           className="font-bold"
         />
-        {exp.companyWebsite && (
-          <span>
-            {" – "}
-            <EditableText
-              value={exp.companyWebsite}
-              onChange={(v) => onUpdate(exp.id, { companyWebsite: v })}
-              placeholder="https://example.com"
-            />
-          </span>
-        )}
+        <span className="mx-2">|</span>
+        <span>{exp.companyWebsite}</span>
+        <span className="mx-2">|</span>
+        <span>{exp.address}</span>
         {exp.country && (
           <span>
             <EditableText
@@ -381,14 +375,51 @@ export interface LanguageEntryProps {
   separator?: string;
 }
 
+/** Maps CEFR level codes to readable proficiency descriptions */
+const proficiencyMap: Record<string, string> = {
+  A1: "Beginner",
+  A2: "Elementary",
+  B1: "Intermediate",
+  B2: "Upper-Intermediate",
+  "B2 - C1": "Advanced",
+  C1: "Advanced",
+  C2: "Expert",
+  Native: "Native",
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
+  expert: "Expert",
+};
+
+function getProficiency(level: string): string {
+  return proficiencyMap[level] ?? level;
+}
+
+/** Level labels that should NOT show parentheses */
+const NO_PARENTHESIS_LEVELS = [
+  "mother tongue",
+  "native",
+  "native speaker",
+  "native language",
+];
+
+/** Checks if a level is a "mother tongue" type label (no CEFR code) */
+function isMotherTongue(level: string): boolean {
+  return NO_PARENTHESIS_LEVELS.some((l) =>
+    level.toLowerCase().includes(l.toLowerCase()),
+  );
+}
+
 export function LanguageEntry({
   lang,
   onUpdate,
   nameStyle,
-  levelStyle,
 }: LanguageEntryProps) {
+  const level = lang.level;
+  const isMT = isMotherTongue(level);
+
   return (
-    <span className="inline-flex items-baseline after:content-[','] after:ml-1 last:after:content-['']">
+    <div className="items-baseline">
       <EditableText
         value={lang.name}
         onChange={(v) => onUpdate(lang.id, { name: v })}
@@ -396,15 +427,28 @@ export function LanguageEntry({
         className="font-medium text-slate-900"
         style={nameStyle}
       />
-      <span>&nbsp;(</span>
-      <EditableText
-        value={lang.level}
-        onChange={(v) => onUpdate(lang.id, { level: v })}
-        placeholder="Level"
-        className="text-slate-900"
-        style={levelStyle}
-      />
-      <span>)</span>
-    </span>
+      <span> - </span>
+      <span className=" text-slate-900">
+        <EditableText
+          value={isMT ? level : getProficiency(level)}
+          onChange={(v) => onUpdate(lang.id, { level: v })}
+          placeholder="Proficiency"
+        />
+      </span>
+      {!isMT && (
+        <>
+          <span>&nbsp;(</span>
+          <span className="font-medium text-slate-700">
+            <EditableText
+              value={level}
+              onChange={(v) => onUpdate(lang.id, { level: v })}
+              placeholder="Level"
+              className="font-medium"
+            />
+          </span>
+          <span>)</span>
+        </>
+      )}
+    </div>
   );
 }

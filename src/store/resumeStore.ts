@@ -9,7 +9,7 @@ export type Language = 'zh' | 'en' | 'de';
 
 interface SectionOrder {
   id: string;
-  type: 'personal' | 'summary' | 'experience' | 'education' | 'projects' | 'skills' | 'languages';
+  type: 'personal' | 'summary' | 'experience' | 'education' | 'projects' | 'skills' | 'additionalSkills';
   label: string;
   visible: boolean;
 }
@@ -18,13 +18,13 @@ interface SectionOrder {
 export type PersonalInfoFieldType =
   | 'fullName' | 'title'
   | 'email' | 'phone' | 'address'
-  | 'nationality' | 'birthDate' | 'workPermit' | 'blueCard'
+  | 'nationality' | 'birthDate' | 'workPermit' | 'residenceStatus' | 'blueCard'
   | 'linkedin' | 'github' | 'website';
 
 export const defaultPersonalInfoFieldOrder: PersonalInfoFieldType[] = [
   'fullName', 'title',
   'email', 'phone', 'address',
-  'nationality', 'birthDate', 'workPermit', 'blueCard',
+  'nationality', 'birthDate', 'workPermit', 'residenceStatus', 'blueCard',
   'linkedin', 'github', 'website',
 ];
 
@@ -37,6 +37,7 @@ export const personalInfoFieldMeta: Record<PersonalInfoFieldType, { rows: number
   nationality: { rows: 1 },
   birthDate: { rows: 1 },
   workPermit: { rows: 1 },
+  residenceStatus: { rows: 1 },
   blueCard: { rows: 1 },
   linkedin: { rows: 1 },
   github: { rows: 1 },
@@ -103,6 +104,7 @@ const zhSample: ResumeData = {
     { id: '1', name: 'Chinese', level: 'Native' },
     { id: '2', name: 'English', level: 'Fluent' },
   ],
+  interests: '',
 };
 
 const enSample: ResumeData = {
@@ -166,6 +168,7 @@ const enSample: ResumeData = {
     { id: '2', name: 'Chinese', level: 'Fluent' },
     { id: '3', name: 'German', level: 'Basic' },
   ],
+  interests: '',
 };
 
 const deSample: ResumeData = {
@@ -262,6 +265,7 @@ const deSample: ResumeData = {
     { id: '2', name: 'Spanish', level: 'Muttersprache' },
     { id: '3', name: 'German', level: 'A1' },
   ],
+  interests: '',
 };
 
 const defaultSectionOrder: SectionOrder[] = [
@@ -271,7 +275,7 @@ const defaultSectionOrder: SectionOrder[] = [
   { id: 'education', type: 'education', label: 'Education', visible: true },
   { id: 'projects', type: 'projects', label: 'Projects', visible: true },
   { id: 'skills', type: 'skills', label: 'Skills', visible: true },
-  { id: 'languages', type: 'languages', label: 'Languages', visible: true },
+  { id: 'additionalSkills', type: 'additionalSkills', label: 'Additional Skills', visible: true },
 ];
 
 function getSampleData(lang: Language): ResumeData {
@@ -335,6 +339,7 @@ const emptyResume: ResumeData = {
   skills: [],
   projects: [],
   languages: [],
+  interests: '',
 };
 
 export const useResumeStore = create<ResumeState>()(
@@ -355,9 +360,9 @@ export const useResumeStore = create<ResumeState>()(
 
       setLanguage: (language) => {
         const labels = {
-          zh: { personal: '基本信息', summary: '自我评价', experience: '工作经历', education: '教育经历', projects: '项目经验', skills: '专业技能', languages: '语言能力' },
-          en: { personal: 'Personal Info', summary: 'Profile', experience: 'Professional Experience', education: 'Education', projects: 'Projects', skills: 'Skills', languages: 'Languages' },
-          de: { personal: 'Persönliche Daten', summary: 'Zusammenfassung', experience: 'Berufserfahrung', education: 'Ausbildung', projects: 'Projekte', skills: 'Fähigkeiten', languages: 'Sprachen' },
+          zh: { personal: '基本信息', summary: '自我评价', experience: '工作经历', education: '教育经历', projects: '项目经验', skills: '专业技能', languages: '语言能力', interests: '兴趣爱好' },
+          en: { personal: 'Personal Info', summary: 'Profile', experience: 'Work Experience', education: 'Education', projects: 'Projects', skills: 'Skills', languages: 'Languages', interests: 'Interests' },
+          de: { personal: 'Persönliche Daten', summary: 'Zusammenfassung', experience: 'Berufserfahrung', education: 'Ausbildung', projects: 'Projekte', skills: 'Fähigkeiten', languages: 'Sprachen', interests: 'Hobbys' },
         };
         const sectionOrder = defaultSectionOrder.map(s => ({
           ...s,
@@ -540,6 +545,14 @@ export const useResumeStore = create<ResumeState>()(
           resumeData: {
             ...state.resumeData,
             languages: state.resumeData.languages.filter((l) => l.id !== id),
+          },
+        })),
+
+      updateInterests: (value: string) =>
+        set((state) => ({
+          resumeData: {
+            ...state.resumeData,
+            interests: value,
           },
         })),
 

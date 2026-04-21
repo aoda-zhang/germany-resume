@@ -19,12 +19,11 @@ export function EducationSection({
   t,
   tEditor,
   present,
-  onUpdate,
 }: EducationSectionProps) {
   if (education.length === 0) return null;
 
   return (
-    <section className="mb-5">
+    <section className="mb-4">
       <SectionTitle
         label={tEditor.education}
         sectionType="education"
@@ -32,30 +31,43 @@ export function EducationSection({
         style={s.sectionTitle}
       />
       {education.map((edu) => (
-        <div key={edu.id} className="grid mb-2" style={{ gridTemplateColumns: "160px 1fr", alignItems: "stretch" }}>
+        <div
+          key={edu.id}
+          className="grid mb-2"
+          style={{ gridTemplateColumns: "170px 1fr", alignItems: "stretch" }}
+        >
           {/* Left: time (fixed width) */}
-          <div className="text-slate-900 pr-4 mr-4 h-full flex flex-col" style={{ fontSize: s.body.fontSize, alignSelf: "start" }}>
+          <div
+            className="text-slate-900 pr-4 mr-4 h-full flex flex-col"
+            style={{ fontSize: s.body.fontSize, alignSelf: "start" }}
+          >
             <div className="whitespace-nowrap">
               {edu.startDate} – {edu.current ? present : edu.endDate}
             </div>
-            {edu.address && (
-              <div className="text-slate-900 mt-0.5">{edu.address}</div>
-            )}
           </div>
 
           {/* Right: field + school */}
           <div className="min-w-0">
             <div className="flex items-baseline gap-4">
-              <span className="text-slate-900" style={{ fontSize: s.body.fontSize, alignSelf: "start" }}>
+              <span
+                className="text-slate-900"
+                style={{ fontSize: s.body.fontSize, alignSelf: "start" }}
+              >
                 {edu.field || t.major || "Field of Study"}
               </span>
-              <span className="text-slate-500 shrink-0">
+              <span className="text-slate-900 shrink-0">
                 {edu.degree ? `, ${edu.degree}` : ""}
               </span>
             </div>
-            <div className="text-slate-900 mt-0.5" style={{ fontSize: s.body.fontSize, alignSelf: "start" }}>
+            <div
+              className="text-slate-900 mt-0.5"
+              style={{ fontSize: s.body.fontSize, alignSelf: "start" }}
+            >
               {edu.school || t.school || "School"}
             </div>
+            {edu.address && (
+              <div className="text-slate-900 mt-0.5">{edu.address}</div>
+            )}
           </div>
         </div>
       ))}

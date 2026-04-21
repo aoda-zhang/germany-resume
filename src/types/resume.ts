@@ -9,6 +9,7 @@ export interface PersonalInfo {
   nationality?: string;
   birthDate?: string;
   workPermit?: string;
+  residenceStatus?: string;
   blueCard?: string;
   photo?: string; // base64 or URL
   github?: string;
@@ -71,6 +72,7 @@ export interface ResumeData {
   skills: Skill[];
   projects: Project[];
   languages: Language[];
+  interests: string;
 }
 
 export type TemplateType = 'modern' | 'classic' | 'minimal' | 'german';

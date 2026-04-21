@@ -1,6 +1,5 @@
 import { useResumeStore } from '../../store/resumeStore';
 import { SingleColumnTemplate } from '../Templates/SingleColumnTemplate';
-import { TwoColumnTemplate } from '../Templates/TwoColumnTemplate';
 import { SectionEditor } from './SectionEditor';
 import { FileImage, FileText, Globe, Layout } from 'lucide-react';
 import { exportToPDF } from '../../utils/exportPdf';
@@ -11,8 +10,7 @@ import { useState } from 'react';
 type TemplateId = 'single' | 'two';
 
 const templates: { id: TemplateId; nameKey: string }[] = [
-  { id: 'single', nameKey: 'singleColumn' },
-  { id: 'two', nameKey: 'twoColumn' },
+  { id: 'single', nameKey: 'singleColumn' }
 ];
 
 const languages: { code: Language; name: string }[] = [
@@ -37,7 +35,7 @@ export function ResumeWorkspace() {
   const handleExportPDF = async () => {
     const element = document.querySelector('[data-resume-preview]');
     if (element) {
-      await exportToPDF(element as HTMLElement);
+      await exportToPDF();
     }
   };
 
@@ -51,9 +49,10 @@ export function ResumeWorkspace() {
   const currentLang = languages.find(l => l.code === language);
 
   return (
-    <div className="h-screen flex bg-slate-100">
+    <div className="h-screen flex bg-slate-100 gap-10">
       
-      <div className="w-[420px] flex-shrink-0 h-full flex flex-col bg-white border-r border-slate-200">
+      {/* Left editor panel — hidden when printing */}
+      <div className="w-105 shrink-0 h-full flex flex-col bg-white border-r border-slate-200" data-no-print>
         
         <div className="px-4 py-3 border-b border-slate-200">
           <div className="flex items-center justify-end">
@@ -102,7 +101,7 @@ export function ResumeWorkspace() {
       
       <div className="flex-1 h-full flex flex-col">
         
-        <div className="px-6 py-3 bg-white border-b border-slate-200">
+        <div className="px-6 py-3 bg-white border-b border-slate-200" data-no-print>
           <div className="flex items-center gap-6">
             {/* Template switcher */}
             <div className="flex items-center gap-3">
@@ -156,7 +155,7 @@ export function ResumeWorkspace() {
         </div>
 
         
-        <div className="flex-1 overflow-auto p-8 bg-slate-200">
+        <div className="flex-1 overflow-auto bg-slate-200" data-print-wrapper>
           <div
             className="mx-auto bg-white shadow-lg"
             style={{
@@ -167,7 +166,6 @@ export function ResumeWorkspace() {
             data-resume-preview
           >
             {template === 'single' && <SingleColumnTemplate />}
-            {template === 'two' && <TwoColumnTemplate />}
           </div>
         </div>
       </div>

@@ -23,8 +23,8 @@ import { ExperienceSection } from "../Sections/ExperienceSection";
 import { EducationSection } from "../Sections/EducationSection";
 import { SkillsSection } from "../Sections/SkillsSection";
 import { ProjectsSection } from "../Sections/ProjectsSection";
-import { LanguagesSection } from "../Sections/LanguagesSection";
 import { SummarySection } from "../Sections/SummarySection";
+import { AdditionalSkillsSection } from "../Sections/AdditionalSkillsSection";
 import {
   FileJson,
   ChevronDown,
@@ -35,11 +35,11 @@ import {
 type SectionKey =
   | "personalInfo"
   | "summary"
+  | "additionalSkills"
   | "experience"
   | "education"
   | "skills"
-  | "projects"
-  | "languages";
+  | "projects";
 
 const storeToEditor: Record<string, SectionKey> = {
   personal: "personalInfo",
@@ -48,7 +48,7 @@ const storeToEditor: Record<string, SectionKey> = {
   education: "education",
   projects: "projects",
   skills: "skills",
-  languages: "languages",
+  additionalSkills: "additionalSkills",
 };
 
 const editorToStore: Record<SectionKey, string> = {
@@ -58,7 +58,7 @@ const editorToStore: Record<SectionKey, string> = {
   education: "education",
   skills: "skills",
   projects: "projects",
-  languages: "languages",
+  additionalSkills: "additionalSkills",
 };
 
 const sectionIcons: Record<SectionKey, string> = {
@@ -68,7 +68,7 @@ const sectionIcons: Record<SectionKey, string> = {
   education: "🎓",
   skills: "🛠️",
   projects: "🚀",
-  languages: "🌐",
+  additionalSkills: "📋",
 };
 
 function SortableSectionItem({
@@ -172,7 +172,7 @@ export function SectionEditor() {
     education: { label: tEditor.education, icon: sectionIcons.education },
     skills: { label: tEditor.skills, icon: sectionIcons.skills },
     projects: { label: tEditor.projects, icon: sectionIcons.projects },
-    languages: { label: tEditor.languages, icon: sectionIcons.languages },
+    additionalSkills: { label: tEditor.additionalSkills || "Additional Skills", icon: sectionIcons.additionalSkills },
   };
 
   const openJson = () => {
@@ -257,6 +257,15 @@ export function SectionEditor() {
             onChange={(v) => handleUpdate("summary", v)}
           />
         );
+      case "additionalSkills":
+        return (
+          <AdditionalSkillsSection
+            languages={resumeData.languages}
+            onLanguagesChange={(v) => handleUpdate("languages", v)}
+            interests={resumeData.interests}
+            onInterestsChange={(v) => handleUpdate("interests", v)}
+          />
+        );
       case "experience":
         return (
           <ExperienceSection
@@ -283,13 +292,6 @@ export function SectionEditor() {
           <ProjectsSection
             data={resumeData.projects}
             onChange={(v) => handleUpdate("projects", v)}
-          />
-        );
-      case "languages":
-        return (
-          <LanguagesSection
-            data={resumeData.languages}
-            onChange={(v) => handleUpdate("languages", v)}
           />
         );
     }
