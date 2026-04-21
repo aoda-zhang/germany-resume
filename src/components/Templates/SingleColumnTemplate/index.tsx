@@ -133,11 +133,11 @@ export function SingleColumnTemplate() {
                   className="text-xs font-bold tracking-wider text-slate-900 mb-2 border-b border-slate-900 pb-1"
                   style={s.sectionTitle}
                 >
-                  Additional Skills & Interests
+                  {tEditor.additionalSkills}
                 </h2>
                 {languages.length > 0 && (
                   <div className="mb-3">
-                    <h3 className="font-bold text-slate-900 mb-1">Languages</h3>
+                    <h3 className="font-bold text-slate-900 mb-1">{tEditor.sectionLanguages}</h3>
                     <div className="flex items-start gap-2">
                       <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-900 shrink-0" />
                       <LanguagesSection
@@ -154,7 +154,7 @@ export function SingleColumnTemplate() {
                 )}
                 {interests && (
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-1">Interests</h3>
+                    <h3 className="font-bold text-slate-900 mb-1">{tEditor.sectionInterests}</h3>
                     <div className="text-slate-900" style={s.body}>
                       {interests.split("\n").filter(Boolean).map((line, i) => (
                         <div key={i} className="flex items-start gap-2 mb-1">

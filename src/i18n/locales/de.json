@@ -30,6 +30,8 @@
     "show": "Anzeigen",
     "hide": "Ausblenden",
     "additionalSkills": "Zusätzliche Fähigkeiten & Interessen",
+    "sectionLanguages": "Sprachen",
+    "sectionInterests": "Interessen",
     "interests": "Interests",
     "interestsPlaceholder": "Reading, Photography, Hiking..."
   },

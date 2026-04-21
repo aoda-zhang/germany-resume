@@ -30,6 +30,8 @@
     "show": "Show",
     "hide": "Hide",
     "additionalSkills": "Additional Skills & Interests",
+    "sectionLanguages": "Languages",
+    "sectionInterests": "Interests",
     "interests": "Interests",
     "interestsPlaceholder": "Reading, Photography, Hiking..."
   },

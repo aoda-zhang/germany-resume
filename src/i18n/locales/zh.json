@@ -30,6 +30,8 @@
     "show": "显示",
     "hide": "隐藏",
     "additionalSkills": "其他技能与兴趣",
+    "sectionLanguages": "语言能力",
+    "sectionInterests": "兴趣爱好",
     "interests": "Interests",
     "interestsPlaceholder": "Reading, Photography, Hiking..."
   },
