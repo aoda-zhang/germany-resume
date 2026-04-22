@@ -2,26 +2,16 @@
  * PDF export using browser native print (window.print).
  * This produces perfect PDFs with automatic page breaks that never cut text.
  * Uses CSS @media print for layout control.
+ *
+ * @param fileName - The PDF filename WITHOUT .pdf extension (e.g. "aoda-zhang-fullstack-developer").
+ *                  The browser's Save as PDF dialog will use this as the default filename.
  */
-
-export async function exportToPDF(): Promise<void> {
-  // Store original title
+export async function exportToPDF(fileName: string = 'resume'): Promise<void> {
   const originalTitle = document.title;
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
+  document.title = fileName;
 
-  const formatted = `${year}${month}${day}${hours}${minutes}`;
-  document.title = formatted;
-
-  // Trigger print dialog
-  // User selects "Save as PDF" in the dialog
   window.print();
 
-  // Restore title after print dialog closes
   setTimeout(() => {
     document.title = originalTitle;
   }, 100);

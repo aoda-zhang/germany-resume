@@ -25,6 +25,7 @@ export function ResumeWorkspace() {
     setLanguage,
     fillSampleData,
     clearData,
+    resumeData,
   } = useResumeStore();
 
   const [template, setTemplate] = useState<TemplateId>('single');
@@ -32,17 +33,30 @@ export function ResumeWorkspace() {
 
   const t = translations[language] as I18n;
 
+  /**
+   * Build PDF filename from name and title.
+   * e.g. "Aoda Zhang" + "Full-Stack Developer" → "aoda-zhang-full-stack-developer.pdf"
+   */
+  const buildPdfFileName = (): string => {
+    const name = (resumeData.personalInfo.fullName || '').trim();
+    const title = (resumeData.personalInfo.title || '').trim();
+    const toSlug = (s: string) =>
+      s.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+    const parts = [toSlug(name), toSlug(title)].filter(Boolean);
+    return parts.length > 0 ? parts.join('-') : 'resume';
+  };
+
   const handleExportPDF = async () => {
     const element = document.querySelector('[data-resume-preview]');
     if (element) {
-      await exportToPDF();
+      await exportToPDF(buildPdfFileName());
     }
   };
 
   const handleExportImage = async () => {
     const element = document.querySelector('[data-resume-preview]');
     if (element) {
-      await exportToImage(element as HTMLElement);
+      await exportToImage(element as HTMLElement, `${buildPdfFileName()}.png`);
     }
   };
 
