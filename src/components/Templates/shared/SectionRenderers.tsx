@@ -129,7 +129,7 @@ export function ExperienceEntry({
 }: ExperienceEntryProps) {
   return (
     <div>
-      <div className="flex justify-between items-baseline gap-2 mb-0.5">
+      <div className="flex justify-between items-baseline gap-2">
         <h3 style={styles.position}>
           <EditableText
             value={exp.position}
@@ -173,7 +173,7 @@ export function ExperienceEntry({
       </div>
 
       {exp.companyDescription && (
-        <p style={styles.companyDescription} className="mt-1">
+        <p style={styles.companyDescription}>
           <EditableText
             value={exp.companyDescription}
             onChange={(v) => onUpdate(exp.id, { companyDescription: v })}
